@@ -29,6 +29,14 @@ Every normalized object carries a **`schema_version`.** Raw exists so nothing is
 normalization; normalized exists so runs are comparable. The pair is non-negotiable — a
 normalized-only trace hides where the model actually said something the app tidied away.
 
+```mermaid
+flowchart LR
+    M["Model / tool<br/>returns"] --> RAW[("raw/<br/>exactly as returned")]
+    M --> NORM["Pydantic normalizes"]
+    NORM --> SUM[("summary.json<br/>schema_version stamped")]
+    RAW -.->|"audit: did tidying<br/>lose anything?"| SUM
+```
+
 ---
 
 ## 3. Storage shape — one directory per run
@@ -51,6 +59,14 @@ pre-emptively.
 
 `traces/` is gitignored.
 
+```mermaid
+flowchart TD
+    R["traces / run_id"] --> E["events.jsonl<br/>live causal stream, append-only<br/><i>what happened, in order</i>"]
+    R --> W["raw/<br/>prompts, responses, tool I/O<br/><i>what was actually said</i>"]
+    R --> S["summary.json<br/>normalized, schema-versioned<br/><i>what can be compared</i>"]
+    R --> D["detective.json<br/>standalone leakage verdict<br/><i>diffable on its own across runs</i>"]
+```
+
 ---
 
 ## 4. The event model
@@ -69,6 +85,27 @@ contribution; corpus search and retrieval activity; Oracle requests; round trans
 rotation; direct question/challenge state changes; stop decision; Editor audit and synthesis;
 Detective verdict; errors and retries.
 
+A run's event spine, at the level the live UI shows it (each beat expands into finer events —
+every search, every Oracle call, every round trip):
+
+```mermaid
+sequenceDiagram
+    participant UI as Browser
+    participant H as Host
+    participant C as Choir
+    participant E as Editor
+    participant D as Detective
+    UI->>H: start run
+    H-->>UI: interpretation · triage · score · cast · topology
+    loop each turn, each round
+        C-->>UI: turn started · searches · Oracle · contribution
+    end
+    C-->>UI: stop decision + reason
+    E-->>UI: audit · synthesis
+    D-->>UI: leakage verdict
+    UI->>UI: run_complete → close the stream explicitly
+```
+
 ---
 
 ## 5. Where the seven observables physically live
@@ -78,8 +115,8 @@ measurement frame and the instrumentation.
 
 | Observable | Kind | Where it lives in the trace |
 |---|---|---|
-| **Cost** | quantitative | token usage → estimated cost, per call / per round / per run, in `summary.json`; raw usage in `raw/`. |
-| **Speed** | quantitative | latency per call / per turn / per round / total, in `summary.json`. |
+| **Cost** | quantitative | token usage → estimated cost, per model round trip / per turn / per round / per run, in `summary.json`; raw usage in `raw/`. |
+| **Speed** | quantitative | latency per model round trip / per turn / per round / total, in `summary.json`. |
 | **Quality of outcome** | qualitative | the Editor synthesis + audit; read by human. Topology-value *deltas* (not a score) derived from the Round-1 baseline. |
 | **Steering** | qualitative | Host archetypes, per-dimension complexity score + rationale, chosen topology, cast rationale + near-misses. Topology steering readable from run one; **cast steering only meaningful once the roster forces a choice** (Phase 9 checkpoint). |
 | **Question refinement** | qualitative | original / clarified / canonical question kept separate; triage outcome; research-need decision; provisional-vs-final score with reason for change. |
@@ -122,7 +159,7 @@ the contamination verdict one click away.
 
 At minimum, a run captures:
 
-- run ID; timestamp; schema versions; models per role;
+- run ID; timestamp; schema versions; model **and reasoning effort** per role (Decisions H1);
 - original / clarified / canonical question; initial user position if captured;
 - decomposition; archetypes; provisional and final complexity scores + per-dimension rationale;
 - cast + near-misses + cast rationale; selected topology + rationale;
@@ -135,7 +172,9 @@ At minimum, a run captures:
 - termination reason;
 - Editor audit; final synthesis;
 - Detective leakage verdict (`detective.json`);
-- latency per call/turn/round/total; token usage; estimated cost;
+- latency and token usage **per model round trip within a turn**, then per turn / round / total;
+  estimated cost. *(Phase 0 finding: context compounds inside a single turn — 89 → 165 input
+  tokens across two round trips — so per-turn totals alone would hide where growth starts.)*
 - errors and retries;
 - raw prompts and raw model/tool payloads.
 
