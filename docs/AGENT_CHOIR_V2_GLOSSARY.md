@@ -1,8 +1,9 @@
 # Agent Choir Studio V2 — Conceptual Glossary
 
 *The project's own vocabulary, for a reader who follows the ideas but wants the terms pinned
-down. Pairs with the stack-literacy glossary (`AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md`), which
-covers the plumbing underneath. Definitions here are the project's meaning, not the general one.*
+down. Pairs with the stack-literacy glossary
+([`AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md`](../AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md), at the
+repo root), which covers the plumbing underneath, with pictures. Definitions here are the project's meaning, not the general one.*
 
 ---
 
@@ -42,7 +43,15 @@ latency.
 
 **Counterfeit certainty.** Carried from V1: a set of agents agreeing *feels* like reliable ground
 truth, but consistency measures agreement among agents, not accuracy against reality. Recurs in V2
-one level up — a clean-looking leakage report feels like proof of boundedness and is not.
+one level up — a clean-looking leakage report feels like proof of boundedness and is not. And
+*across runs*: two runs agreeing with each other measures stability, not correctness — the Phase 0
+spike produced two identical answers that both missed the same evidence.
+
+**Counterfeit completeness.** Retrieval's version of counterfeit certainty: an answer that looks
+whole because the evidence it never saw leaves no trace in it. A figure cannot notice a passage its
+search failed to surface, so a thin retrieval produces a confident, clean-looking answer. First seen
+in the Phase 0 spike; the reason retrieval quality is an observable and both candidate lists are
+kept in the trace.
 
 ---
 
@@ -164,6 +173,10 @@ The second is a *figure failure* — retrieval broke technically; no pretrained 
 **"What would change the answer?"** A mandatory element of every synthesis — what new evidence or
 argument would move the conclusion.
 
+**Model-tier steering** *(parked)*. Using the same complexity rubric that picks topology and cast to
+also pick *which model* a question or seat gets — a third mapping from one score, needing no new
+machinery. Named in Decisions A5; not built in V2.
+
 ---
 
 ## Discipline
@@ -173,7 +186,14 @@ one. *Run = isolated execution; Trace = record of it; Experiment = external comp
 completed traces.* A hard property, not a limitation.
 
 **The load-bearing principle.** Concentrate model capability where it converts into quality (Editor,
-Detective, Host), floor it where the role is narrow (figures, Oracle). Carried from V1.
+Detective, Host), floor it where the role is narrow (figures, Oracle). Carried from V1 — and in V2
+treated as a hypothesis to test seat by seat, not an assignment (see *promotion on evidence*).
+
+**Promotion on evidence.** Every role starts on one cheap model, with reasoning effort as the
+per-role dial; a seat moves to a stronger model only when its own trace shows the cheap one costing
+quality, proven by re-running the same frozen input on both and comparing side by side
+(Decisions H1). The Editor is the likeliest first. Tier 4 of the mitigation hierarchy, applied to the
+instrument itself.
 
 **Repo-as-truth.** The git repository is the durable record of *behaviour*; the documents carry
 *intent and reasoning*. No duplication between them.
