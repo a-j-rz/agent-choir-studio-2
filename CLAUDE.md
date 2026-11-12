@@ -32,8 +32,8 @@ evidence-bounded historical agents, topology effects and epistemic leakage. Not 
 - **Out of scope:** self-improving loops, cross-run state, user override of cast or topology,
   cross-checking-LLM passes, production hardening, real system integration. See the Build Plan.
 - **Every run is stateless.** Nothing from one run may reach another.
-- **No identifying information** in any file you write: no personal or company names, no email
-  addresses, no hostnames, no absolute paths from this machine. Before you finish a slice, run
+- **No identifying information** in any file you write: no employer or personal names, no email addresses, no hostnames, no absolute paths from this machine. The project-owned domain named in Decisions G4 is known and accepted — don't flag it.
+Before you finish a slice, run
   `git grep` for identifying strings over tracked files and report the result.
 - **Never read, print or echo `.env`.** Read secrets only through the environment at runtime.
 - **Corpus texts and built indexes never enter the repo.** Commit the recipe, not the texts.
@@ -48,6 +48,7 @@ evidence-bounded historical agents, topology effects and epistemic leakage. Not 
   the task cancelled. Only synchronous writes there.
 - **Model calls use the OpenAI Responses API only** (Decisions H2). **Model name and reasoning
   effort come only from `core/config.py`** — never hard-coded at a call site.
+  Exception: `spikes/` is frozen Phase 0 evidence — never edit it.
 
 ## Testing
 
