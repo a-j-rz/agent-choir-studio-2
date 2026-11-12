@@ -121,7 +121,9 @@ flowchart TD
 stands up with identity hygiene verified before commit one, a FastAPI skeleton streams
 events to a vanilla page, and a live spike has proven the model → tool → model loop on
 `gpt-6-luna` through the Responses API. Its findings are recorded in the Build Plan.
-**Next is Phase 1, the substrate.** The Build Plan carries the live status; this
+**Phase 1, the substrate, is complete too:** every event is traced write-first and streamed
+live, and every model call goes through one async, traced wrapper. **Next is Phase 2, the
+keystone.** The Build Plan carries the live status; this
 section is a pointer, not a second source of truth.
 
 Every role currently runs on one model, with reasoning effort as the per-role dial and

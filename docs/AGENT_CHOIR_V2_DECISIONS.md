@@ -162,6 +162,12 @@ commit author metadata. V2 must expose no corporate identity of any kind.*
   examine. Model choice remains configuration, not architecture, in one config location.
   *Rejected:* fixing the tiered mapping up front (assumes the answer the instrument exists to
   measure); a single model with no per-role dial (removes the cheapest way to differentiate seats).
+  *Refined 2026-11-12, from Phase 1 evidence:* **effort is a ceiling, not a floor** — the Editor
+  at `high` reasoned for zero tokens on an easy task, so effort *permits* deliberation and only
+  costs more when the task uses it. Hence the order for a struggling seat: **raise effort first,
+  promote the model second.** Effort is the fine dial, the model the coarse one, topology coarser
+  still. And if a seat struggles on a task it judges easy, more effort won't help — that points
+  straight at promotion or at the prompt.
 - **H2 — The Responses API is the only model-call surface.** **RESOLVED 2026-11-12.** Current
   models require it for tool calling (or allow Chat Completions tool calls only with reasoning
   switched off), and a single call shape keeps the Phase 1 model-call wrapper simple. Proven live

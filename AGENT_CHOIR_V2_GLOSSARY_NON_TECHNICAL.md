@@ -28,7 +28,8 @@ another for something and get an answer back — like a restaurant menu. You don
 how the kitchen works; you need to know what you can order and what arrives.
 
 **Endpoint.** One specific address an API offers for one kind of request. This project's app
-has three so far: `/` (the page), `/health` (are you alive?) and `/stream` (a test run).
+has four so far: `/` (the page), `/health` (are you alive?), `/stream` (a free test run) and
+`/stream/live` (a run that makes one real, paid model call).
 
 **Request / response.** The basic unit of API conversation: something asks, something answers.
 
@@ -47,10 +48,12 @@ flowchart LR
     end
 ```
 
-**The explicit close.** Browsers are helpful in a way that costs money here: when a stream
-ends, they quietly *reconnect* — and a reconnect to a "start a run" address starts another run.
-V1 hit exactly this. So the page closes the connection itself the moment the run reports it's
-finished.
+**No silent reconnect.** Browsers are helpful in a way that costs money here: the standard
+streaming tool (`EventSource`) quietly *reconnects* when a stream ends — and a reconnect to a
+"start a run" address starts another run. V1 hit exactly this. This project reads the stream with
+`fetch()` instead, which never reconnects on its own, so a second billed run can't start by
+accident. The page still closes the connection itself the moment a run reports it's over —
+belt and braces.
 
 ```mermaid
 sequenceDiagram
@@ -59,12 +62,12 @@ sequenceDiagram
     B->>S: start a run
     S-->>B: event… event… run_complete
     Note over B,S: stream ends
-    alt without an explicit close
+    alt EventSource (V1)
         B->>S: reconnects automatically
         S-->>B: starts — and bills — a second run
-    else with the explicit close (this project)
+    else fetch() + explicit close (this project)
         B->>B: closes the connection itself
-        Note over B: nothing more happens
+        Note over B: never reconnects — nothing more happens
     end
 ```
 
@@ -77,6 +80,11 @@ you tell "the app is broken" apart from "the app isn't running."
 
 **curl.** A command-line tool for making requests without a browser. Handy for watching a raw
 event stream arrive line by line.
+
+**Closing the tab.** Hanging up the browser cancels the stream — but on its own, not the work
+behind it, which would carry on making paid model calls for nobody. So the server cancels the
+work too. A call already in flight may still be billed: cancelling stops *us* waiting, not the
+provider working.
 
 > **Why it matters here:** with SSE you *watch the deliberation think*, one turn at a time. The
 > live view is built only from real events as they arrive — never simulated timing.

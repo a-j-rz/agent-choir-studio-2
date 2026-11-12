@@ -75,9 +75,11 @@ One shared event schema across everything, so the live stream and the trace are 
 substance. Each event minimally carries an event type, the role/actor, a payload (the full
 structured output on "spoke"/"produced" events — this doubles as the trace record, not just a UI
 string), a round number where relevant, and a timestamp. The frontend animates strictly off
-**real** events as they arrive — never simulated timing — and closes its SSE connection explicitly
-on completion so a browser auto-reconnect can never silently re-trigger a billed run (a concrete
-V1 lesson).
+**real** events as they arrive — never simulated timing. It reads the stream with `fetch()`,
+which never auto-reconnects, and still closes the connection explicitly when a run ends, so a
+reconnect can never silently re-trigger a billed run (a concrete V1 lesson). If the client
+disconnects mid-run, the server cancels the run's work so it stops making paid calls, and the run
+is recorded as `aborted`.
 
 Events should cover at least: run lifecycle; Host interpretation / clarification / triage /
 score / cast / topology; Researcher intervention and fact pack; each figure's turn start and
@@ -115,7 +117,7 @@ measurement frame and the instrumentation.
 
 | Observable | Kind | Where it lives in the trace |
 |---|---|---|
-| **Cost** | quantitative | token usage → estimated cost, per model round trip / per turn / per round / per run, in `summary.json`; raw usage in `raw/`. |
+| **Cost** | quantitative | token usage → estimated cost, per model round trip / per turn / per round / per run, in `summary.json`; raw usage in `raw/`. For an **aborted** run the recorded cost is a lower bound: a call cancelled in flight returns no usage but may still be billed. |
 | **Speed** | quantitative | latency per model round trip / per turn / per round / total, in `summary.json`. |
 | **Quality of outcome** | qualitative | the Editor synthesis + audit; read by human. Topology-value *deltas* (not a score) derived from the Round-1 baseline. |
 | **Steering** | qualitative | Host archetypes, per-dimension complexity score + rationale, chosen topology, cast rationale + near-misses. Topology steering readable from run one; **cast steering only meaningful once the roster forces a choice** (Phase 9 checkpoint). |

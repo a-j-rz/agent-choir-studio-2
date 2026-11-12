@@ -189,6 +189,11 @@ completed traces.* A hard property, not a limitation.
 Detective, Host), floor it where the role is narrow (figures, Oracle). Carried from V1 — and in V2
 treated as a hypothesis to test seat by seat, not an assignment (see *promotion on evidence*).
 
+**Effort is a ceiling, not a floor.** Reasoning effort sets how much a model *may* deliberate, not
+how much it *will*. Found in Phase 1: the Editor at `high` reasoned for zero tokens on an easy
+task. So raising effort is cheap — it costs only when used — but it can't force depth on a task
+the model judges easy.
+
 **Promotion on evidence.** Every role starts on one cheap model, with reasoning effort as the
 per-role dial; a seat moves to a stronger model only when its own trace shows the cheap one costing
 quality, proven by re-running the same frozen input on both and comparing side by side

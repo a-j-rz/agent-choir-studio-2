@@ -21,8 +21,8 @@ against a spec that can no longer move under it.
 
 ```mermaid
 flowchart TD
-    P0["0 · Bootstrap + API spike"]:::done --> P1["1 · Substrate"]:::next
-    P1 --> P2["2 · KEYSTONE<br/>one figure, one real corpus"]:::key
+    P0["0 · Bootstrap + API spike"]:::done --> P1["1 · Substrate"]:::done
+    P1 --> P2["2 · KEYSTONE — next<br/>one figure, one real corpus"]:::key
     P2 --> P3["3 · Oracle loop"]
     P3 --> P4["4 · Host flow"]
     P4 --> P5["5 · Hub-and-spoke + Editor<br/>+ Editor model test"]
@@ -49,7 +49,7 @@ flowchart TD
     classDef check fill:#f8d7da,stroke:#b02a37,color:#58151c
 ```
 
-Green is done, amber is next, the thick blue box is the keystone, and red marks the checkpoint
+Green is done, the thick blue box is the keystone and the next slice, and red marks the checkpoint
 where cast steering first produces real data. Phases 1–8 run on the machine-proving four;
 content scaling waits until the machine can no longer move under it.
 
@@ -94,6 +94,28 @@ round trip *within* a turn, not just per turn — the spike showed that's where 
 *Trace evidence:* a trivial end-to-end event stream writes a well-formed `events.jsonl` and a
 `schema_version`-stamped `summary.json`.
 
+✅ **Done 2026-11-12**, in five slices, each proven by its trace before the next began:
+
+| Slice | What landed | Proven by |
+|---|---|---|
+| 1a | `Event` (trace record = SSE message); `RunTrace` writes each event *before* it's sent; `finish()` in a `finally`, so every run leaves a summary — `complete`, `failed` or `aborted` | A full run (seq 1–5, complete) and a hang-up (client saw 2 events; trace holds 3, ending `run_aborted`) |
+| 1b | `core/config.py`: the one place for each role's model and effort; snapshotted into every summary at run start | Changing an effort shows in the next run's summary while earlier summaries are untouched |
+| 1c | `call_model()`: async Responses-API tool loop; raw request/response per round trip, then a `round_trip` event; a loud round-trip cap | Live loop answered from a fake corpus; input tokens 89 → 167 (spike: 89 → 165); cap run stopped loudly |
+| 1d | Work runs as a task that owns the lifecycle; the SSE generator only relays a live queue, and cancels the task if the client leaves | Events reach the page seconds apart, matching `events.jsonl` field for field; an abort mid-call leaves no round trip after the disconnect |
+| 1e | Cache writes priced; client created at server start; one run pattern shared by browser and CLI | Cost maths checked by hand; first event's lag 381 ms → 10 ms |
+
+*Findings carried forward:*
+
+| Finding | What it means | Where it lands |
+|---|---|---|
+| A browser hang-up raises `CancelledError`/`GeneratorExit`, which bypass `except Exception` | Aborted and failed stay distinct for free — but nothing that awaits may run in a `finally` | Every run generator; Phase 8 |
+| Cancelling a stream doesn't cancel the work behind it | Without an explicit cancel, a closed tab keeps making paid calls | `core/runner.py`; Phase 6 especially |
+| A cancelled call may still be billed | An aborted run's recorded cost is a **lower bound** | Trace & Instrumentation §5 |
+| Code between two `await`s can't be interrupted | Keeps each raw file and its event on the same seq under concurrency — an `await` between them would silently break it | Phase 5 onwards (four figures writing at once) |
+| Editor at `high` reasoned for 0 tokens on an easy task | **Effort is a ceiling, not a floor** (Decisions H1) | Phase 5: confirm reasoning-token pricing on a real Editor call |
+| Client setup did ~270 ms of blocking work inside the first run | The blocking trap, in miniature; found by the trace | Fixed (lifespan); a pattern to watch for any one-off setup |
+| Usage could report impossible token slices | Cost estimation raises rather than misprices | Phase 8 |
+
 **Phase 2 — KEYSTONE: one corpus, end to end.**
 Take one machine-proving figure. Acquire → structure-aware chunk → build BM25 + vector + RRF
 index → expose the retrieval tools → run **one figure doing a real corpus-grounded agentic turn**
@@ -124,7 +146,9 @@ with disposition label, attribution, distinguished modern/historical citations, 
 change the answer?"; a genuine (unstaged) satellite failure handled per the degraded-run rule if
 one occurs. Then the **Editor model test** (Decisions H1): the same frozen deliberation
 re-synthesised on a stronger tier, the two syntheses compared side by side, and the promotion
-decision recorded either way.
+decision recorded either way. Also confirm, on the first Editor call that reports
+`reasoning_tokens > 0`, that its estimated cost counts reasoning inside output tokens and not on
+top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
 **Phase 6 — Token-ring.**
 R1 blind baseline → later rounds seeing the transcript → direct-question/challenge objects →

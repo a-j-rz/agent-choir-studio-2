@@ -11,8 +11,9 @@ from where it shouldn't have.
 
 **Not a product.** The trace is the point; the final answer is a by-product.
 
-> **Status:** Phase 0 complete — skeleton running, live tool-calling loop proven.
-> Next: Phase 1, the substrate. See [Build status](#build-status).
+> **Status:** Phase 1 complete — the substrate runs: every event traced write-first and
+> streamed live, every model call through one async, traced wrapper.
+> Next: Phase 2, the keystone. See [Build status](#build-status).
 
 ---
 
@@ -292,8 +293,8 @@ Built in thin vertical slices. "Done" means the trace shows it, not that the cod
 | Phase | Slice | Status |
 |---|---|---|
 | 0 | Bootstrap + live API spike | ✅ Done |
-| 1 | Substrate: schemas, event model, trace directory, model-call wrapper | ⏭ Next |
-| 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | |
+| 1 | Substrate: event model, trace directory, per-role config, model-call wrapper, live relay | ✅ Done |
+| 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ⏭ Next |
 | 3 | Oracle loop | |
 | 4 | Host flow: triage, scoring, topology, cast | |
 | 5 | Hub-and-spoke + Editor | |
@@ -320,6 +321,21 @@ three-passage fake corpus. Small run, real lessons:
 - **Context grows inside a single turn**, and each round trip costs roughly 3–5 seconds even at
   low effort. Four searches per figure, four figures, four rounds: that number compounds.
 
+### What Phase 1 showed
+
+- **Effort is a ceiling, not a floor.** The Editor ran at `high` on an easy task and reasoned for
+  zero tokens. Effort *permits* deliberation; it doesn't buy it.
+- **The blocking trap appears in miniature.** Creating the API client did ~270 ms of synchronous
+  setup *inside* the first run, stalling everything behind it. Moved to server start; the first
+  event's lag fell from 381 ms to 10 ms.
+- **Closing the tab must stop the spending.** A cancelled stream doesn't cancel the work behind
+  it, which would keep making paid calls for a reader who'd gone. The relay now cancels the work
+  explicitly — and a cancelled call may still be billed, so an aborted run's recorded cost is a
+  lower bound.
+- **Cooperative concurrency is a guarantee, not a style.** Code between two `await`s can't be
+  interrupted, which is what keeps every raw file and the event that names it on the same
+  sequence number when four figures write at once.
+
 ---
 
 ## Models
@@ -340,7 +356,8 @@ Model choice is configuration, never architecture.
 ```text
 Language:     Python 3.12
 Backend:      FastAPI
-Live updates: Server-Sent Events, hand-rolled; explicit close so a reconnect can't re-bill a run
+Live updates: Server-Sent Events, read with fetch() — which never auto-reconnects, so a dropped
+              stream can't silently start a second billed run
 Frontend:     Vanilla HTML + JS, no framework, no build step
 Model API:    OpenAI Responses API, direct
 Concurrency:  asyncio
@@ -365,11 +382,12 @@ cp .env.example .env          # then add your own API key
 uvicorn app:app --reload      # http://127.0.0.1:8000
 ```
 
-Right now the page streams a test run over SSE. To run the tool-calling spike against the live
-API (costs a fraction of a cent):
+The page has two buttons: a **free test run** (no model calls) and a **live run** — one real
+traced model call as the Editor, costing around $0.0001. Every run writes its trace to
+`traces/<run_id>/`. The same live run from the command line, printing events as they happen:
 
 ```bash
-python spikes/tool_loop.py
+python -m scripts.llm_smoke
 ```
 
 Corpus texts, built indexes, run traces and `.env` are gitignored by design. The repo carries
@@ -383,9 +401,18 @@ the *recipe* for a corpus, never the texts.
 agent-choir-studio-2/
   README.md
   AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md   # the plumbing, in plain words, with pictures
-  app.py                 # FastAPI: page at /, /health, /stream (test SSE)
-  frontend/index.html    # vanilla page consuming the stream
-  spikes/
+  CLAUDE.md              # standing rules for Claude Code
+  app.py                 # FastAPI: /, /health, /stream (free test run), /stream/live
+  core/
+    events.py            # the Event: trace record and SSE message in one object
+    trace.py             # RunTrace: traces/<run_id>/, write-first, live queue, summary
+    config.py            # the one place for each role's model, effort and prices
+    llm.py               # call_model(): async, traced tool-call loop on the Responses API
+    runner.py            # run lifecycle as a task; relay to browser or terminal
+  demo/live_demo.py      # labelled fake corpus for the live demo run
+  scripts/llm_smoke.py   # the live demo run, from the command line
+  frontend/index.html    # vanilla page: renders any event type, live
+  spikes/                # Phase 0 evidence, frozen
     tool_loop.py         # Phase 0 spike: model → tool → model round trip
     spike_log.txt        # its captured output
   docs/                  # the design pack: intent, reasoning, decisions
