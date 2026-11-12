@@ -8,15 +8,16 @@
 
 This is the **complete, self-contained canon** for Agent Choir Studio V2 — an
 open-question historical-deliberation learning instrument. It assumes **nothing
-outside itself**: not the private build repository, not the earlier V2 draft
-documents, not any prior conversation. Where earlier context is load-bearing, its
-substance is embedded here directly.
+outside itself**: not the repository's code, not the earlier V2 draft documents, not
+any prior conversation. Where earlier context is load-bearing, its substance is embedded
+here directly.
 
 If you are a fresh reader — a new Claude project, ChatGPT, Claude Code, or a human
 picking this up cold — everything you need to understand *what we are building and
-why* lives in these twelve files. The **code** (once it exists) is the source of
-truth for *behaviour*; this pack is the source of truth for *intent, reasoning and
-design constraints*.
+why* lives in these twelve files. In the repository, eleven sit in `docs/` and the
+non-technical glossary sits at the repo root beside the README (Decisions I1). The
+**code** is the source of truth for *behaviour*; this pack is the source of truth for
+*intent, reasoning and design constraints*.
 
 Two governing principles inherited from the first experiment and unchanged:
 
@@ -60,19 +61,51 @@ Read in this order for a cold start. Skip freely once oriented.
 | # | File | What it gives you |
 |---:|---|---|
 | 1 | **AGENT_CHOIR_V2_INDEX.md** *(this file)* | Orientation and the map. |
-| 2 | **AGENT_CHOIR_LINEAGE_V1.md** | The first experiment: what it was, why, what it proved, what carried forward. Skippable if you already know V1. |
-| 3 | **AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md** | The intellectual spine — the *why*. The layered purpose, the seven observables, the knowing-everything paradox, the mitigation hierarchy, deliberation triage. The anchor document. |
-| 4 | **AGENT_CHOIR_V2_SYSTEM.md** | The *what* — roles and their contracts (Host, Choir, Editor, Detective, Researcher, Oracle), the stateless run boundary, the technology posture. |
-| 5 | **AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md** | The historical-agent canon — the roster of 24, the machine-proving four, corpus standard, Manifests / Persona Dossiers / Epistemic Horizons, the retrieval tool loop, per-figure rules. |
-| 6 | **AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md** | Orchestration mechanics — archetypes, complexity rubric, locked topology threshold, cast steering, hub-and-spoke, token-ring (rounds, seat rotation, direct questions/challenges, stop logic), Researcher steering. |
-| 7 | **AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md** | The Detective's full spec, the hard/soft leakage taxonomy, the Oracle cross-check, `detective.json`, and the mandatory self-limitation clause. |
-| 8 | **AGENT_CHOIR_V2_DECISIONS.md** | The decision record (ADR) — every resolved implementation choice as decision + rationale + rejected alternative, plus repo-hygiene decisions. |
-| 9 | **AGENT_CHOIR_V2_BUILD_PLAN.md** | The phased vertical-slice build plan, the keystone slice, trace-evidence per phase, the cast-steering activation checkpoint, and the explicit out-of-scope list. |
-| 10 | **AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md** | What every run captures — raw + normalized, `schema_version`, the per-run trace directory, where each of the seven observables physically lives, the live-vs-expandable UI split. |
-| 11 | **AGENT_CHOIR_V2_GLOSSARY.md** | Conceptual glossary — the project's own vocabulary. |
-| 12 | **AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md** | Stack-literacy glossary — the plumbing, for a reader who follows the ideas but hasn't touched the machinery. |
+| 2 | [**AGENT_CHOIR_LINEAGE_V1.md**](AGENT_CHOIR_LINEAGE_V1.md) | The first experiment: what it was, why, what it proved, what carried forward. Skippable if you already know V1. |
+| 3 | [**AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md**](AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md) | The intellectual spine — the *why*. The layered purpose, the seven observables, the knowing-everything paradox, the mitigation hierarchy, deliberation triage. The anchor document. |
+| 4 | [**AGENT_CHOIR_V2_SYSTEM.md**](AGENT_CHOIR_V2_SYSTEM.md) | The *what* — roles and their contracts (Host, Choir, Editor, Detective, Researcher, Oracle), the stateless run boundary, the technology posture. |
+| 5 | [**AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md**](AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md) | The historical-agent canon — the roster of 24, the machine-proving four, corpus standard, Manifests / Persona Dossiers / Epistemic Horizons, the retrieval tool loop, per-figure rules. |
+| 6 | [**AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md**](AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md) | Orchestration mechanics — archetypes, complexity rubric, locked topology threshold, cast steering, hub-and-spoke, token-ring (rounds, seat rotation, direct questions/challenges, stop logic), Researcher steering. |
+| 7 | [**AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md**](AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md) | The Detective's full spec, the hard/soft leakage taxonomy, the Oracle cross-check, `detective.json`, and the mandatory self-limitation clause. |
+| 8 | [**AGENT_CHOIR_V2_DECISIONS.md**](AGENT_CHOIR_V2_DECISIONS.md) | The decision record (ADR) — every resolved implementation choice as decision + rationale + rejected alternative, plus repo-hygiene decisions. |
+| 9 | [**AGENT_CHOIR_V2_BUILD_PLAN.md**](AGENT_CHOIR_V2_BUILD_PLAN.md) | The phased vertical-slice build plan, the keystone slice, trace-evidence per phase, the cast-steering activation checkpoint, and the explicit out-of-scope list. |
+| 10 | [**AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md**](AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md) | What every run captures — raw + normalized, `schema_version`, the per-run trace directory, where each of the seven observables physically lives, the live-vs-expandable UI split. |
+| 11 | [**AGENT_CHOIR_V2_GLOSSARY.md**](AGENT_CHOIR_V2_GLOSSARY.md) | Conceptual glossary — the project's own vocabulary. |
+| 12 | [**AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md**](../AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md) *(repo root)* | Stack-literacy glossary — the plumbing, for a reader who follows the ideas but hasn't touched the machinery. |
 
 ---
+
+The same twelve, by the question each one answers:
+
+```mermaid
+flowchart TD
+    I["INDEX<br/>start here"] --> WHY
+    subgraph WHY["Why"]
+        direction LR
+        L["Lineage V1<br/>where this came from"]
+        F["Experimental Frame<br/>the anchor"]
+    end
+    subgraph WHAT["What"]
+        direction LR
+        S["System<br/>roles + contracts"]
+        C["Choir & Corpus<br/>figures + retrieval"]
+        T["Topology & Steering<br/>routing + deliberation"]
+        D["Leakage & Detective<br/>the interesting idea"]
+    end
+    subgraph HOW["How"]
+        direction LR
+        B["Build Plan<br/>phases + scope"]
+        R["Trace & Instrumentation<br/>what every run records"]
+        DE["Decisions<br/>what's settled"]
+    end
+    subgraph REF["Reference"]
+        direction LR
+        G["Glossary<br/>project vocabulary"]
+        GN["Non-technical glossary<br/>the plumbing, with pictures"]
+    end
+    WHY --> WHAT --> HOW
+    HOW -.->|"look up terms anytime"| REF
+```
 
 ## If you only read three
 
@@ -84,10 +117,15 @@ Read in this order for a cold start. Skip freely once oriented.
 
 ## Status
 
-V2 is a **greenfield build**. At the time this pack was written there is no V2
-implementation repository yet. The first implementation act is to stand up the
-repository and a minimal skeleton, then build vertically in thin, observable slices.
-See the Build Plan.
+*As of 2026-11-12.* V2 started greenfield. **Phase 0 is complete:** the repository
+stands up with identity hygiene verified before commit one, a FastAPI skeleton streams
+events to a vanilla page, and a live spike has proven the model → tool → model loop on
+`gpt-6-luna` through the Responses API. Its findings are recorded in the Build Plan.
+**Next is Phase 1, the substrate.** The Build Plan carries the live status; this
+section is a pointer, not a second source of truth.
+
+Every role currently runs on one model, with reasoning effort as the per-role dial and
+promotion only on trace evidence (Decisions H1).
 
 The roster of twenty-four is locked. The build begins on a **machine-proving four**
 (Marcus Aurelius, Plato, Frederick Douglass, Charles Darwin) — enough to prove the
