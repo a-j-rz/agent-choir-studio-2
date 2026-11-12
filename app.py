@@ -1,27 +1,38 @@
 import asyncio
-import json
-import time
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, StreamingResponse
+
+from core.trace import RunStatus, RunTrace
 
 app = FastAPI(title="Agent Choir Studio V2")
 
 FRONTEND = Path(__file__).parent / "frontend"
 
 
-def sse(event_type: str, role: str, payload: dict) -> str:
-    data = {"type": event_type, "role": role, "payload": payload, "ts": time.time()}
-    return f"event: {event_type}\ndata: {json.dumps(data)}\n\n"
-
-
 async def fake_run():
-    yield sse("run_started", "system", {"note": "skeleton run"})
-    for step in range(1, 4):
-        await asyncio.sleep(1)
-        yield sse("test_event", "system", {"step": step})
-    yield sse("run_complete", "system", {"note": "done"})
+    trace = RunTrace()
+    status: RunStatus = "aborted"  # guilty until proven: only a known outcome overwrites this
+    try:
+        yield trace.emit("run_started", "system", {"note": "skeleton run"}).to_sse()
+        for step in range(1, 4):
+            await asyncio.sleep(1)
+            yield trace.emit("test_event", "system", {"step": step}).to_sse()
+        done = trace.emit("run_complete", "system", {"note": "done"})
+        status = "complete"  # the run finished; delivering the last message is not part of that
+        yield done.to_sse()
+    except Exception as exc:
+        # A real error in our code. Client hang-ups never land here (see walkthrough).
+        status = "failed"
+        trace.emit("run_failed", "system", {"error": repr(exc)})
+        raise
+    finally:
+        # No `yield` or `await` in here: the client may be gone and the task may be cancelled.
+        # Only synchronous file writes, which is all RunTrace does.
+        if status == "aborted":
+            trace.emit("run_aborted", "system", {"reason": "client disconnected"})
+        trace.finish(status)
 
 
 @app.get("/")
