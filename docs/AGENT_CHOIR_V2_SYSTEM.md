@@ -48,6 +48,31 @@ enters it (see §8).
 15. Editor synthesis;
 16. Detective leakage audit over the frozen trace.
 
+The same sequence, grouped by who owns each step. Note the early exits: most of the cost saving
+in the whole system lives in steps 2–3.
+
+```mermaid
+flowchart TD
+    subgraph HOST["Host — steps 1–12"]
+        direction TB
+        S1["1 · original question, verbatim"] --> S2{"2 · triage"}
+        S2 -->|"clarify"| S3["3 · one clarification"] --> S2
+        S2 -->|"proceed"| S4["4 · optional:<br/>'what do you think?'"]
+        S4 --> S5{"5 · facts missing?"}
+        S5 -->|"yes"| S6["6 · Researcher"] --> S7
+        S5 -->|"no"| S7["7 · canonical question"]
+        S7 --> S8["8 · decompose"] --> S9["9 · archetypes"] --> S10["10 · complexity score"]
+        S10 --> S11["11 · cast of four"] --> S12["12 · topology from<br/>locked threshold"]
+        S2 -->|"answer_directly"| OUT1(["Answer and stop"])
+        S2 -->|"reframe_or_reject"| OUT2(["Explain and stop"])
+    end
+    S12 --> S13["13 · Choir deliberation"]
+    S13 --> S14["14 · Editor audit"] --> S15["15 · Editor synthesis"]
+    S15 --> ANS(["Answer to user"])
+    S15 --> S16["16 · Detective audit<br/>over the frozen trace"]
+    S16 --> DJ[("detective.json")]
+```
+
 ---
 
 ## 3. Host
@@ -181,6 +206,19 @@ Editor, Detective.
 > **Run = isolated execution. Trace = record of that execution. Experiment = external
 > comparison across completed traces.**
 
+```mermaid
+flowchart LR
+    R1["Run 1"] --> T1[("Trace 1")]
+    R2["Run 2"] --> T2[("Trace 2")]
+    R3["Run 3"] --> T3[("Trace 3")]
+    T1 --> X["Experiment<br/>external, after the fact"]
+    T2 --> X
+    T3 --> X
+    X -.-x|"never flows into"| RN["Any later run"]
+```
+
+Arrows only ever point away from runtime. That one-way flow is the whole property.
+
 Completed traces may be analysed externally, after the fact, observationally — and that
 analysis never alters subsequent runs. This is a **hard property**, not a limitation V2
 apologises for: statelessness at runtime is exactly what makes cross-run analysis
@@ -199,7 +237,7 @@ Language:     Python 3.12
 Backend:      FastAPI
 Live updates: Server-Sent Events (SSE)
 Frontend:     Minimal vanilla HTML + JS (no framework, no build step)
-Model API:    OpenAI API (direct)
+Model API:    OpenAI Responses API (direct) — see Decisions H2
 Concurrency:  asyncio
 Schemas:      Pydantic
 Trace:        local structured artefacts (see Trace & Instrumentation)
@@ -215,20 +253,34 @@ Hard "do nots", each protecting the thing being learned:
   the FastAPI process, so retrieval mechanics stay visible.
 - **No hosted vector stores** by default. Corpus and indexes stay local and inspectable.
 
-**Per-role model disposition** (configuration, never architecture — keep it in one config
-location, and *verify current model names, pricing and API/tool support against official
-documentation before relying on them; names drift*):
+**Per-role model disposition** (configuration, never architecture — one config location;
+re-verify a model's official page before it enters config, per Decisions H3).
 
-| Role | Disposition | Currently intended |
-|---|---|---|
-| Host | Capable orchestration model | GPT-5.6 Terra class |
-| Historical figures | Fast/cheap capable model | GPT-5.6 Luna class |
-| Oracle | Same narrow class as figures | GPT-5.6 Luna class |
-| Editor | Strongest reasoning model | GPT-5.6 Sol class |
-| Detective | Strong reasoning model (adversarial audit) | Editor-class; verify/tune |
-| Researcher | Capable + search-capable | Choose deliberately after reviewing current tool/search support |
+**Current: every role runs on `gpt-6-luna`**, with `reasoning.effort` (`none` → `max`) as the
+per-role dial. A seat is promoted to a stronger model only when its trace shows it struggling
+(Decisions H1). Starting effort values are set in the Phase 1 config and tuned on evidence.
 
-The **load-bearing principle** (from V1) governs the pattern: concentrate model capability
-where it converts into quality (Editor, Detective, Host), floor it where the role is narrow
-(figures, Oracle). Model choice is the fine-tuning within a topology's position on the iron
-triangle; topology is the coarse setting.
+| Role | Hypothesis: where capability converts to quality | Now | Promotion trigger |
+|---|---|---|---|
+| Editor | Highest — audit + synthesis over the whole run | `gpt-6-luna` | **First candidate.** Phase 5: same frozen deliberation through Luna and a stronger tier, syntheses compared side by side |
+| Detective | High — adversarial audit | `gpt-6-luna` | Next to examine if the Editor is promoted; a suspiciously clean catch rate is the signal |
+| Host | Medium — framing, scoring, cast rationale | `gpt-6-luna` | Phase 4 traces: poor triage, unstable scores or weak cast rationale |
+| Researcher | Medium — claim-by-claim source judgement | `gpt-6-luna` | Phase 7 traces: weak source hierarchy or flattened disagreement |
+| Historical figures | Low — narrow, bounded role | `gpt-6-luna` | Unlikely; effort is the first lever |
+| Oracle | Low — neutral concept explanation | `gpt-6-luna` | Unlikely |
+
+```mermaid
+flowchart LR
+    A["Every seat on<br/>gpt-6-luna"] --> B["Tune reasoning effort<br/>per role"]
+    B --> C{"Trace shows a seat<br/>struggling?"}
+    C -->|"no"| A2(["Keep it cheap"])
+    C -->|"yes"| D["Re-run the same frozen input<br/>on a stronger tier"]
+    D --> E{"Clearly better,<br/>side by side?"}
+    E -->|"yes"| F(["Promote that seat —<br/>record the evidence"])
+    E -->|"no"| A2
+```
+
+The **load-bearing principle** (from V1) still governs the pattern: capability belongs where it
+converts into quality, and is floored where the role is narrow. V2 now *tests* that principle
+seat by seat rather than assuming it. Model choice is the fine-tuning within a topology's position
+on the iron triangle; topology is the coarse setting.
