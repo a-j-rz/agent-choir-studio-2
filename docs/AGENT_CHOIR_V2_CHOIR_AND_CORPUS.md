@@ -69,6 +69,13 @@ form a real panel across four archetypes (Personal/Existential, Moral/Ethical,
 Political/Institutional, Scientific/Epistemic), so the Host's archetype logic is exercised
 from day one. Rights are clean for all four in public-domain English.
 
+| Figure | Corpus shape | Natural chunk unit | What it stress-tests |
+|---|---|---|---|
+| Marcus Aurelius | Aphoristic personal notes | One aphorism | Chunking non-sequential, non-argumentative text |
+| Plato | Dialogue and treatise | One exchange or passage | Long, multi-voiced text — whose view is "Plato's"? |
+| Frederick Douglass | Speeches, letters, autobiography | One speech segment or letter | Rhetorical, occasion-bound, first-person testimony |
+| Charles Darwin | Scientific prose | One proposition or section | Sustained empirical argument; the heaviest Oracle load |
+
 **Darwin was kept over Descartes** (the strongest reserve pick) deliberately: Descartes'
 corpus shape (structured treatise/meditation) overlaps Plato's, whereas Darwin's scientific
 prose is a text structure none of the other three exercise, and Darwin stress-tests the Oracle
@@ -97,6 +104,17 @@ Permitted modern channels, and only these:
 - distilled Researcher facts;
 - Oracle concept bridges the figure explicitly requested;
 - in token-ring, the current-run transcript of what other figures actually said.
+
+```mermaid
+flowchart TD
+    OK["<b>Sanctioned — every one logged</b><br/>canonical question<br/>user-supplied facts<br/>distilled Researcher facts<br/>Oracle bridges it requested<br/>transcript lines, token-ring only<br/>its own corpus passages"]
+    NO["<b>Not sanctioned</b><br/>pretrained modern events, theories, terminology<br/>its own later biography<br/>who else is on the panel, beyond the transcript"]
+    OK -->|"permitted"| F["The figure's reasoning"]
+    NO -.->|"asked not to —<br/>cannot be prevented"| F
+    F --> DT["Detective audits<br/>which route each piece took"]
+```
+
+The dotted arrow is the whole experiment. It can be forbidden, audited and measured — never removed.
 
 Governing instruction:
 
@@ -160,6 +178,17 @@ intellectual temperament → rhetorical voice.** Authenticity never excuses epis
 behaviour: a combative figure still concedes valid evidence, withdraws unsupported claims, and
 says when the corpus does not support an answer.
 
+```mermaid
+flowchart TD
+    M["Corpus Manifest<br/><i>what evidence exists</i>"] --> FIG["One figure,<br/>every runtime call"]
+    D["Persona Dossier<br/><i>how it reasons</i> · logos · ethos · pathos"] --> FIG
+    H["Epistemic Horizon<br/><i>what it could know without a bridge</i>"] --> FIG
+    FIG --> P["<b>When they conflict, higher wins</b><br/>1 · evidence fidelity<br/>2 · deliberative integrity<br/>3 · intellectual temperament<br/>4 · rhetorical voice"]
+```
+
+All three are generated offline, human-reviewed, frozen and versioned. When the priorities
+conflict, the higher one wins: a figure's voice never outranks its evidence.
+
 ### Epistemic Horizon — *what the figure could know without a bridge*
 
 A separate first-class artefact recording: lifetime dates / epoch; concepts and vocabulary
@@ -204,6 +233,29 @@ location/context pointer and provenance.
 The trace exposes, per turn: original search query; lexical candidates; semantic candidates;
 merged/ranked results; passages opened; passages cited; whether fresh retrieval occurred.
 (Retrieval quality is one of the seven observables — see the Frame.)
+
+```mermaid
+flowchart TD
+    subgraph OFF["Offline — built once per figure"]
+        A["Acquire approved<br/>public-domain texts"] --> CH["Chunk along<br/>natural units"]
+        CH --> BM[("BM25 index")]
+        CH --> EM[("Vector index<br/>local embeddings")]
+    end
+    subgraph RUN["Runtime — every turn, bound to one figure"]
+        Q["Figure's own query<br/>≤ 4 searches · ≤ 8 candidates each"] --> L["Lexical search"]
+        Q --> S["Semantic search"]
+        L --> R{"RRF merge"}
+        S --> R
+        R --> O["Passages opened"] --> C["Passages cited"]
+    end
+    BM -.->|"reads"| L
+    EM -.->|"reads"| S
+```
+
+*Seen in the Phase 0 spike:* with lexical search alone, a relevant passage that shared no words
+with the query never surfaced, and the figure's answer still looked complete — twice,
+identically. The semantic path exists to catch exactly that, and the trace keeps both candidate
+lists so the catch (or the miss) is visible.
 
 ---
 
