@@ -58,6 +58,18 @@ optional later tooling. The cost is one model call per run, which the observable
 distinct from the external, cross-run *trace-comparison* analysis, which remains out of scope
 for V2 — see the Build Plan.)
 
+```mermaid
+flowchart LR
+    subgraph RUN["The run — frozen once the Editor finishes"]
+        direction TB
+        H["Host"] --> C["Choir"] --> E["Editor"]
+    end
+    RUN -->|"frozen trace +<br/>Editor synthesis"| DT["Detective<br/>read-only · runs last"]
+    DT --> J[("detective.json")]
+    DT --> EV["live event<br/>→ instrumentation panel"]
+    DT -.-x|"changes nothing"| RUN
+```
+
 ---
 
 ## 4. The two grades of finding
@@ -90,6 +102,24 @@ class (using post-lifetime knowledge the figure was never legitimately given) in
 reconciliation between two logged lists — concepts-used-outside-horizon vs Oracle-bridges-logged
 — rather than a vibe.
 
+```mermaid
+flowchart LR
+    A["List A<br/>out-of-horizon concepts<br/>each figure actually used"] --> R{"Reconcile,<br/>per figure, per turn"}
+    B["List B<br/>Oracle bridges<br/>that figure logged"] --> R
+    R -->|"in A and in B"| OK(["Bridged — legitimate"])
+    R -->|"in A, not in B"| HB(["Hard breach"])
+    R -->|"in B, not in A"| UN(["Bridge requested, never used —<br/>harmless, worth noticing"])
+```
+
+> **Build note — where the determinism actually starts.** List B is a plain log, so it's exact.
+> List A is not free: something has to read a figure's prose and decide which concepts in it lie
+> beyond the horizon. Matching against the post-lifetime vocabulary an Epistemic Horizon
+> enumerates is deterministic but only catches what the Horizon thought to list; asking a model
+> catches more but reintroduces judgement. So the *reconciliation* is deterministic; the
+> *extraction* that feeds it is the hard part, and its method should be recorded in every report.
+> The cheap end is the place to start — Horizon matching first, a model pass only if traces show
+> it missing things.
+
 ---
 
 ## 6. The self-limitation clause — mandatory in every report
@@ -109,6 +139,12 @@ observable. But it means **every Detective report must carry a standing self-lim
 Without this clause the report manufactures its own counterfeit certainty — a clean-looking
 leakage audit *feels* like proof of boundedness and is not. Same trap as V1, one level up. The
 clause is not boilerplate; the report is dishonest without it.
+
+**Sharpened for now.** Under Decisions H1, the Detective currently runs on the *same model* as the
+figures it audits — not merely the same kind of model, the identical one. That makes the clause
+literal rather than analogical. It also makes the Detective's catch rate worth watching: a run of
+suspiciously clean reports is the signal to test it on a stronger tier, the same way the Editor is
+tested.
 
 ---
 
@@ -144,6 +180,17 @@ Minimum structure, so the report stands alone when read cold:
     Oracle bridge, or not;
 - **run-level verdict** — hard-breach count, soft-breach count, one-line qualitative read;
 - **the mandatory self-limitation clause** (§6) — present in every report, without exception.
+
+```mermaid
+flowchart TD
+    J[("detective.json")] --> REF["Run reference<br/>run_id · topology · cast · schema_version"]
+    J --> PF["Per-figure findings"]
+    J --> V["Run-level verdict<br/>hard count · soft count · one-line read"]
+    J --> SL["Self-limitation clause<br/>every report, no exceptions"]
+    PF --> HB["Hard breaches<br/>span · channel that should have carried it ·<br/>trace evidence it didn't"]
+    PF --> SB["Soft breaches<br/>flagged spans, low confidence"]
+    PF --> OX["Oracle cross-check<br/>each out-of-horizon concept:<br/>bridged or not"]
+```
 
 ---
 
