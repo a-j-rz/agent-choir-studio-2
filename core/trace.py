@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal, get_args
 
+from core.config import config_snapshot
 from core.events import SCHEMA_VERSION, Event, utc_iso
 
 TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
@@ -24,6 +25,8 @@ class RunTrace:
         self.started_at = datetime.now(timezone.utc)
         self._started_clock = time.monotonic()  # for duration: immune to wall-clock jumps
         self.run_id = new_run_id(self.started_at)
+        # Taken now, not at finish: the trace records the config this run ran with.
+        self._config = config_snapshot()
         self.dir = root / self.run_id
         # exist_ok=False: a run_id collision fails loudly rather than mixing two runs.
         (self.dir / "raw").mkdir(parents=True, exist_ok=False)
@@ -78,5 +81,6 @@ class RunTrace:
             "duration_s": round(time.monotonic() - self._started_clock, 3),
             "event_count": self._seq,
             "last_event_type": self._last_type,
+            "config": self._config,
         }
         (self.dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
