@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "figure_id": "marcus_aurelius",
+  "author": "Marcus Aurelius",
+  "included_works": ["The Thoughts, Books I–XII"],
+  "work": "The Thoughts",
+  "period": "Second century CE; individual sections are not dated by this source.",
+  "genre": "Personal philosophical notes; Book I is a catalogue of debts.",
+  "audience_context": "Personal reflections and exercises addressed largely to himself, not a systematic public treatise.",
+  "authorship_status": "Attributed to Marcus Aurelius; the English wording is a translation. Quotations embedded in his notes remain included, not independent works in this corpus.",
+  "translation_edition": {
+    "translator": "George Long",
+    "language": "English",
+    "source_title": "Thoughts of Marcus Aurelius Antoninus",
+    "print_edition": "No identifying print edition or print publication date is stated in the supplied title matter. Dates in the introductory scholarship refer to other editions and are not assigned to this translation.",
+    "ebook_release_date": "2005-05-22",
+    "ebook_last_updated": "2020-12-14"
+  },
+  "source_provenance": {
+    "url": "https://www.gutenberg.org/cache/epub/15877/pg15877.txt",
+    "gutenberg_number": 15877,
+    "sha256": "6584df7e90d6035eece30d8028527290bf2508076963ee0376cb41db9cf88d5b",
+    "retrieval_date": "2026-11-12",
+    "retrieval_context": "Supplied source bytes received on this date; the download endpoint was also fetched and verified byte-identical on this date. New downloads must match these exact bytes."
+  },
+  "chronology": {
+    "book_order": "Book order is not proven composition order; no section-level composition chronology is asserted.",
+    "place_notes": [
+      {"book": 1, "as_in_source": "Among the Quadi at the Granua.[D]", "clean": "Among the Quadi at the Granua."},
+      {"book": 2, "as_in_source": "This in Carnuntum.[A]", "clean": "This in Carnuntum."}
+    ],
+    "place_note_handling": "Preserved at book ends in clean text and recorded here; not appended to the final numbered section in chunks. The source footnote questions the genuineness and placement of the first place-note."
+  },
+  "exclusions": [
+    "Project Gutenberg header, production credits and licence/footer",
+    "Title matter and all illustration captions: Marcus Aurelius Antoninus; The Temple of Pallas; The Appian Way, Rome; Interior of the Parthenon; The Capitol and Temple of Jupiter; The Forum",
+    "Contents",
+    "Long's Biographical Sketch",
+    "Long's essay The Philosophy of Marcus Aurelius Antoninus",
+    "Indexes heading, Index of Terms and General Index",
+    "All lettered footnote bodies, including unindented bodies and multi-paragraph continuations",
+    "All in-text lettered footnote markers",
+    "Three standalone editorial verse-source attributions: V.33 (Hesiod), XI.31 (Odyssey), XI.32 (Hesiod)"
+  ],
+  "caveats": [
+    "Book I catalogues debts to people and gods; its genre differs from the reflections and exercises in Books II–XII.",
+    "Section 1 is unnumbered in every source book; the recipe explicitly labels it 1.",
+    "Square-bracketed translator insertions and parenthetical expressions are retained. Parentheses include cross-references and cannot all be confidently called translator insertions.",
+    "The source represents Greek as bracketed transliteration; preserve it as supplied, not reconstructed Greek characters.",
+    "Corruption signs (+), ellipses, spelling and punctuation remain as supplied. Removing notes also removes explanations of corrupt or uncertain readings.",
+    "Embedded quotations and inline references remain; three separate verse-source attribution lines are excluded as editorial apparatus.",
+    "The SHA-256 pins the supplied CRLF bytes. A line-ending-only change must still fail verification."
+  ],
+  "rights_status": {
+    "source_statement": "The supplied Gutenberg licence states that this electronic work is derived from texts not protected by U.S. copyright law and requires users elsewhere to check local law.",
+    "scope": "Public-domain source for the local experiment; no worldwide rights clearance asserted. Corpus text and generated data are excluded from the public repository."
+  }
+}

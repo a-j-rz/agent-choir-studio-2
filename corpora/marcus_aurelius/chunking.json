@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "unit": "section",
+  "max_words": 420,
+  "max_words_rationale": "Started at 380; Book I, section 17 has a 420-word sentence. Raised to 420 to preserve sentence boundaries without exceeding the configured maximum.",
+  "word_count": "Whitespace-delimited tokens, including punctuation-only tokens.",
+  "split_strategy": "Recursively choose the paragraph boundary closest to half the words; if none, choose the nearest sentence boundary. Preserve order and paragraph breaks. Fail if a single sentence exceeds max_words. No overlap."
+}

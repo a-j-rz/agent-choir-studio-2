@@ -5,7 +5,7 @@
 traces/
 
 # corpus texts and built indexes (recipe is committed, texts are not)
-corpus/texts/
+corpora/*/data/
 indexes/
 
 # python
