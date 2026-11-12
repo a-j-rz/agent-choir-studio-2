@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent Choir Studio V2</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 50rem; }
+  #statusLine { margin: 0.75rem 0; font-weight: 600; }
+  #eventLog { list-style: none; padding: 0; font-family: ui-monospace, monospace; font-size: 0.9rem; }
+  #eventLog li { padding: 0.25rem 0; border-bottom: 1px solid #ddd; }
+</style>
+</head>
+<body>
+<h1>Agent Choir Studio V2</h1>
+<button id="startBtn">Start run</button>
+<div id="statusLine">idle</div>
+<ul id="eventLog"></ul>
+<script>
+  const startBtn = document.getElementById('startBtn');
+  const statusLine = document.getElementById('statusLine');
+  const eventLog = document.getElementById('eventLog');
+  let source = null;
+
+  function addLine(text) {
+    const li = document.createElement('li');
+    li.textContent = text;
+    eventLog.appendChild(li);
+  }
+
+  function finish(reason) {
+    if (source) { source.close(); source = null; }
+    statusLine.textContent = 'closed: ' + reason;
+    startBtn.disabled = false;
+  }
+
+  startBtn.addEventListener('click', () => {
+    if (source) return;
+    eventLog.textContent = '';
+    startBtn.disabled = true;
+    statusLine.textContent = 'streaming...';
+    source = new EventSource('/stream');
+
+    ['run_started', 'test_event', 'run_complete'].forEach((type) => {
+      source.addEventListener(type, (e) => {
+        const d = JSON.parse(e.data);
+        addLine(new Date().toLocaleTimeString() + '  ' + d.type + '  ' + JSON.stringify(d.payload));
+        if (type === 'run_complete') finish('run_complete');
+      });
+    });
+
+    source.onerror = () => finish('error or server closed');
+  });
+</script>
+</body>
+</html>
