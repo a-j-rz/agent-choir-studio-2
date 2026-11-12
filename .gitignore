@@ -1,0 +1,17 @@
+# secrets
+.env
+
+# run output
+traces/
+
+# corpus texts and built indexes (recipe is committed, texts are not)
+corpus/texts/
+indexes/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
