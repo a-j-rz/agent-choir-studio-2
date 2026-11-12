@@ -11,8 +11,10 @@ open choices are marked as such.*
 
 A decision recorded here is **settled.** Do not reopen it merely because a different choice is
 defensible — the rationale and the rejected alternative are recorded precisely so the trade was
-made once, deliberately. Items explicitly marked **OPEN** or **DEFERRED TO SETUP** are the only
-live degrees of freedom.
+made once, deliberately. Items explicitly marked **OPEN** are the only live degrees of freedom.
+
+Decisions resolved during the build carry the date they were settled, e.g. **RESOLVED
+2026-11-12**, so the record shows what was decided up front and what was decided on evidence.
 
 ---
 
@@ -31,6 +33,13 @@ live degrees of freedom.
 - **A4 — Run-to-run consistency / self-improvement deferred.** Runs are stateless islands;
   cross-run analysis is external-only and never feeds back. A self-improving version is a named
   future build on the arc, not this one. *Rejected:* any compounding loop in V2.
+- **A5 — Model-tier steering is parked, not a new experiment.** The same complexity/ambiguity
+  rubric that steers topology and cast could equally steer *which model* a question or seat gets —
+  a third mapping (score → model tier) alongside score → topology, needing no new observable and
+  no new machinery. It is the per-question resource allocation that tier 4 of the mitigation
+  hierarchy already names. Not built in V2. *Rejected:* treating it as a separate experiment (it
+  is the same idea, not a new one); and adding it as a third live Host dial now (a third
+  dynamically steered variable would blur attribution while the machine is still being proven).
 
 ## B. Retrieval stack
 
@@ -52,10 +61,12 @@ live degrees of freedom.
 
 ## C. Utilities & orchestration
 
-- **C1 — Researcher on the Host tier (Terra class) with a search tool, configurable.**
-  Source-quality judgement needs capability. *Rejected:* a cheap model (degrades the claim-by-claim
-  source hierarchy). Native-vs-app-mediated search is **OPEN**, decided after reviewing current
-  tooling.
+- **C1 — Researcher runs on the shared default model (see H1), with a search tool, configurable.**
+  *Revised 2026-11-12:* originally placed on a stronger tier because source-quality judgement needs
+  capability. Under H1 every role starts on the same model and is promoted only on trace evidence;
+  the Researcher is a candidate for promotion if its claim-by-claim source handling proves weak in
+  Phase 7. *Rejected:* pre-assigning a stronger tier before any evidence exists.
+  Native-vs-app-mediated search is **OPEN**, decided after reviewing current tooling.
 - **C2 — Ambiguous-stop adjudicator deferred.** Build deterministic stop first; add a narrow
   model adjudicator only if empirically needed. *Rejected:* a stop-controller abstraction up
   front.
@@ -82,7 +93,7 @@ live degrees of freedom.
 - **E1 — Persona Dossiers and Epistemic Horizons are offline-generated, human-reviewed, frozen,
   versioned repo artefacts** — never runtime-generated summaries. Generation prompt, provenance
   format, review checklist and regeneration policy are **OPEN** workflow details.
-- **E2 — Corpus corpus texts and built indexes are gitignored; Manifests, chunking config and
+- **E2 — Corpus texts and built indexes are gitignored; Manifests, chunking config and
   build/acquisition scripts are committed.** The repo carries a reproducible *recipe*, not the
   texts. See G.
 
@@ -98,8 +109,16 @@ live degrees of freedom.
 ## G. Repository & identity hygiene
 
 *Context: the V1 public repo leaked a corporate email address — not in repo contents, but in
-commit author metadata. V2 must expose no corporate identity of any kind. These are resolved in
-principle; the mechanics are **DEFERRED TO SETUP**.*
+commit author metadata. V2 must expose no corporate identity of any kind.*
+
+**RESOLVED 2026-11-12 — all layers set before commit one, and verified:**
+
+| Layer | What was done | Evidence |
+|---|---|---|
+| Commit identity (G2) | Per-repo identity set to the GitHub `noreply` address before the first commit; "block command line pushes that expose my email" enabled | Every commit's author *and* committer is the noreply address; a deliberate test commit carrying a real address was pushed and **rejected by GitHub (GH007)**, then deleted locally |
+| SSH key (G3) | Fresh dedicated key with a neutral comment, reached only through its own host alias with `IdentitiesOnly`, so no other key is ever offered | Verbose SSH confirms only the dedicated key is offered and accepted |
+| API key (G4) | Fresh project-scoped key, `.env`-only (mode 600), gitignored from commit one, with an enforced project spend cap | `.env` absent from `git ls-files`; requests fail at the cap rather than overspend |
+| Contents (G1) | Every file scanned for identifiers before its first commit | `git grep` over all tracked files returns nothing |
 
 - **G1 — No company / corporate identifier anywhere** — repo contents, commit metadata, SSH key
   comments, or config. Hard rule; the repo is public (at least temporarily) and must not be
@@ -118,7 +137,9 @@ principle; the mechanics are **DEFERRED TO SETUP**.*
 - **G5 — The three layers (G2 author, G3 key comment, G4 API keys) are independent.** Doing one
   does not cover the others; a pristine SSH key with an unchanged git config reproduces the exact
   V1 leak. All three set at setup.
-- **G6 — Repo is public only as a temporary verification window during build, then private.**
+- **G6 — Repo is public for the duration of the build; visibility afterwards is the owner's call,
+  made at the end.** *Revised 2026-11-12* from "public only as a temporary verification window,
+  then private".
   Claude Code retains full access via the local clone throughout (public/private is irrelevant
   to it). This chat surface can fetch the repo only while public; once private, the standalone
   context pack is the sole re-grounding artefact — which is why the pack embeds all context and
@@ -129,10 +150,33 @@ principle; the mechanics are **DEFERRED TO SETUP**.*
 
 ## H. Model identifiers
 
-- **H1 — Verify current model names, pricing, API surface and tool/search support against
-  official documentation at build time.** Names drift; the currently-intended dispositions
-  (Host/Terra, figures & Oracle/Luna, Editor/Sol, Detective/Editor-class, Researcher/configurable)
-  are configuration, not architecture, and live in one config location. **OPEN** until verified.
+- **H1 — Every role starts on one model, `gpt-6-luna`; reasoning effort is the per-role dial; a
+  seat is promoted only on trace evidence.** **RESOLVED 2026-11-12**, after verifying current
+  names, pricing and tool support against OpenAI's model pages. The originally intended tiered
+  dispositions (Host on a mid tier, figures and Oracle on the cheap tier, Editor and Detective on
+  the strongest) are kept as *hypotheses about where capability converts to quality*, to be tested
+  rather than assumed. The **Editor** is the likeliest first promotion: in Phase 5 its first real
+  run is repeated on a stronger tier over the *same* frozen deliberation, and the two syntheses are
+  compared side by side — V1's Aggregator test, one variable at a time. If the Editor is promoted,
+  the Detective becomes the only audit seat still sharing the figures' model, and is next to
+  examine. Model choice remains configuration, not architecture, in one config location.
+  *Rejected:* fixing the tiered mapping up front (assumes the answer the instrument exists to
+  measure); a single model with no per-role dial (removes the cheapest way to differentiate seats).
+- **H2 — The Responses API is the only model-call surface.** **RESOLVED 2026-11-12.** Current
+  models require it for tool calling (or allow Chat Completions tool calls only with reasoning
+  switched off), and a single call shape keeps the Phase 1 model-call wrapper simple. Proven live
+  by the Phase 0 spike (`spikes/`). *Rejected:* Chat Completions, as in V1 (a dead end for tool
+  calling on the current generation).
+- **H3 — Re-verify model names at each phase that first uses a new seat.** Names and pricing
+  drift; the page for any model is checked before it enters config.
+
+## I. Documentation layout
+
+- **I1 — The non-technical glossary lives at the repo root; the rest of the pack lives in
+  `docs/`.** **RESOLVED 2026-11-12.** The glossary is the doc a non-engineer opens first, so it
+  sits beside the README, as in V1. One copy only, keeping its full name so every reference in
+  the pack still matches. *Rejected:* keeping it in `docs/` (buried for its main reader);
+  duplicating it in both places (two copies drift).
 
 ---
 
