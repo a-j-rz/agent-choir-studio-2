@@ -1,38 +1,29 @@
 import asyncio
 from pathlib import Path
+from typing import Any, AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, StreamingResponse
 
-from core.trace import RunStatus, RunTrace
+from core.runner import stream_run
+from core.trace import RunTrace
+from demo.live_demo import editor_demo
 
 app = FastAPI(title="Agent Choir Studio V2")
 
 FRONTEND = Path(__file__).parent / "frontend"
 
 
-async def fake_run():
-    trace = RunTrace()
-    status: RunStatus = "aborted"  # guilty until proven: only a known outcome overwrites this
-    try:
-        yield trace.emit("run_started", "system", {"note": "skeleton run"}).to_sse()
-        for step in range(1, 4):
-            await asyncio.sleep(1)
-            yield trace.emit("test_event", "system", {"step": step}).to_sse()
-        done = trace.emit("run_complete", "system", {"note": "done"})
-        status = "complete"  # the run finished; delivering the last message is not part of that
-        yield done.to_sse()
-    except Exception as exc:
-        # A real error in our code. Client hang-ups never land here (see walkthrough).
-        status = "failed"
-        trace.emit("run_failed", "system", {"error": repr(exc)})
-        raise
-    finally:
-        # No `yield` or `await` in here: the client may be gone and the task may be cancelled.
-        # Only synchronous file writes, which is all RunTrace does.
-        if status == "aborted":
-            trace.emit("run_aborted", "system", {"reason": "client disconnected"})
-        trace.finish(status)
+async def fake_body(trace: RunTrace) -> dict[str, Any]:
+    """The free test run: three timed test events, no model calls."""
+    for step in range(1, 4):
+        await asyncio.sleep(1)
+        trace.emit("test_event", "system", {"step": step})
+    return {"note": "done"}
+
+
+def sse(events: AsyncIterator[str]) -> StreamingResponse:
+    return StreamingResponse(events, media_type="text/event-stream", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/")
@@ -47,8 +38,10 @@ def health():
 
 @app.get("/stream")
 def stream():
-    return StreamingResponse(
-        fake_run(),
-        media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache"},
-    )
+    return sse(stream_run(fake_body, "skeleton run"))
+
+
+@app.get("/stream/live")
+def stream_live():
+    """Costs money: one real call_model() run (demo fixture, ~2 model calls)."""
+    return sse(stream_run(editor_demo, "live demo: editor, fake corpus"))

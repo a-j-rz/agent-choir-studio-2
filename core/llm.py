@@ -118,7 +118,7 @@ async def call_model(
                 "output_tokens": usage.output_tokens,
                 "reasoning_tokens": reasoning,
                 "tool_calls_requested": requested,
-                "est_cost_usd": trip_cost,
+                "est_cost_usd": round(trip_cost, 8),  # 8 dp: hides float noise, keeps every real digit
                 "raw_file": raw_file,
             },
         )
@@ -173,5 +173,5 @@ def _result(text: str, stop: StopReason, trips: int, totals: dict[str, int], cos
         cached_input_tokens=totals["cached"],
         output_tokens=totals["output"],
         reasoning_tokens=totals["reasoning"],
-        cost_usd=cost,
+        cost_usd=round(cost, 8),  # summed unrounded, rounded once here
     )

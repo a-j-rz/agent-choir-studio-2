@@ -1,5 +1,10 @@
-"""RunTrace owns one run's directory: traces/<run_id>/{events.jsonl, raw/, summary.json}."""
+"""RunTrace owns one run's directory: traces/<run_id>/{events.jsonl, raw/, summary.json}.
 
+It also owns the run's live channel: every event, once written, is put on `live` for whoever is
+relaying the run to a browser. `finish()` puts `None` there to say the run is over.
+"""
+
+import asyncio
 import json
 import secrets
 import time
@@ -34,6 +39,9 @@ class RunTrace:
         self._seq = 0
         self._last_type: str | None = None
         self._finished = False
+        # Unbounded, so put_nowait can never raise QueueFull: emit() must never block or await,
+        # because it runs inside `finally` blocks. Nobody reading it (a CLI run) is harmless.
+        self.live: asyncio.Queue[Event | None] = asyncio.Queue()
 
     def emit(
         self,
@@ -44,7 +52,8 @@ class RunTrace:
     ) -> Event:
         """Record an event durably, then hand it back for the caller to send.
 
-        Write + flush happen before return, so anything the browser sees is already in the trace.
+        Write + flush happen before the event goes on `live`, so anything the browser sees is
+        already in the trace.
         """
         if self._finished:
             raise RuntimeError(f"run {self.run_id} is finished; cannot emit {type!r}")
@@ -61,6 +70,7 @@ class RunTrace:
         self._events_file.write(event.model_dump_json() + "\n")
         self._events_file.flush()  # out of Python's buffer, into the OS: survives a process crash
         self._last_type = type
+        self.live.put_nowait(event)  # after the write: the live view never leads the trace
         return event
 
     def write_raw(self, stem: str, data: Any) -> str:
@@ -97,3 +107,4 @@ class RunTrace:
             "config": self._config,
         }
         (self.dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        self.live.put_nowait(None)  # end of stream: the relay stops after the summary exists
