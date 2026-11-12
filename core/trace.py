@@ -63,6 +63,19 @@ class RunTrace:
         self._last_type = type
         return event
 
+    def write_raw(self, stem: str, data: Any) -> str:
+        """Write a raw payload to raw/<seq>-<stem>.json and return the file name.
+
+        <seq> is the seq the *next* emitted event will get: write the evidence, then emit the
+        event that names it. Do not `await` between the two, or another coroutine could take
+        that seq first.
+        """
+        if self._finished:
+            raise RuntimeError(f"run {self.run_id} is finished; cannot write raw {stem!r}")
+        name = f"{self._seq + 1:04d}-{stem}.json"
+        (self.dir / "raw" / name).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        return name
+
     def finish(self, status: RunStatus) -> None:
         """Close events.jsonl and write summary.json. A second call is a no-op."""
         if self._finished:

@@ -20,8 +20,25 @@ class RoleConfig(BaseModel):
     reasoning_effort: Effort
 
 
+class ModelPrice(BaseModel):
+    """List price in USD per 1M tokens. Cached input is a cheaper slice of input, not extra."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    input: float
+    cached_input: float
+    output: float  # reasoning tokens are part of output and billed at this rate
+
+
 # Every seat starts here; a seat is promoted only on trace evidence (Decisions H1, H3).
 LUNA = "gpt-6-luna"
+
+# Checked against OpenAI's model page 2026-11-12 (Decisions H3). Prices drift; re-check on change.
+PRICES: Mapping[str, ModelPrice] = MappingProxyType(
+    {
+        LUNA: ModelPrice(input=0.10, cached_input=0.01, output=0.50),
+    }
+)
 
 # Built when the module loads, so an invalid value stops the server before any run starts.
 # MappingProxyType makes the mapping read-only; frozen=True makes each entry read-only.
@@ -45,6 +62,25 @@ def role_config(role: str) -> RoleConfig:
         raise KeyError(f"unknown role {role!r}; known roles: {', '.join(ROLES)}") from None
 
 
+def price_for(model: str) -> ModelPrice:
+    """The price of one model. A model with no price raises; cost is never silently zero."""
+    try:
+        return PRICES[model]
+    except KeyError:
+        raise KeyError(f"no price for model {model!r}; priced models: {', '.join(PRICES)}") from None
+
+
+# Every role must have a price, checked at import: a promoted seat without one fails here.
+for _role, _cfg in ROLES.items():
+    price_for(_cfg.model)
+
+
 def config_snapshot() -> dict[str, dict[str, Any]]:
-    """A plain-dict copy of the whole config, safe to JSON-encode into a trace."""
-    return {role: cfg.model_dump() for role, cfg in ROLES.items()}
+    """A plain-dict copy of the whole config, safe to JSON-encode into a trace.
+
+    Each role carries its model's prices, so a summary records the rates its cost estimates used.
+    """
+    return {
+        role: {**cfg.model_dump(), "usd_per_1m_tokens": price_for(cfg.model).model_dump()}
+        for role, cfg in ROLES.items()
+    }
