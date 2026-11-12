@@ -1,8 +1,9 @@
 """DEMO FIXTURE for GET /stream/live — not part of the runtime core.
 
 One real `call_model()` run as the `editor` role against a three-passage FAKE corpus, so the live
-view can be watched end to end. The passages are invented placeholders, not real texts; real
-corpora arrive in Phase 2. Costs a fraction of a cent (~2 model calls).
+view can be watched end to end. scripts/llm_smoke.py runs it too: this is the only fake corpus.
+The passages are invented placeholders, not real texts; real corpora arrive in Phase 2. Costs a
+fraction of a cent (~2 model calls).
 """
 
 from typing import Any
@@ -44,7 +45,7 @@ def search_demo_corpus(query: str) -> list[dict]:
     ]
 
 
-async def editor_demo(trace: RunTrace) -> dict[str, Any]:
+async def editor_demo(trace: RunTrace, max_round_trips: int = MAX_ROUND_TRIPS) -> dict[str, Any]:
     """A run body (see core.runner): the work only, no lifecycle events."""
     result = await call_model(
         role="editor",
@@ -56,6 +57,6 @@ async def editor_demo(trace: RunTrace) -> dict[str, Any]:
         tools=TOOLS,
         handlers={"search_demo_corpus": search_demo_corpus},
         trace=trace,
-        max_round_trips=MAX_ROUND_TRIPS,
+        max_round_trips=max_round_trips,
     )
     return result.model_dump()

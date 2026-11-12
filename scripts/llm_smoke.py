@@ -3,83 +3,54 @@
     python -m scripts.llm_smoke                      # normal run: ~2 model calls
     python -m scripts.llm_smoke --max-round-trips 1  # cap run: 1 model call
 
-Prints the trace directory. Read events.jsonl, raw/ and summary.json there.
+Runs the shared demo (demo/live_demo.py) on the shared runner (core/runner.py), and prints each
+event as it happens: the same relay the browser reads, rendered for a terminal. This script holds
+no run lifecycle and no corpus of its own. Read events.jsonl, raw/ and summary.json in the trace
+directory it prints.
 """
 
 import argparse
 import asyncio
+import json
+from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
 
-from core.llm import call_model
-from core.trace import RunStatus, RunTrace
-
-# Invented placeholder passages, clearly fake. Not real texts; real corpora arrive in Phase 2.
-FAKE_CORPUS = {
-    "fake-1": "FAKE PASSAGE: The mind is the one territory a person fully governs.",
-    "fake-2": "FAKE PASSAGE: Outside events arrive unbidden; judgement about them is ours.",
-    "fake-3": "FAKE PASSAGE: The harbour was quiet and the ships were late.",
-}
-
-TOOLS = [
-    {
-        "type": "function",
-        "name": "search_my_corpus",
-        "description": "Search your own corpus. Returns matching passages with ids.",
-        "parameters": {
-            "type": "object",
-            "properties": {"query": {"type": "string", "description": "Words to search for"}},
-            "required": ["query"],
-            "additionalProperties": False,
-        },
-        "strict": True,
-    }
-]
+from core.events import Event
+from core.runner import relay
+from core.trace import TRACES_DIR
+from demo.live_demo import MAX_ROUND_TRIPS, editor_demo
 
 
-def search_my_corpus(query: str) -> list[dict]:
-    words = {w.strip(".,;:").lower() for w in query.split()}
-    return [
-        {"passage_id": pid, "text": text}
-        for pid, text in FAKE_CORPUS.items()
-        if words & {w.strip(".,;:").lower() for w in text.split()}
-    ]
+def line(event: Event) -> str:
+    """One terminal line per event: receive time, then the event's own seq, ts, type and role."""
+    p = event.payload
+    if event.type == "round_trip":
+        detail = (
+            f"trip {p['trip']} · {p['latency_s']}s · in {p['input_tokens']} (cached {p['cached_input_tokens']},"
+            f" write {p['cache_write_tokens']}) / out {p['output_tokens']} (reasoning {p['reasoning_tokens']})"
+            f" · ${p['est_cost_usd']:.8f}"
+        )
+    elif event.type == "tool_result":
+        detail = f"{p['name']} → {json.dumps(p['result'])}"
+    else:
+        detail = json.dumps(p)
+    received = datetime.now(timezone.utc).strftime("%H:%M:%S.%f")[:-3]
+    return f"{received}  #{event.seq} {event.ts}  {event.type:<22} {event.role:<7} {detail}"
 
 
 async def main(max_round_trips: int) -> None:
-    trace = RunTrace()
-    status: RunStatus = "aborted"  # guilty until proven, as in app.py
-    try:
-        trace.emit("run_started", "system", {"note": "llm smoke check", "max_round_trips": max_round_trips})
-        result = await call_model(
-            role="figure",
-            instructions="Answer only from passages returned by search_my_corpus. Cite passage ids.",
-            input_items=[
-                {
-                    "role": "user",
-                    "content": "What does your corpus say about governing one's own mind? Cite passage ids.",
-                }
-            ],
-            tools=TOOLS,
-            handlers={"search_my_corpus": search_my_corpus},
-            trace=trace,
-            max_round_trips=max_round_trips,
-        )
-        trace.emit("run_complete", "system", result.model_dump())
-        status = "complete"
-    except Exception as exc:
-        status = "failed"
-        trace.emit("run_failed", "system", {"error": repr(exc)})
-        raise
-    finally:
-        # Synchronous only. Ctrl-C (KeyboardInterrupt) is not an Exception, so it lands here as aborted.
-        if status == "aborted":
-            trace.emit("run_aborted", "system", {"reason": "interrupted"})
-        trace.finish(status)
-        print(f"trace ({status}): {trace.dir.relative_to(Path.cwd())}")
+    body = partial(editor_demo, max_round_trips=max_round_trips)
+    last: Event | None = None
+    async for event in relay(body, f"llm smoke check (max_round_trips={max_round_trips})", render=lambda e: e):
+        print(line(event), flush=True)
+        last = event
+    if last is not None:
+        print(f"trace: {(TRACES_DIR / last.run_id).relative_to(Path.cwd())}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--max-round-trips", type=int, default=8)
+    parser.add_argument("--max-round-trips", type=int, default=MAX_ROUND_TRIPS)
     args = parser.parse_args()
     asyncio.run(main(args.max_round_trips))

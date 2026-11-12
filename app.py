@@ -1,15 +1,32 @@
 import asyncio
+import logging
+import time
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, StreamingResponse
 
+from core.llm import get_client
 from core.runner import stream_run
 from core.trace import RunTrace
 from demo.live_demo import editor_demo
 
-app = FastAPI(title="Agent Choir Studio V2")
+log = logging.getLogger("uvicorn.error")  # uvicorn's own logger, so the line shows in its output
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Runs once at server start, before any request: do the client's one-off blocking setup
+    here, so it never stalls the event loop inside a run. No network call is made."""
+    t0 = time.monotonic()
+    get_client()
+    log.info("OpenAI client created at startup in %.0f ms", (time.monotonic() - t0) * 1000)
+    yield
+
+
+app = FastAPI(title="Agent Choir Studio V2", lifespan=lifespan)
 
 FRONTEND = Path(__file__).parent / "frontend"
 

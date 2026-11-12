@@ -28,13 +28,19 @@ ToolHandler = Callable[..., Any]
 _client: AsyncOpenAI | None = None
 
 
-def _get_client() -> AsyncOpenAI:
-    """Created on first use, so importing this module needs no key. The key is read from the
-    environment by the SDK and never touched here."""
+def get_client() -> AsyncOpenAI:
+    """The one shared client. The server creates it at startup (app.py's lifespan hook) so its
+    blocking setup never lands inside a run; command-line use gets it here on first call.
+
+    Importing this module needs no key. The key is read from the environment by the SDK and never
+    touched here.
+    """
     global _client
     if _client is None:
         load_dotenv()  # does not override variables already set in the environment
-        _client = AsyncOpenAI()
+        client = AsyncOpenAI()
+        client.responses  # the SDK loads this resource lazily, and synchronously: do it now
+        _client = client
     return _client
 
 
@@ -43,17 +49,31 @@ class LLMResult(BaseModel):
     stop_reason: StopReason
     round_trips: int
     input_tokens: int
-    cached_input_tokens: int
+    cached_input_tokens: int  # a slice of input_tokens
+    cache_write_tokens: int  # a slice of input_tokens
     output_tokens: int  # includes reasoning tokens
     reasoning_tokens: int
     cost_usd: float
 
 
-def estimate_cost(price: ModelPrice, input_tokens: int, cached: int, output_tokens: int) -> float:
-    """USD at list price. Cached tokens are a subset of input; reasoning is a subset of output
-    (per the SDK's usage schema), so neither is added on top."""
-    uncached = input_tokens - cached
-    return (uncached * price.input + cached * price.cached_input + output_tokens * price.output) / 1e6
+def estimate_cost(
+    price: ModelPrice, input_tokens: int, cached: int, cache_write: int, output_tokens: int
+) -> float:
+    """USD at list price, unrounded. Per the SDK's usage schema, cached reads and cache writes are
+    slices of input_tokens and reasoning is a slice of output_tokens, so each input token is
+    priced exactly once, at the rate for its slice, and reasoning is not added on top.
+    """
+    plain = input_tokens - cached - cache_write
+    if plain < 0:
+        # A token is read from the cache or written to it, not both. If a response ever says
+        # otherwise, our model of the bill is wrong: fail loudly rather than misprice quietly.
+        raise ValueError(f"cached ({cached}) + cache_write ({cache_write}) exceeds input ({input_tokens})")
+    return (
+        plain * price.input
+        + cached * price.cached_input
+        + cache_write * price.cache_write
+        + output_tokens * price.output
+    ) / 1e6
 
 
 async def call_model(
@@ -70,9 +90,9 @@ async def call_model(
         raise ValueError(f"max_round_trips must be at least 1, got {max_round_trips}")
     cfg = role_config(role)
     price = price_for(cfg.model)
-    client = _get_client()
+    client = get_client()
     items = list(input_items)  # our own copy: the caller's list is never mutated
-    totals = dict(input=0, cached=0, output=0, reasoning=0)
+    totals = dict(input=0, cached=0, cache_write=0, output=0, reasoning=0)
     cost = 0.0
 
     for trip in range(1, max_round_trips + 1):
@@ -92,10 +112,12 @@ async def call_model(
 
         usage = response.usage
         cached = usage.input_tokens_details.cached_tokens
+        cache_write = usage.input_tokens_details.cache_write_tokens
         reasoning = usage.output_tokens_details.reasoning_tokens
-        trip_cost = estimate_cost(price, usage.input_tokens, cached, usage.output_tokens)
+        trip_cost = estimate_cost(price, usage.input_tokens, cached, cache_write, usage.output_tokens)
         totals["input"] += usage.input_tokens
         totals["cached"] += cached
+        totals["cache_write"] += cache_write
         totals["output"] += usage.output_tokens
         totals["reasoning"] += reasoning
         cost += trip_cost
@@ -115,6 +137,7 @@ async def call_model(
                 "latency_s": latency_s,
                 "input_tokens": usage.input_tokens,
                 "cached_input_tokens": cached,
+                "cache_write_tokens": cache_write,
                 "output_tokens": usage.output_tokens,
                 "reasoning_tokens": reasoning,
                 "tool_calls_requested": requested,
@@ -171,6 +194,7 @@ def _result(text: str, stop: StopReason, trips: int, totals: dict[str, int], cos
         round_trips=trips,
         input_tokens=totals["input"],
         cached_input_tokens=totals["cached"],
+        cache_write_tokens=totals["cache_write"],
         output_tokens=totals["output"],
         reasoning_tokens=totals["reasoning"],
         cost_usd=round(cost, 8),  # summed unrounded, rounded once here

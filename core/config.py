@@ -21,12 +21,17 @@ class RoleConfig(BaseModel):
 
 
 class ModelPrice(BaseModel):
-    """List price in USD per 1M tokens. Cached input is a cheaper slice of input, not extra."""
+    """List price in USD per 1M tokens.
+
+    Cached reads and cache writes are both slices of input, priced instead of the input rate,
+    never on top of it. Reasoning is a slice of output.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
-    input: float
-    cached_input: float
+    input: float  # uncached input that is not written to the cache
+    cached_input: float  # input read from the cache
+    cache_write: float  # input written to the cache
     output: float  # reasoning tokens are part of output and billed at this rate
 
 
@@ -36,7 +41,7 @@ LUNA = "gpt-6-luna"
 # Checked against OpenAI's model page 2026-11-12 (Decisions H3). Prices drift; re-check on change.
 PRICES: Mapping[str, ModelPrice] = MappingProxyType(
     {
-        LUNA: ModelPrice(input=0.10, cached_input=0.01, output=0.50),
+        LUNA: ModelPrice(input=0.10, cached_input=0.01, cache_write=0.125, output=0.50),
     }
 )
 
