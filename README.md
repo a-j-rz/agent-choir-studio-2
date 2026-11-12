@@ -382,6 +382,7 @@ the *recipe* for a corpus, never the texts.
 ```text
 agent-choir-studio-2/
   README.md
+  AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md   # the plumbing, in plain words, with pictures
   app.py                 # FastAPI: page at /, /health, /stream (test SSE)
   frontend/index.html    # vanilla page consuming the stream
   spikes/
@@ -405,6 +406,6 @@ agent-choir-studio-2/
 | What's settled and what isn't | [`DECISIONS`](docs/AGENT_CHOIR_V2_DECISIONS.md) |
 | The plan and what's out of scope | [`BUILD_PLAN`](docs/AGENT_CHOIR_V2_BUILD_PLAN.md) |
 | What every run records | [`TRACE_AND_INSTRUMENTATION`](docs/AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md) |
-| The plumbing, in plain words | [`GLOSSARY_NON_TECHNICAL`](docs/AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md) |
+| The plumbing, in plain words | [`GLOSSARY_NON_TECHNICAL`](AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md) |
 
 > The code is disposable. The judgement is the asset.
