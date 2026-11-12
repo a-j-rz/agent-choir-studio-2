@@ -56,6 +56,16 @@ record remain in the trace. The Editor may inspect the clarification record read
 whether the synthesis answers the resolved intent) but may not treat it as deliberative
 evidence.
 
+```mermaid
+flowchart LR
+    H["<b>Known to the Host</b><br/>kept in the trace<br/><br/>original wording<br/>clarification exchange<br/>user's own view<br/>archetype labels<br/>complexity rationale<br/>cast rationale + near-misses"]
+    C["<b>Reaches the Choir</b><br/><br/>canonical question<br/>frozen fact pack"]
+    H -->|"distils"| C
+    H -.-x|"everything else:<br/>blocked"| CH["The Choir"]
+    C --> CH
+    H -.->|"clarification record only:<br/>read-only, to check intent —<br/>never as evidence"| ED["Editor"]
+```
+
 ---
 
 ## 4. Decomposition
@@ -110,6 +120,21 @@ changing in a future governed version — not a licence to override at runtime.
 work, and a revised final score if research materially changes the shape, stakes or ambiguity
 of the question. The trace records initial score, Researcher intervention, final score, and the
 reason for any change. **Topology is selected from the final score, before the Choir starts.**
+
+```mermaid
+flowchart LR
+    D1["Value conflict<br/>0–2"] --> SUM
+    D2["Interpretive ambiguity<br/>0–2"] --> SUM
+    D3["Cross-domain interaction<br/>0–2"] --> SUM
+    D4["Challenge value<br/>0–2"] --> SUM
+    D5["Consequence / stakes<br/>0–2"] --> SUM
+    SUM{"Final score<br/>0–10"} -->|"0–4"| HS["Hub-and-spoke"]
+    SUM -->|"5–10"| TR["Token-ring"]
+    OV["Host judgement<br/>override"] -.-x|"does not exist"| SUM
+```
+
+Every dimension's score and rationale is persisted, so a poor routing can be traced to the
+dimension that caused it.
 
 ---
 
@@ -201,10 +226,14 @@ to the debate.
 **Deterministic seat rotation.** The ring direction is fixed, but persona-to-seat assignment
 rotates each round to distribute first/last-speaker bias:
 
-- R1: A B C D
-- R2: B C D A
-- R3: C D A B
-- R4: D A B C
+| Round | Seat 1 (first) | Seat 2 | Seat 3 | Seat 4 (last) |
+|---|---|---|---|---|
+| R1 | A | B | C | D |
+| R2 | B | C | D | A |
+| R3 | C | D | A | B |
+| R4 | D | A | B | C |
+
+Across a full four rounds, every figure occupies every seat exactly once.
 
 The token moves around the same ring; what changes is who occupies each speaking position. Seat
 order is persisted for every round.
@@ -244,6 +273,36 @@ Two **distinct** structured objects.
 - may be converted into a direct question in a later round;
 - influences stop assessment but does **not** itself hard-block termination.
 
+| | Direct question | Direct challenge |
+|---|---|---|
+| What it is | A procedural obligation | Visible, unresolved contention |
+| Limit per figure | One outstanding | Two unresolved |
+| Must the target respond? | Yes — **first**, on its next turn | No hard obligation |
+| Blocks early termination? | **Yes** | No — but weighs on the stop assessment |
+| Can become the other? | — | Yes, a challenge can be escalated to a question later |
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    state "Direct question" as Q {
+        [*] --> Outstanding
+        Outstanding --> Answered: target answers first, next turn
+        Answered --> [*]
+        note right of Outstanding: blocks early stop
+    }
+    state "Direct challenge" as C {
+        [*] --> Open
+        Open --> Addressed: responded to
+        Open --> Ignored: never taken up
+        Addressed --> Resolved
+        Addressed --> Unresolved: still contested
+    }
+    C --> Q: escalated in a later round
+```
+
+At the stop, the Editor reads each challenge's end state — ignored, addressed-but-unresolved, or
+resolved — rather than treating them as one category.
+
 A figure in `insufficient_corpus_basis` may still ask a genuinely exploratory direct question.
 At termination, the Editor distinguishes ignored challenges, addressed-but-unresolved
 challenges, and classifies unresolved disagreement as empirical, normative/principled or mixed.
@@ -271,6 +330,27 @@ outstanding direct question exists, no materially new evidence was introduced.**
 > letting the system manufacture the appearance of consensus out of an agent's inability to
 > object. The stop logic must never count a failed figure toward the "all four agree" pattern —
 > a three-way agreement plus one silenced dropout is **not** consensus.
+
+The stop check after each round from Round 2, with the guard built in:
+
+```mermaid
+flowchart TD
+    E["Round ends"] --> CAP{"Round 4?"}
+    CAP -->|"yes"| S0(["Stop: round cap"])
+    CAP -->|"no"| DQ{"Any direct question<br/>outstanding?"}
+    DQ -->|"yes"| NEXT(["Next round"])
+    DQ -->|"no"| FAIL{"Any figure failed?"}
+    FAIL -->|"no"| ALL{"All four declare<br/>no_material_change<br/>and no new evidence?"}
+    ALL -->|"yes"| S1(["Stop: strong pattern"])
+    FAIL -->|"yes"| GUARD["Strong pattern unavailable —<br/>a dropout is not a vote"]
+    ALL -->|"no"| OTHER
+    GUARD --> OTHER{"Other signals clearly met?<br/>disagreement principled, not evidential;<br/>persistent insufficient basis"}
+    OTHER -->|"yes"| S2(["Stop: reason recorded"])
+    OTHER -->|"no, or ambiguous"| NEXT2(["Next round"])
+```
+
+If ambiguous cases turn out to matter in practice, a narrow model adjudicator can be added at the
+"ambiguous" branch (Decisions C2) — only once the traces show it is needed.
 
 Persist an explicit stop reason, e.g. *"Stopped after Round 3: positions stabilised; remaining
 disagreement is principled, not evidential."* Unresolved challenges may legitimately remain at a
@@ -312,6 +392,18 @@ remain in the transcript and trace; the figure is marked failed from that point 
 
 **Structural roles:** Host, required Researcher, and Editor failure (after retry) each hard-fail
 the run.
+
+```mermaid
+flowchart TD
+    X["Something fails"] --> R{"Transient?<br/>one logged retry"}
+    R -->|"recovers"| OK(["Continue normally"])
+    R -->|"still failing"| W{"Which role?"}
+    W -->|"Host, required Researcher,<br/>or Editor"| HF(["Run hard-fails"])
+    W -->|"A historical figure"| N{"Figures failed<br/>so far?"}
+    N -->|"1"| DG(["Degraded run — clearly marked;<br/>Editor names the missing perspective"])
+    N -->|"2 or more"| HF2(["Run hard-fails;<br/>no synthesis"])
+    W -->|"The Oracle"| OR(["Not automatically a failure —<br/>figure records the unresolved concept<br/>and stays within what it can know"])
+```
 
 **Corpus / Oracle distinctions:** `cannot_access_corpus` → figure failure (no pretrained
 fallback). `insufficient_corpus_basis` → valid epistemic outcome, not a failure. Oracle
