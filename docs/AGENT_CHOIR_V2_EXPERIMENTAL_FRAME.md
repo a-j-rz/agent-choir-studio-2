@@ -92,8 +92,32 @@ rest honestly.
    question.* An eligibility check and a "help me think this through" prompt do not warrant
    the same spend on leak-suppression.
 
+```mermaid
+flowchart BT
+    T1["Tier 1 · Prompt + audit<br/>cheapest · leakiest<br/>← V2 lives here"]:::here
+    T2["Tier 2 · Cross-checking LLMs<br/>slower, dearer, still imperfect<br/>named, not built"]
+    T3["Tier 3 · Purpose-trained SLMs<br/>boundary becomes structural<br/>but broad capability is lost<br/>named, not attempted"]
+    T4["Tier 4 · Resource allocation<br/>no tier is perfect, so choose a point<br/>per use case, per question"]:::conclusion
+    T1 --> T2 --> T3
+    T1 -.-> T4
+    T2 -.-> T4
+    T3 -.-> T4
+    classDef here fill:#cfe2ff,stroke:#0b5ed7,color:#052c65,stroke-width:3px
+    classDef conclusion fill:#d4edda,stroke:#2e7d32,color:#1b5e20
+```
+
+Tiers 1–3 climb in cost and in how real the boundary is. Tier 4 isn't a fourth rung; it's the
+decision every rung feeds: which rung, for *this* question.
+
 Tier 4 is the practical conclusion the whole frame drives toward, and it connects directly
 to the Host (below).
+
+**Model choice is the same decision, one level down.** The complexity rubric that steers topology
+and cast could equally steer *which model* a question or seat gets — a third mapping from the same
+score, needing no new machinery. That is parked, not built (Decisions A5). The build already
+applies the principle to itself, though: every role starts on one cheap model, and a seat is
+promoted only when its own trace shows the cheap model costing quality (Decisions H1). Spend
+follows evidence, per seat — tier 4 applied to the instrument that studies it.
 
 ---
 
@@ -123,6 +147,8 @@ V2 makes seven things observable per run, in two families. This is the measureme
    substrate the entire epistemic-discipline claim rests on: if retrieval is weak, "bounded
    reasoning" is bounded to noise. It is the most novel thing V2 builds (V1 had no retrieval
    at all) and is named as a first-class observable rather than left as plumbing.
+   *Already observed:* in the Phase 0 spike, word-only search missed a relevant passage and the
+   answer still looked complete — twice, identically. Thin retrieval does not announce itself.
 
 Two quantitative, five qualitative. The weight on human judgement is deliberate and
 consistent with V1's principle that *quality is a human read.*
@@ -155,6 +181,26 @@ triangle, and one is *coupled* to it:
 - **Leakage** happens **during** and **trades against** the triangle — suppressing it costs
   speed and money (the tier-2 cross-checking option). Leak-tolerance is, in effect, a
   **fourth dial** on the same panel as speed, cost and quality.
+
+```mermaid
+flowchart LR
+    subgraph UP["Upstream — set the position before anything is spent"]
+        direction TB
+        QR["Question refinement<br/>deliberate at all? framed how?"]
+        ST["Steering<br/>which topology, which cast"]
+    end
+    subgraph TRI["Where the run lands"]
+        direction TB
+        SP["Speed"]
+        CO["Cost"]
+        QU["Quality"]
+    end
+    subgraph DURING["During — trades against the triangle"]
+        LK["Leak-tolerance<br/>the fourth dial"]
+    end
+    UP -->|"chooses the corner"| TRI
+    LK <-->|"suppressing leaks<br/>costs speed and money"| TRI
+```
 
 Put together: the **Host is a per-question resource allocator.** When it scores complexity,
 decides whether to deliberate, picks a topology and a cast, it is already doing exactly what
