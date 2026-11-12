@@ -1,0 +1,10 @@
+
+--- round 1: 2.84s, input=89 output=32 tokens
+model asked: search_my_corpus({'query': "governing one's own mind self control thoughts mind discipline rule oneself"})  call_id=call_mSSknx1iBqQgNe3ohQUndah3
+we returned: ['p1']
+
+--- round 2: 3.78s, input=165 output=24 tokens
+final answer:
+The corpus says, “The mind is the one territory a person fully governs.” (p1)
+
+totals: input=254 output=56 tokens, ~$0.00005 at list price
