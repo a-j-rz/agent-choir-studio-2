@@ -13,11 +13,15 @@ from pathlib import Path
 from typing import Any, Literal, get_args
 
 from core.config import config_snapshot
-from core.events import SCHEMA_VERSION, Event, utc_iso
+from core.events import Event, utc_iso
 
 TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
 
 RunStatus = Literal["complete", "failed", "aborted"]
+
+# summary.json's own shape version, separate from the event schema (core.events).
+# 2: config nested as {roles, embedding, retrieval} (2e). 1: config was {role: ...} flat.
+SUMMARY_SCHEMA_VERSION = "2"
 
 
 def new_run_id(now: datetime) -> str:
@@ -96,7 +100,7 @@ class RunTrace:
         self._events_file.close()
         ended_at = datetime.now(timezone.utc)
         summary = {
-            "schema_version": SCHEMA_VERSION,
+            "schema_version": SUMMARY_SCHEMA_VERSION,
             "run_id": self.run_id,
             "status": status,
             "started_at": utc_iso(self.started_at),

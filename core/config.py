@@ -84,6 +84,34 @@ EMBEDDING = EmbeddingConfig(
 )
 
 
+class RetrievalConfig(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    rrf_k: int  # each list adds 1/(rrf_k + rank) to an item's merged score (Decisions B2)
+    candidate_depth: int  # how far down each of BM25 and vector RRF looks
+    results_per_search: int  # merged results the model sees per search
+    searches_per_turn: int  # per figure per turn
+    opens_per_turn: int  # passages returned by open_passage / open_context, per turn
+    context_window_max: int  # neighbours each side that open_context may return
+    preview_chars: int  # characters of text shown per search result
+
+
+# Corpus-tool limits per figure per turn (CHOIR_AND_CORPUS §6).
+RETRIEVAL = RetrievalConfig(
+    rrf_k=60,
+    # Decided from the 2e depth measurement: with 8 results per search, RRF gives each list
+    # ~4 slots unless items appear in both; deeper lists add consensus items that crowd out
+    # single-method catches ("mastering my thoughts": 2 catches survive at depth 8, 1 at 15,
+    # 0 at 30).
+    candidate_depth=8,
+    results_per_search=8,
+    searches_per_turn=4,
+    opens_per_turn=8,
+    context_window_max=2,
+    preview_chars=200,
+)
+
+
 def role_config(role: str) -> RoleConfig:
     """The config for one role. An unknown role raises; there is no silent default."""
     try:
@@ -111,6 +139,10 @@ def config_snapshot() -> dict[str, dict[str, Any]]:
     Each role carries its model's prices, so a summary records the rates its cost estimates used.
     """
     return {
-        role: {**cfg.model_dump(), "usd_per_1m_tokens": price_for(cfg.model).model_dump()}
-        for role, cfg in ROLES.items()
+        "roles": {
+            role: {**cfg.model_dump(), "usd_per_1m_tokens": price_for(cfg.model).model_dump()}
+            for role, cfg in ROLES.items()
+        },
+        "embedding": EMBEDDING.model_dump(),
+        "retrieval": RETRIEVAL.model_dump(),
     }
