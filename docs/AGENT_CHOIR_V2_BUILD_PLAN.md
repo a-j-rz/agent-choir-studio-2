@@ -1,6 +1,7 @@
 # Agent Choir Studio V2 — Build Plan
 
-*The phased, vertical-slice build. Started greenfield; **Phase 0 completed 2026-11-12.** Build in
+*The phased, vertical-slice build. Started greenfield; **Phases 0–1 completed 2026-11-12; Phase 2, the keystone, completed
+2026-11-21.** Build in
 thin, observable slices — each proved by trace evidence before the next begins. This is guidance with
 teeth, not a rigid contract; resist building an architecture for imagined future complexity.*
 
@@ -22,8 +23,8 @@ against a spec that can no longer move under it.
 ```mermaid
 flowchart TD
     P0["0 · Bootstrap + API spike"]:::done --> P1["1 · Substrate"]:::done
-    P1 --> P2["2 · KEYSTONE — next<br/>one figure, one real corpus"]:::key
-    P2 --> P3["3 · Oracle loop"]
+    P1 --> P2["2 · KEYSTONE<br/>one figure, one real corpus"]:::keydone
+    P2 --> P3["3 · Oracle loop — next"]:::next
     P3 --> P4["4 · Host flow"]
     P4 --> P5["5 · Hub-and-spoke + Editor<br/>+ Editor model test"]
     P5 --> P6["6 · Token-ring"]
@@ -46,10 +47,11 @@ flowchart TD
     classDef done fill:#d4edda,stroke:#2e7d32,color:#1b5e20
     classDef next fill:#fff3cd,stroke:#b8860b,color:#5d4200
     classDef key fill:#cfe2ff,stroke:#0b5ed7,color:#052c65,stroke-width:3px
+    classDef keydone fill:#d4edda,stroke:#2e7d32,color:#1b5e20,stroke-width:3px
     classDef check fill:#f8d7da,stroke:#b02a37,color:#58151c
 ```
 
-Green is done, the thick blue box is the keystone and the next slice, and red marks the checkpoint
+Green is done (the thick green box is the keystone), amber is the next slice, and red marks the checkpoint
 where cast steering first produces real data. Phases 1–8 run on the machine-proving four;
 content scaling waits until the machine can no longer move under it.
 
@@ -125,6 +127,49 @@ candidates, merged/ranked results, passages opened, passages cited — and a con
 in real cited passages. It should also include at least one case where the semantic list surfaces
 a relevant passage the lexical list missed — the Phase 0 failure, now caught. If this feels right,
 everything downstream is assembly.
+
+✅ **Done 2026-11-21**, in six slices on Marcus Aurelius, each proven before the next began:
+
+| Slice | What landed | Proven by |
+|---|---|---|
+| 2a + 2b | Gutenberg #15877 (Long), SHA-256 pinned; Long's apparatus stripped, including 127 footnotes matched by label; one chunk per numbered section | Deterministic chunks; no section-number gaps; zero contamination hits |
+| 2c | Hand-written BM25: Snowball stemming, internal apostrophes kept, per-term breakdown (surface form, tf, IDF, contribution) | Hand arithmetic matched to 5 dp; "governing one's own mind" reaches I.1 via *government → govern* |
+| 2d | B4 resolved: `bge-small-en-v1.5` via `sentence-transformers`, pinned revision, every setting asserted at load; `max_words` 380 plus a semicolon fallback; vector cache keyed on content and model | 0 of 504 chunks over 512 model tokens; self-match at cosine 1.0; a stale cache names the key that changed |
+| 2e | RRF (k 60, depth 8); per-turn bound tools with budgets enforced in code; `corpus_search` events naming raw candidate lists; embedding and retrieval config in the run snapshot | RRF hand arithmetic to 6 dp; three refusals logged and the run still `complete`; no route to another figure's data |
+| 2f | Structured contribution; stand-in prompt (not a dossier, E1); deterministic citation checks; three live turns | 9 calls, ~$0.0015 in total; every citation opened first; **V.36, surfaced only by the semantic list, opened and cited** |
+
+*Owner judgements recorded* — the trace can show what was retrieved; only a reader can say what
+is relevant:
+
+- **IX.15 is relevant** to "governing one's own mind" (2d): no BM25 match, vector #5. With I.1 —
+  BM25 #7, vector #319 — it is the first entry for the Phase 10 regression set.
+- **Run 1's four citations each support their claims** (2f): the first human-verified grounded turn.
+- **Run 2's `grounded` is fair** (2f): "I cannot prescribe a financial strategy from these writings"
+  is the evidence boundary working, and the move into the nature of wealth is a legitimate extension.
+
+*Findings carried forward:*
+
+| Finding | What it means | Where it lands |
+|---|---|---|
+| The possessive remnant `s` (df 61) carried IDF ≈ 2.1 | Rarity weighting only suppresses junk that is *common*; tokeniser choices need probing on real text | Fixed in 2c; Phase 9 for every corpus |
+| The library's recorded model revision only echoes the requested string | A check against an echoed value verifies nothing | Revision read from the commit-named cache folder; a pattern for every verification |
+| One 420-word sentence (I.17) measured 523 tokens; restoring 380 words also split IX.9, X.8 and X.33 | Chunk limits come from the model, but the word rule stays model-independent, with a token gate at embed time | Phase 9 chunking per corpus |
+| Archaic forms split into misleading pieces (*doth* → `dot` + `h`) and never match modern forms lexically | Period English costs on both retrieval paths | Retrieval quality, Phase 9 |
+| Dropping the query instruction moves ranks materially (IX.15 #5 → #1, X.2 #8 → #24) | A silent setting with real effects; kept as documented (B4) | Phase 10 regression set |
+| The vector top 8 spans ~0.03 cosine; the 14-word I.1 ranks vector #319 | Cosines carry little meaning beyond rank; very short chunks embed weakly; each path misses what the other finds | Supports RRF on ranks; Phase 9 chunking |
+| With 8 merged slots, RRF gives each list ~4 unless items appear in both; deeper lists crowd out single-path catches (2 → 1 → 0 at depths 8 / 15 / 30) | Depth 8 chosen on that evidence | `core/config.py`; re-test against the regression set |
+| IX.15 surfaced twice (semantic-only, #7 and #5) and was never opened | A catch can be lost at every stage: retrieved → merged → previewed → opened → cited, and the trace shows which | Preview length is a measured lever; Phase 10 |
+| The figure's queries come from prior knowledge (Stoic vocabulary; "Book 4 Book 6 Book 11") | Memory steers retrieval before any claim is made | Leakage & Detective: distinguish memory used to *search* from memory used to *assert* |
+| One search, four opens, zero reasoning tokens in every run at `low` | **Effort is a ceiling** again: the figure stops at *enough*. Not yet evidence of struggling (H1) | Watch from Phase 5, when topology asks more of a figure |
+| Runs 1 and 3 shared 7 of 8 merged results and 3 of 4 citations | Stability, not correctness (the Phase 0 warning) | Phase 10 |
+| `insufficient_corpus_basis` has no definition: the figure self-assesses "not enough" | Statuses consumed downstream need a checkable criterion, not a qualitative call | **OPEN** — Phases 4–5 (Host framing, Editor disposition) |
+| Run 2 answered a neighbouring question and the schema cannot say so | The frame belongs upstream, not in a third figure status | Phase 4 |
+
+*Parked for later phases:* `call_model`'s events carry the role (`figure`) but not which figure —
+needed before Phase 5 runs four at once; OpenAI's default response storage is on, and turning it
+off changes how reasoning items pass between round trips — revisit before the Researcher
+(Phase 7); figure and embedding loads are synchronous — move them off the event loop when the
+server runs figures.
 
 **Phase 3 — Oracle loop.**
 Add the private Oracle to that one figure: horizon-triggered, budgeted, declared in turn state.
