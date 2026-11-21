@@ -52,10 +52,15 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
 - **B3 — Vector index: brute-force numpy cosine (or FAISS-CPU) per figure.** For 24 modest
   corpora a vector DB is unnecessary; flat cosine is maximally legible. *Rejected:* Chroma /
   hosted stores (opacity; sends nothing local).
-- **B4 — Embeddings: one shared local model across all 24 indexes** (e.g. `bge-small-en` or
-  `all-MiniLM-L6-v2` — confirm at build). CPU-friendly, reproducible, local. *Rejected:* OpenAI
-  embeddings API (sends corpus to cloud, defeats "local and visible"); per-figure embedding
-  tuning (locked out for V2). The exact model is **OPEN** within these criteria.
+- **B4 — Embeddings: one shared local model across all 24 indexes — `BAAI/bge-small-en-v1.5`,
+  run with `sentence-transformers` on CPU.** **RESOLVED 2026-11-21.** 384 dimensions, 512-token
+  input, MIT licence. Model id, pinned revision, pooling (CLS), normalisation and the query
+  instruction live in `core/config.py` and are asserted at load — each is a silent failure if
+  wrong. No chunk may exceed the token limit: checked before embedding, never truncated.
+  *Rejected:* `all-MiniLM-L6-v2` (256-token limit would truncate longer sections); `fastembed`
+  (defaults to a third-party quantised ONNX export and a library-chosen prefix — two silent
+  choices); hand-rolled ONNX inference (legible, but a pooling error would go uncaught); OpenAI
+  embeddings API (sends the corpus to the cloud); per-figure embedding tuning (locked out for V2).
 - **B5 — 24 physically separate indexes, not one index with metadata filters.** Corpus
   boundaries enforced by construction, not by query hygiene.
 

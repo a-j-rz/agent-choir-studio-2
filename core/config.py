@@ -2,6 +2,7 @@
 
 Nothing else may name a model or an effort. Call sites ask `role_config(role)`; traces record
 `config_snapshot()` at run start, so every run says what it actually ran with.
+It is also the one place that names the local embedding model (Decisions B4).
 """
 
 from types import MappingProxyType
@@ -56,6 +57,30 @@ ROLES: Mapping[str, RoleConfig] = MappingProxyType(
         "editor": RoleConfig(model=LUNA, reasoning_effort="high"),
         "detective": RoleConfig(model=LUNA, reasoning_effort="high"),
     }
+)
+
+
+class EmbeddingConfig(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    model_id: str
+    revision: str  # a full Hub commit SHA, never a branch name
+    dimensions: int
+    max_tokens: int
+    pooling: Literal["cls"]  # anything else fails at import
+    normalise: bool
+    query_instruction: str  # prefixed to queries only, never to passages
+
+
+# Decisions B4. Each field is asserted against the loaded model in retrieval/vectors.py.
+EMBEDDING = EmbeddingConfig(
+    model_id="BAAI/bge-small-en-v1.5",
+    revision="5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    dimensions=384,
+    max_tokens=512,
+    pooling="cls",
+    normalise=True,
+    query_instruction="Represent this sentence for searching relevant passages: ",
 )
 
 
