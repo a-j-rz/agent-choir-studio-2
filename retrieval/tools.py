@@ -10,6 +10,8 @@ Refusals (over budget, unknown id, bad window) never raise: the model gets a pla
 {"error": ...} and the trace gets a loud *_refused event. Code errors still raise.
 """
 
+import copy
+
 from core.config import RETRIEVAL
 from retrieval import hybrid
 
@@ -83,10 +85,16 @@ TOOL_SCHEMAS = [
 
 
 def bind_corpus_tools(figure, model, trace, role):
-    """(tool_schemas, handlers) for one figure's turn. Budgets live only in this binding."""
+    """(tool_schemas, handlers, turn_state) for one figure's turn.
+
+    Budgets live only in this binding. turn_state() returns a copy of what this turn did,
+    for the citation check: changing the copy changes nothing here.
+    """
     chunks = figure["chunks"]
     by_id = {c["chunk_id"]: c for c in chunks}
-    state = {"searches_used": 0, "opens_used": 0, "surfaced": set()}
+    # surfaced: passage_id -> the sources ("both", "lexical_only", "semantic_only") under
+    # which it appeared in any merged list this turn.
+    state = {"searches_used": 0, "opens_used": 0, "surfaced": {}, "searches": [], "opens": []}
 
     def refuse_open(via, reason, **detail):
         trace.emit("passage_open_refused", role, {
@@ -96,9 +104,12 @@ def bind_corpus_tools(figure, model, trace, role):
 
     def record_open(chunk, via):
         state["opens_used"] += 1
+        surfaced = chunk["chunk_id"] in state["surfaced"]
+        state["opens"].append({"passage_id": chunk["chunk_id"], "via": via,
+                               "surfaced_by_search": surfaced})
         trace.emit("passage_opened", role, {
             "passage_id": chunk["chunk_id"], "locator": chunk["locator"], "via": via,
-            "surfaced_by_search": chunk["chunk_id"] in state["surfaced"],
+            "surfaced_by_search": surfaced,
             "opens_used": state["opens_used"],
             "opens_left": RETRIEVAL.opens_per_turn - state["opens_used"]})
         return {"passage_id": chunk["chunk_id"], "locator": chunk["locator"],
@@ -120,7 +131,10 @@ def bind_corpus_tools(figure, model, trace, role):
         detail = hybrid.search(figure, model, query)
         state["searches_used"] += 1
         number = state["searches_used"]
-        state["surfaced"].update(m["passage_id"] for m in detail["merged"])
+        for m in detail["merged"]:
+            state["surfaced"].setdefault(m["passage_id"], set()).add(m["source"])
+        state["searches"].append({"search_number": number, "query": query, "merged": [
+            {"passage_id": m["passage_id"], "source": m["source"]} for m in detail["merged"]]})
         # Evidence first, then the event that names it. No `await` between these two.
         raw_file = trace.write_raw(f"{role}-search{number}", detail)
         trace.emit("corpus_search", role, {
@@ -175,5 +189,12 @@ def bind_corpus_tools(figure, model, trace, role):
                 "translator": manifest["translation_edition"]["translator"],
                 "period": manifest["period"]}
 
-    return TOOL_SCHEMAS, {"search_my_corpus": search_my_corpus, "open_passage": open_passage,
-                          "open_context": open_context, "list_my_works": list_my_works}
+    def turn_state():
+        return {"searches": copy.deepcopy(state["searches"]),
+                "opens": copy.deepcopy(state["opens"]),
+                "surfaced_sources": {pid: sorted(sources)
+                                     for pid, sources in state["surfaced"].items()}}
+
+    handlers = {"search_my_corpus": search_my_corpus, "open_passage": open_passage,
+                "open_context": open_context, "list_my_works": list_my_works}
+    return TOOL_SCHEMAS, handlers, turn_state

@@ -54,6 +54,9 @@ class LLMResult(BaseModel):
     output_tokens: int  # includes reasoning tokens
     reasoning_tokens: int
     cost_usd: float
+    # The text of each `message` item of the final response, separately. With structured
+    # outputs a model may return more than one message item; the caller must see each.
+    message_texts: list[str]
 
 
 def estimate_cost(
@@ -85,6 +88,7 @@ async def call_model(
     handlers: Mapping[str, ToolHandler],
     trace: RunTrace,
     max_round_trips: int = 8,
+    text_format: dict[str, Any] | None = None,
 ) -> LLMResult:
     if max_round_trips < 1:
         raise ValueError(f"max_round_trips must be at least 1, got {max_round_trips}")
@@ -103,6 +107,8 @@ async def call_model(
             "tools": tools,
             "reasoning": {"effort": cfg.reasoning_effort},
         }
+        if text_format is not None:
+            request["text"] = {"format": text_format}  # part of the request, so raw/ records it
         started_at = utc_iso()
         t0 = time.monotonic()
         raw = await client.responses.with_raw_response.create(**request)
@@ -147,7 +153,7 @@ async def call_model(
         )
 
         if not calls:
-            return _result(response.output_text, "answered", trip, totals, cost)
+            return _result(response.output_text, body, "answered", trip, totals, cost)
 
         if trip == max_round_trips:
             # The model still wants tools, but there is no trip left to show it their results,
@@ -157,7 +163,7 @@ async def call_model(
                 role,
                 {"max_round_trips": max_round_trips, "unexecuted_tool_calls": requested},
             )
-            return _result(response.output_text, "round_trip_cap_reached", trip, totals, cost)
+            return _result(response.output_text, body, "round_trip_cap_reached", trip, totals, cost)
 
         items += body["output"]  # the model's own turn, including its reasoning and its calls
         for call in calls:
@@ -187,7 +193,18 @@ async def call_model(
     raise AssertionError("unreachable: the last trip always returns")
 
 
-def _result(text: str, stop: StopReason, trips: int, totals: dict[str, int], cost: float) -> LLMResult:
+def _message_texts(body: dict[str, Any]) -> list[str]:
+    """Each `message` output item's text, taken from the raw body, one string per item."""
+    return [
+        "".join(part["text"] for part in item.get("content", []) if part.get("type") == "output_text")
+        for item in body["output"]
+        if item.get("type") == "message"
+    ]
+
+
+def _result(
+    text: str, body: dict[str, Any], stop: StopReason, trips: int, totals: dict[str, int], cost: float
+) -> LLMResult:
     return LLMResult(
         text=text,
         stop_reason=stop,
@@ -198,4 +215,5 @@ def _result(text: str, stop: StopReason, trips: int, totals: dict[str, int], cos
         output_tokens=totals["output"],
         reasoning_tokens=totals["reasoning"],
         cost_usd=round(cost, 8),  # summed unrounded, rounded once here
+        message_texts=_message_texts(body),
     )

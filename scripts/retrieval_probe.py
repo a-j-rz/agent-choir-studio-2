@@ -98,7 +98,7 @@ def depth_table(figure, model):
 
 def make_trace_body(figure, model):
     async def body(trace):
-        _, handlers = bind_corpus_tools(figure, model, trace, role=FIGURE)
+        _, handlers, _ = bind_corpus_tools(figure, model, trace, role=FIGURE)
         calls = [
             ("list_my_works", {}),
             ("search_my_corpus", {"query": "governing one's own mind"}),
