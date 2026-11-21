@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "unit": "section",
-  "max_words": 420,
-  "max_words_rationale": "Started at 380; Book I, section 17 has a 420-word sentence. Raised to 420 to preserve sentence boundaries without exceeding the configured maximum.",
+  "max_words": 380,
+  "max_words_rationale": "Restored to 380 in 2d. Book I, section 17 has a 420-word sentence that measured 523 model tokens, over bge-small-en-v1.5's 512-token input; it now splits at a semicolon. Every chunk is checked to be at most 512 model tokens before embedding.",
   "word_count": "Whitespace-delimited tokens, including punctuation-only tokens.",
-  "split_strategy": "Recursively choose the paragraph boundary closest to half the words; if none, choose the nearest sentence boundary. Preserve order and paragraph breaks. Fail if a single sentence exceeds max_words. No overlap."
+  "split_strategy": "Recursively choose the paragraph boundary closest to half the words; if none, the nearest sentence boundary; if none, the nearest point just after a semicolon followed by whitespace. Preserve order and paragraph breaks. Fail if a span with no paragraph, sentence or semicolon boundary exceeds max_words. No overlap."
 }

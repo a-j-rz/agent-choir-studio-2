@@ -26,7 +26,11 @@ def split_section(text, maximum):
         boundaries = [match.start() for match in re.finditer(
             r'''(?<=[.!?])\s+(?=["'\[]?[A-Z])''', text)]
     if not boundaries:
-        raise ValueError("A sentence exceeds max_words; no permitted split boundary")
+        # Last resort: just after a semicolon followed by whitespace.
+        boundaries = [match.end() for match in re.finditer(r";(?=\s)", text)]
+    if not boundaries:
+        raise ValueError("A sentence exceeds max_words with no semicolon; "
+                         "no permitted split boundary")
     midpoint = words(text) / 2
     cut = min(boundaries, key=lambda pos: (abs(words(text[:pos]) - midpoint), pos))
     return (split_section(text[:cut].strip(), maximum)
