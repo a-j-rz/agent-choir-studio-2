@@ -1,4 +1,5 @@
 import asyncio
+from functools import partial
 import logging
 import time
 from contextlib import asynccontextmanager
@@ -7,11 +8,13 @@ from typing import Any, AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, StreamingResponse
+from pydantic import BaseModel, ConfigDict, Field
 
 from core.llm import get_client
 from core.runner import stream_run
 from core.trace import RunTrace
 from demo.live_demo import editor_demo
+from host.triage import triage
 
 log = logging.getLogger("uvicorn.error")  # uvicorn's own logger, so the line shows in its output
 
@@ -62,3 +65,15 @@ def stream():
 def stream_live():
     """Costs money: one real call_model() run (demo fixture, ~2 model calls)."""
     return sse(stream_run(editor_demo, "live demo: editor, fake corpus"))
+
+
+class HostRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    question: str = Field(min_length=1)
+
+
+@app.post("/run/host")
+def run_host(body: HostRequest):
+    """Costs money: one Host triage call. POST, so a prefetch or link preview cannot fire it."""
+    return sse(stream_run(partial(triage, question=body.question), "host triage (4a)"))

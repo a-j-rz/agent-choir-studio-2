@@ -9,19 +9,29 @@
   table { border-collapse: collapse; font-family: ui-monospace, monospace; font-size: 0.85rem; }
   th, td { text-align: left; padding: 0.25rem 0.6rem 0.25rem 0; border-bottom: 1px solid #ddd; vertical-align: top; }
   td.payload { word-break: break-word; }
+  #question { width: 100%; max-width: 48rem; font: inherit; }
+  #record { margin: 0.75rem 0; padding: 0.75rem 1rem; border: 1px solid #ccc; max-width: 48rem; }
+  #record:empty { display: none; }
+  #record dt { font-weight: 600; margin-top: 0.5rem; }
+  #record dd { margin: 0.15rem 0 0 0; white-space: pre-wrap; }
 </style>
 </head>
 <body>
 <h1>Agent Choir Studio V2</h1>
 <button id="freeBtn">Test run (free)</button>
 <button id="liveBtn">Live run (~$0.0001)</button>
+<h2>Host: triage and framing</h2>
+<textarea id="question" rows="3" placeholder="Your question"></textarea><br>
+<button id="hostBtn">Ask the Host (1 live call)</button>
+<div id="record"></div>
 <div id="statusLine">idle</div>
 <table>
   <thead><tr><th>received</th><th>trace ts</th><th>seq</th><th>type</th><th>role</th><th>payload</th></tr></thead>
   <tbody id="eventLog"></tbody>
 </table>
 <script>
-  const buttons = [document.getElementById('freeBtn'), document.getElementById('liveBtn')];
+  const buttons = ['freeBtn', 'liveBtn', 'hostBtn'].map((id) => document.getElementById(id));
+  const record = document.getElementById('record');
   const statusLine = document.getElementById('statusLine');
   const eventLog = document.getElementById('eventLog');
   const TERMINAL = new Set(['run_complete', 'run_failed', 'run_aborted']);
@@ -37,6 +47,34 @@
     if (d.type === 'tool_result') return `${p.name} → ${JSON.stringify(p.result)}`;
     const s = JSON.stringify(p);
     return s.length > 300 ? s.slice(0, 300) + '…' : s;
+  }
+
+  // The Host's decision record, as a readable block. textContent only: model text is never HTML.
+  function showRecord(p) {
+    const t = p.triage;
+    const rows = [['Outcome', t.outcome], ['Reason', t.reason]];
+    if (t.outcome === 'answer_directly') rows.push(['Answer', t.direct_answer]);
+    if (t.outcome === 'clarify') rows.push(['Clarifying question', t.clarifying_question]);
+    if (t.outcome === 'reframe_or_reject') {
+      rows.push(['Explanation', t.explanation]);
+      rows.push(['Suggested question', t.suggested_question ?? '(none)']);
+    }
+    if (t.outcome === 'proceed') {
+      rows.push(['Canonical question', t.canonical_question]);
+      rows.push(['Answer criterion', t.answer_criterion]);
+      rows.push(['Factual posture', t.factual_posture]);
+      rows.push(['Factual gaps', t.factual_gaps.length
+        ? t.factual_gaps.map((g) => `${g.gap} (${g.kind})`).join('\n') : '(none)']);
+      rows.push(['Research needed', `${p.research_needed}` + (p.researcher_status ? ` · researcher ${p.researcher_status}` : '')]);
+    }
+    const dl = document.createElement('dl');
+    rows.forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.append(dt, dd);
+    });
+    record.textContent = '';
+    record.appendChild(dl);
   }
 
   function addRow(d) {
@@ -58,15 +96,16 @@
   }
 
   // Hand-rolled SSE reader: events are separated by a blank line; the JSON is on the data: line.
-  async function run(url) {
+  async function run(url, init = {}) {
     if (controller) return;
     controller = new AbortController();
     const signal = controller.signal;
     eventLog.textContent = '';
+    record.textContent = '';
     buttons.forEach((b) => { b.disabled = true; });
     statusLine.textContent = 'streaming ' + url + ' ...';
     try {
-      const response = await fetch(url, { signal });
+      const response = await fetch(url, { ...init, signal });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
       let buffer = '';
@@ -82,6 +121,7 @@
           if (!data) continue;
           const d = JSON.parse(data);
           addRow(d);
+          if (d.type === 'host_decision_record') showRecord(d.payload);
           if (TERMINAL.has(d.type)) { finish(d.type); return; }
         }
       }
@@ -94,6 +134,12 @@
 
   document.getElementById('freeBtn').addEventListener('click', () => run('/stream'));
   document.getElementById('liveBtn').addEventListener('click', () => run('/stream/live'));
+  document.getElementById('hostBtn').addEventListener('click', () => {
+    const question = document.getElementById('question').value.trim();
+    if (!question) { statusLine.textContent = 'type a question first'; return; }
+    run('/run/host', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                       body: JSON.stringify({ question }) });
+  });
 </script>
 </body>
 </html>

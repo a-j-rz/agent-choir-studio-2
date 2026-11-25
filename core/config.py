@@ -40,6 +40,8 @@ class ModelPrice(BaseModel):
 LUNA = "gpt-6-luna"
 
 # Checked against OpenAI's model page 2026-11-12 (Decisions H3). Prices drift; re-check on change.
+# Re-checked 2026-11-25, before the Host's first live call: prices unchanged; structured outputs,
+# the Responses API and `medium` reasoning effort all supported.
 PRICES: Mapping[str, ModelPrice] = MappingProxyType(
     {
         LUNA: ModelPrice(input=0.10, cached_input=0.01, cache_write=0.125, output=0.50),
