@@ -20,8 +20,9 @@ TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
 RunStatus = Literal["complete", "failed", "aborted"]
 
 # summary.json's own shape version, separate from the event schema (core.events).
-# 2: config nested as {roles, embedding, retrieval} (2e). 1: config was {role: ...} flat.
-SUMMARY_SCHEMA_VERSION = "2"
+# 3: config gains oracle (3b). 2: config nested as {roles, embedding, retrieval} (2e).
+# 1: config was {role: ...} flat.
+SUMMARY_SCHEMA_VERSION = "3"
 
 
 def new_run_id(now: datetime) -> str:

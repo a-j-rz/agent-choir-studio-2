@@ -114,6 +114,17 @@ RETRIEVAL = RetrievalConfig(
 )
 
 
+class OracleConfig(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    requests_per_turn: int  # per figure per turn, separate from corpus budgets
+    where_encountered_max_chars: int  # the figure's own words, cut to this before sending
+
+
+# The Oracle's per-turn limits (CHOIR_AND_CORPUS §6; System §7).
+ORACLE = OracleConfig(requests_per_turn=3, where_encountered_max_chars=300)
+
+
 def role_config(role: str) -> RoleConfig:
     """The config for one role. An unknown role raises; there is no silent default."""
     try:
@@ -147,4 +158,5 @@ def config_snapshot() -> dict[str, dict[str, Any]]:
         },
         "embedding": EMBEDDING.model_dump(),
         "retrieval": RETRIEVAL.model_dump(),
+        "oracle": ORACLE.model_dump(),
     }
