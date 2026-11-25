@@ -96,8 +96,18 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
 ## E. Persona & epistemic artefacts
 
 - **E1 — Persona Dossiers and Epistemic Horizons are offline-generated, human-reviewed, frozen,
-  versioned repo artefacts** — never runtime-generated summaries. Generation prompt, provenance
-  format, review checklist and regeneration policy are **OPEN** workflow details.
+  versioned repo artefacts** — never runtime-generated summaries. **Horizon method RESOLVED
+  2026-11-25:** a shared tree of concept *lineages* — each a sequence of era-specific *senses*
+  with dates, the traditions they reached, prerequisites, signalling terms, revealing markers,
+  sources and confidence — plus a small per-figure *profile* (horizon year, milieu, traditions,
+  exceptions, an epoch-only description for the Oracle), compiled deterministically into each
+  figure's Horizon. The compiled file is what is reviewed and committed; a source hash makes it
+  detectably stale. Seeded only for the questions in hand and grown on trace evidence.
+  *Rejected:* handwritten per-figure Horizons (24 inconsistent lists, no shared structure, no
+  bridge distance); importing a full external taxonomy as the backbone (none model senses
+  through time, and "comprehensive" becomes the project); unreviewed model-generated Horizons.
+  External anchors kept light: a Library of Congress main class and an optional Wikidata id
+  per lineage. Dossier generation prompt and regeneration policy remain **OPEN**.
 - **E2 — Corpus texts and built indexes are gitignored; Manifests, chunking config and
   build/acquisition scripts are committed.** The repo carries a reproducible *recipe*, not the
   texts. See G.
