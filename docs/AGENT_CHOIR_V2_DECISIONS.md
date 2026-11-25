@@ -98,6 +98,18 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   verdict to the trace and instrumentation panel (not the main user answer). *Rejected:* a fully
   external post-run utility (would make leakage optional rather than a headline output of every
   run).
+- **C5 — What the Oracle receives, and how identity is kept out.** **RESOLVED 2026-11-25.** Our code
+  composes the input: the profile's epoch line; the concept; from the figure's compiled Horizon,
+  the asker's own sense of that lineage, the target sense and its bridge distance (or, for an
+  unreached sense, that it existed outside the asker's world; or, for an unmapped concept, that no
+  counterpart is recorded); and the figure's own words on where it met the concept, capped at 300
+  characters. Never the figure's name, corpus, dossier, the user's question or the rest of the
+  turn. Name tokens in the figure's own words are redacted to "[name]" in what is sent; the trace
+  keeps the original, the flag and the redaction; the composed input is asserted free of name
+  stems. *Rejected:* epoch only (the Oracle must guess what the asker knows and anchors in modern
+  ideas); full context (the Oracle drifts into answering the question); blocking a flagged request
+  (loses a legitimate bridge); sending a flagged name (breaks "Oracle knows epoch not identity").
+  Descriptions cannot be redacted — the barrier stays soft, as System §7 says.
 
 ## D. Trace storage
 
@@ -123,7 +135,15 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   bridge distance); importing a full external taxonomy as the backbone (none model senses
   through time, and "comprehensive" becomes the project); unreviewed model-generated Horizons.
   External anchors kept light: a Library of Congress main class and an optional Wikidata id
-  per lineage. Dossier generation prompt and regeneration policy remain **OPEN**.
+  per lineage. Dossier generation prompt and regeneration policy remain **OPEN**. *Refined
+  2026-11-25, in Phase 3:* terms are matched by stem through BM25's own `analyse()`; terms
+  containing digits are rejected; the compiled file is at schema 2. **OPEN, on Phase 3
+  evidence:** whether a figure's prompt includes its own era's senses — the 3c A/B ran one turn
+  per cell; two of condition B's three Oracle requests quoted the block back.
+- **E3 — No figure prompt may contain a breach term.** **RESOLVED 2026-11-25.** The filled prompt
+  is checked with `find_breaches` before every turn and the turn raises on any hit. *Rejected:*
+  listing the figure's breach terms in its prompt (hands it the modern vocabulary); trusting
+  curated text (the guard caught "investors" in the Horizon's own summary before any run).
 - **E2 — Corpus texts and built indexes are gitignored; Manifests, chunking config and
   build/acquisition scripts are committed.** The repo carries a reproducible *recipe*, not the
   texts. See G.

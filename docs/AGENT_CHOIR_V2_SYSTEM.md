@@ -194,6 +194,17 @@ specific enough to be useful is often nearly identifying. This is acceptable bec
 Oracle's job (neutral concept explanation) is low-sensitivity to that leakage — but the
 separation should not be oversold as a real information barrier.
 
+*As built in Phase 3 (Decisions C5):* the figure calls `ask_oracle(concept, where_encountered)`;
+our code looks the concept up in the figure's compiled Horizon and composes the input — the epoch
+line, the concept, the figure's own sense of that lineage and the later sense asked about (so the
+explanation builds from what the asker has), and the figure's own words, with its name redacted.
+The Oracle returns `bridged` or `cannot_bridge`, an explanation, the **anchors** from the asker's
+world it built on, and what it **left out**. Three requests per turn, separate from searches; no
+caching; a failure returns "unavailable" and the turn continues. In the first six bridges it built
+from couriers and fire signals, debased coinage, account books and seals; none refused, and on
+the owner's reading none advised or judged. The caveat above now has evidence: a name is caught and redacted, but "as one who
+has ruled Rome these many years" passes untouched.
+
 ---
 
 ## 8. Stateless run boundary

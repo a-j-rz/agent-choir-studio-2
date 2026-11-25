@@ -136,6 +136,23 @@ guessed id), and **cited ids that are not in the figure's corpus**. They are sig
 verdicts: none of them says whether a citation supports its claim. They are cheap, exact, and
 the same shape of reconciliation the Oracle cross-check will use.
 
+**The reconciliation, as built in Phase 3** (`choir/reconcile.py`). After every figure turn, with
+no model involved: every breach term in the figure's text (matched by stem against its compiled
+Horizon) is checked against the sanctioned channels — the question, an Oracle explanation the
+figure received (any term in it, not only the concept asked: a bridge hands over its own
+vocabulary), or a passage it opened. A breach term with no channel is an **unbridged use**, a
+candidate hard breach. Each result also lists each bridge's **uptake**, bridges requested but not
+used, and **Horizon gaps** — Oracle requests for concepts the Horizon doesn't map, found by the
+figure itself. Every result states its method: *term matching by stem, on mapped lineages only;
+markers are not checked; absence of unbridged hits is not evidence of clean reasoning.*
+
+*What the first runs showed about its limits.* In Q2 Marcus asked the Oracle about "anxiety as a
+medical illness"; the lookup matched "anxiety" as his own word (Cicero's *anxietas*), so the Oracle got no sense
+framing, and his answer contained no breach term — zero hits, by a check that cannot see modern
+ideas expressed in old words. Old words in new senses are the hard case at every layer: breach terms, the coverage
+probe, the Oracle lookup. Markers exist for them; checking markers needs matching by meaning, not
+by word.
+
 ---
 
 ## 6. The self-limitation clause — mandatory in every report
@@ -155,6 +172,11 @@ observable. But it means **every Detective report must carry a standing self-lim
 Without this clause the report manufactures its own counterfeit certainty — a clean-looking
 leakage audit *feels* like proof of boundedness and is not. Same trap as V1, one level up. The
 clause is not boilerplate; the report is dishonest without it.
+
+**And a coverage statement, from Phase 3 evidence.** The deterministic check covers only the
+lineages a figure's Horizon maps. A coverage probe found the long tail real: of 23 unmapped
+concept groups in six ordinary answers, only one recurred. Every report must say so: *the
+vocabulary check covers mapped lineages only.*
 
 **Sharpened for now.** Under Decisions H1, the Detective currently runs on the *same model* as the
 figures it audits — not merely the same kind of model, the identical one. That makes the clause
@@ -216,6 +238,14 @@ By default the user gets the Editor's clean synthesis; the Detective's leakage v
 the **expandable instrumentation panel** alongside the other observables, not in the main answer.
 The user should not have to read a contamination report to get their answer — but the verdict is
 always one click away, and always in the trace.
+
+**Parked requirement — a report written for a person.** `detective.json` is for machines and
+cross-run comparison. Alongside it, a readable report is **rendered from it deterministically**
+(nothing re-summarised by a model, so it cannot drift from the record): the turn as a transcript —
+question, searches, opens, Oracle requests and answer, in order; breaches marked inline where they
+occur, each with the channel that should have carried it and what the trace shows instead; bridges
+marked beside the words they sanctioned, with the Oracle's explanation; citations beside the
+passages they cite; and the self-limitation and coverage statements at the end.
 
 ---
 

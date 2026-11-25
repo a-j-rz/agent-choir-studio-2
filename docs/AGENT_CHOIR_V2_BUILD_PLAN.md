@@ -1,7 +1,7 @@
 # Agent Choir Studio V2 — Build Plan
 
 *The phased, vertical-slice build. Started greenfield; **Phases 0–1 completed 2026-11-12; Phase 2, the keystone, completed
-2026-11-21.** Build in
+2026-11-21; Phase 3, the Oracle, completed 2026-11-25.** Build in
 thin, observable slices — each proved by trace evidence before the next begins. This is guidance with
 teeth, not a rigid contract; resist building an architecture for imagined future complexity.*
 
@@ -24,8 +24,8 @@ against a spec that can no longer move under it.
 flowchart TD
     P0["0 · Bootstrap + API spike"]:::done --> P1["1 · Substrate"]:::done
     P1 --> P2["2 · KEYSTONE<br/>one figure, one real corpus"]:::keydone
-    P2 --> P3["3 · Oracle loop — next"]:::next
-    P3 --> P4["4 · Host flow"]
+    P2 --> P3["3 · Oracle loop"]:::done
+    P3 --> P4["4 · Host flow — next"]:::next
     P4 --> P5["5 · Hub-and-spoke + Editor<br/>+ Editor model test"]
     P5 --> P6["6 · Token-ring"]
     P6 --> P7["7 · Researcher + fact freezing"]
@@ -154,7 +154,7 @@ is relevant:
 | The possessive remnant `s` (df 61) carried IDF ≈ 2.1 | Rarity weighting only suppresses junk that is *common*; tokeniser choices need probing on real text | Fixed in 2c; Phase 9 for every corpus |
 | The library's recorded model revision only echoes the requested string | A check against an echoed value verifies nothing | Revision read from the commit-named cache folder; a pattern for every verification |
 | One 420-word sentence (I.17) measured 523 tokens; restoring 380 words also split IX.9, X.8 and X.33 | Chunk limits come from the model, but the word rule stays model-independent, with a token gate at embed time | Phase 9 chunking per corpus |
-| Archaic forms split into misleading pieces (*doth* → `dot` + `h`) and never match modern forms lexically | Period English costs on both retrieval paths | Retrieval quality, Phase 9 |
+| Archaic forms split into misleading pieces (*doth* → `dot` + `##h`) and never match modern forms lexically | Period English costs on both retrieval paths | Retrieval quality, Phase 9 |
 | Dropping the query instruction moves ranks materially (IX.15 #5 → #1, X.2 #8 → #24) | A silent setting with real effects; kept as documented (B4) | Phase 10 regression set |
 | The vector top 8 spans ~0.03 cosine; the 14-word I.1 ranks vector #319 | Cosines carry little meaning beyond rank; very short chunks embed weakly; each path misses what the other finds | Supports RRF on ranks; Phase 9 chunking |
 | With 8 merged slots, RRF gives each list ~4 unless items appear in both; deeper lists crowd out single-path catches (2 → 1 → 0 at depths 8 / 15 / 30) | Depth 8 chosen on that evidence | `core/config.py`; re-test against the regression set |
@@ -175,6 +175,54 @@ server runs figures.
 Add the private Oracle to that one figure: horizon-triggered, budgeted, declared in turn state.
 *Trace evidence:* a turn where the figure hits a post-horizon concept, requests a bridge, and the
 Oracle call + its effect on reasoning appear in the trace with the corpus-search budget untouched.
+
+✅ **Done 2026-11-25**, in four slices on Marcus Aurelius:
+
+| Slice | What landed | Proven by |
+|---|---|---|
+| 3a-i | Horizon machinery: shared concept *lineages* of era-specific *senses*, a per-figure *profile*, a deterministic compiler (available / beyond by date / unreached), breach terms, source-hash staleness (Decisions E1) | Hand-computed toy values, including a later sense from another tradition landing in *beyond*; six rejections with clear messages |
+| 3a-ii | Marcus's Horizon: 7 traditions, 15 lineages, 58 senses, each sourced; terms matched by stem through BM25's own `analyse()`; `find_breaches()`; an offline coverage probe (`builder` role) | v1 seed left 24 of 34 extracted modern concepts unmapped; after stem matching and evidence-driven content, fresh unseen answers left 11 of 44 |
+| 3b | The Oracle as a bound tool: deterministic Horizon lookup, composed input (Decisions C5), name redaction, structured answer, 3-per-turn budget, failure that never fails the figure | 6 live bridges, $0.0014, all `bridged`; the budget refusal shown in the live run (refused before any call); redaction and `repeat_of` shown offline; the simulated failure in both |
+| 3c | Oracle wired into the figure turn; prompt guard (Decisions E3); deterministic reconciliation; Horizon-in-prompt run as an A/B | 6 turns, 35 calls, $0.0053. Q1 A asked the Oracle about "phone" before searching; all 5 uses traced to the question and bridge 1; search budget untouched |
+
+Phase 3 live calls in all: 65, about $0.018.
+
+*Owner judgements and contributions recorded:*
+
+- **The Horizon as a shared concept tree** — the owner's proposal, with epoch-grounded senses
+  (Galen's circulation, not Harvey's) and access by milieu rather than by corpus. It replaced
+  per-figure Horizon lists.
+- **"Is it exhaustive enough?"** — the owner's challenge that produced the coverage probe; and the
+  owner's catch that the first milieu foregrounded Galen only because the conversation had.
+- **The six Oracle explanations are faithful and neutral.** In review, the SSRI bridge read as the
+  weakest: it anchors on the humours and opium, not on Galen's own teaching about the nerves.
+- **Phase 3 works as intended.** The Q2 answers were *not* read line by line against their bridge,
+  so their zero unbridged hits are a method result, not a verified clean (finding below).
+
+*Findings carried forward:*
+
+| Finding | What it means | Where it lands |
+|---|---|---|
+| Splitting unavailable senses by tradition would make every modern sense "unreached" for a single-tradition figure | Split by date: *beyond* = after the horizon year, anywhere; *unreached* = existed, but not for this figure. Tea (Han China) is the first real unreached sense | `epistemic/horizon.py` |
+| While drafting, before the first commit, the first compile flagged 18 ordinary words as modern — among them "nerves" (Galen), "engagement", "interest rates", "usurer", "division of labour" (removed before commit, so not in repo history) | A word modern in one sense is often ancient in another; breach terms must be checked word by word | Every figure's Horizon review, Phase 9 |
+| A seed written from imagination left 24 of 34 extracted modern concepts unmapped; evidence-driven content brought fresh answers to 11 of 44 | Seed from evidence, not invention. Several remaining gaps are old words in new senses ("dependence", "alerts"); others are simply unmapped ("clinician", "windfall gains") | Coverage probe per figure, Phase 9 |
+| Exact matching missed inflections ("apps", "SSRIs"); acronym plurals don't stem ("SSRIs" stays `ssris`); the tokeniser drops digits | Terms match by stem through BM25's own `analyse()`; acronym plurals are listed in content; terms with digits are rejected | `epistemic/horizon.py` |
+| The identity flag catches names, not descriptions: "as one who has ruled Rome these many years" passes; before redaction, a flagged name would have been sent (the only named request ran against a patched call) | Names are redacted to "[name]" in what is sent; descriptions cannot be, so "epoch, not identity" stays a soft barrier | Decisions C5; System §7 |
+| No answer came back `cannot_bridge`, not even quantum entanglement | The Oracle's honesty lives in `left_out` more than in refusing | Watch from Phase 5 |
+| A bridge hands the figure further modern terms (the SSRI bridge introduced "serotonin", a breach term) | A bridge sanctions every term in the explanation received, not only the concept asked | `choir/reconcile.py` |
+| The Horizon's own summary would have put "investors" into the figure's prompt; the guard, specified in the 3c brief, caught it before any run | Our instruments leak too; no figure prompt may contain a breach term | Decisions E3 |
+| Q2's request about anxiety as a medical illness looked up as `his` (anxiety is Cicero's word): the Oracle got no sense block, and term matching found nothing in his answer | Old word, new sense, at the lookup layer. A request for a modern sense of one of his words is itself the signal | Parked: `his` lookups send his sense **and** the lineage's later senses |
+| Two of condition B's three Oracle requests quote the B block back (Q2 "bodily melancholia"; Q3 debasement); B also searched more (8 searches against A's 4). One run per cell | The seed's wording visibly primes the figure; one run per cell cannot separate the rest from noise | **OPEN** — Decisions E1 |
+| "Bridge unused" requires the whole concept phrase to recur: Q3 B's concept, "prices rising and profit from price changes", would need all seven stems in order | Measure uptake by reuse of the explanation's distinctive terms | Parked for the Detective |
+| The $0.05 stop for the 3c runs failed silently: it lived in a shell loop | Spend caps belong in the runner, in code | Phase 8 |
+| Marcus asked the Oracle before searching (Q1); every turn reasoned for 0 tokens at `low` | The prompt's ordering shapes the turn; effort is a ceiling, again | Watch from Phase 5 |
+
+*Parked for later phases:* `his` lookups to carry the lineage's later senses; uptake measured by
+explanation terms; spend caps in the runner (Phase 8); a **human-readable Detective report**
+rendered from `detective.json` (Leakage & Detective §8); marker-level checking — a candidate is
+cosine similarity between a figure's sentences and marker claims using the local embedding model,
+to be tested when a trace shows a marker-level leak; the Q2 answers read line by line against
+their bridge.
 
 **Phase 4 — Host flow (no Choir yet).**
 Framing → triage → archetype → complexity score → topology → cast selection, all rationale to

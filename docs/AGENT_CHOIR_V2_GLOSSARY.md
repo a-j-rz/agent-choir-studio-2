@@ -76,8 +76,9 @@ certify it clean.
 disagreement. Not an essayist; never fabricates a missing quantitative premise.
 
 **Oracle** *(utility)*. A neutral modern-concept bridge a figure may request when it hits something
-beyond its lifetime. Knows the epoch, not the figure's identity. Tells the figure what the modern
-world contains; the figure's corpus determines what it thinks about it.
+beyond its lifetime. Knows the epoch, not the figure's identity (names are redacted from what it
+is sent). Tells the figure what the modern world contains; the figure's corpus determines what it
+thinks about it.
 
 ---
 
@@ -176,6 +177,40 @@ argument would move the conclusion.
 **Model-tier steering** *(parked)*. Using the same complexity rubric that picks topology and cast to
 also pick *which model* a question or seat gets — a third mapping from one score, needing no new
 machinery. Named in Decisions A5; not built in V2.
+
+---
+
+## Horizon and Oracle terms, as built
+
+**Lineage.** One concept through time, as an ordered list of senses — shared by every figure.
+
+**Sense.** One era's meaning of a concept: Galen's circulation, Harvey's, the modern one. Records
+when and where it appeared, its signalling terms, its revealing markers, and its sources.
+
+**Available / beyond / unreached.** For one figure: the sense its world had; senses that came
+after its horizon year (anywhere); senses that existed in its time but outside its world.
+
+**Bridge distance.** How many steps beyond what a figure has a sense lies, counting the sense
+itself. Diocletian's price edict is 1 step beyond Marcus; the smartphone is 6.
+
+**Breach term.** A word that signals a sense beyond the figure — matched by stem, after removing
+every word one of its own senses uses ("energy" is Aristotle's, so it is not one).
+
+**Marker.** A claim that reveals a sense ("a pill can reduce anxiety by acting on the brain"). Catches old words in new
+senses, which terms cannot.
+
+**Anchors.** The things from the asker's own world an Oracle explanation is built on.
+
+**Reconciliation.** The deterministic check after each turn: every breach term the figure used,
+against the channels that could have sanctioned it.
+
+**Unbridged use.** A breach term with no sanctioning channel — a candidate hard breach.
+
+**Bridge uptake.** The breach terms in a figure's answer that a particular Oracle bridge
+sanctioned — the trace's evidence of a bridge's effect on reasoning.
+
+**Horizon gap.** An Oracle request for a concept the Horizon doesn't map — a gap the figure found
+itself.
 
 ---
 

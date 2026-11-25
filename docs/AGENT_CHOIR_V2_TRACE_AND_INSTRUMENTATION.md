@@ -123,15 +123,20 @@ sequenceDiagram
 | `contribution` | figure turn | the parsed contribution and the stop reason |
 | `citation_check` | figure turn | cited vs opened vs surfaced, unknown ids, the source of each citation, and how many extra message items arrived |
 | `contribution_invalid` | figure turn | every message text and why each failed validation; the run then fails |
+| `oracle_request` | Oracle tool | concept, the figure's own words, whether truncated, the Horizon lookup (beyond / unreached / his / unmapped, senses, distance), identity flag and redaction, repeat, budget used, and the raw file holding the exact composed input |
+| `oracle_bridge` · `oracle_failed` · `oracle_request_refused` | Oracle tool | the parsed answer (status, explanation, anchors, left out) and cost; or the error, the turn continuing; or the budget refusal |
+| `horizon_reconciliation` | figure turn | breach hits in the figure's text with their sanctioning channels, unbridged uses, uptake per bridge, unused bridges, Horizon gaps, and the method statement |
 
 Two layers are kept deliberately apart: `tool_result` records **what the model saw**;
 `corpus_search` and its raw file record **how retrieval chose it**. Raw files are named
 `raw/<seq>-<stem>.json`, where `<seq>` is the sequence number of the event that names the file;
 nothing that awaits may run between writing the file and emitting its event.
 
-`summary.json` is at schema **2**: its config snapshot nests `roles`, `embedding` and
-`retrieval`, so every run records the model, effort, embedding model and revision, and every
-retrieval setting it ran with.
+`summary.json` is at schema **4**: its config snapshot nests `roles`, `embedding`, `retrieval` and
+`oracle`, so every run records the model, effort, embedding model and revision, and every
+retrieval and Oracle setting it ran with; `annotations` records run inputs such as the 3c prompt
+condition. The Oracle's own model calls appear as `round_trip` events labelled `oracle`, nested
+inside the figure's turn.
 
 ---
 

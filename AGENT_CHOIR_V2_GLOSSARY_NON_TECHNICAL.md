@@ -256,6 +256,11 @@ flowchart TD
     Cap -->|"no"| Stop["Request refused"]
 ```
 
+**Epistemic Horizon, as a tech tree.** Like the technology tree in a strategy game, but for
+ideas, and far finer-grained: each concept is a line through history (Galen's idea of the blood,
+then Harvey's, then today's), and each figure stands at a point on each line its world reached. Whatever lies
+further along the line is beyond them, and has to be explained by the Oracle rather than assumed.
+
 **Stateless.** Each run starts from nothing and leaves nothing behind for the next. No memory
 between runs, by design — that's what makes comparing runs trustworthy.
 

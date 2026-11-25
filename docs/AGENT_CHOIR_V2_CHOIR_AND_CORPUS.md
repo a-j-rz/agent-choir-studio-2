@@ -196,6 +196,32 @@ available; clearly post-lifetime concepts; common anachronism hazards; conceptua
 hints. The figure uses it to recognise when to consult the Oracle rather than silently reach
 for modern pretrained knowledge.
 
+**As built in Phase 3 (Decisions E1).** A Horizon is compiled, not handwritten. Shared across all
+figures is a tree of concept **lineages** — one concept through time, as an ordered list of
+era-specific **senses** (for example circulation: Galen's, then Harvey's, then modern — an
+illustration; the current seed is built for the Phase 3 questions). Each sense records
+when and in which tradition it appeared, the **terms** that tend to signal it, the **markers**
+(claims) that reveal it, hazards, sources and a confidence. Each figure has a small **profile**:
+horizon year, the traditions it had access to (by milieu, not by corpus — an educated reader of
+the day knew far more than they wrote), exceptions, and the one-line epoch the Oracle is told.
+The compiler then gives, per lineage, the figure's **available** sense, the senses **beyond** it
+(later, with a **bridge distance** in steps) and any **unreached** (existing in its time, but
+outside its world — for Marcus, tea in Han China), plus the breach terms and markers.
+
+```mermaid
+flowchart LR
+    L[("Lineages — shared<br/>senses through time")] --> C{"Compile<br/>by date and tradition"}
+    P["Profile — one per figure<br/>horizon year · traditions ·<br/>exceptions · epoch line"] --> C
+    C --> H[("Compiled Horizon<br/>his sense · beyond + distance ·<br/>unreached · breach terms")]
+    H --> O["Oracle lookup"]
+    H --> R["Leakage reconciliation"]
+```
+
+The Horizon describes what the figure could *understand*; the corpus decides what it *thinks*. It
+maps borders, not everything the figure knew: only concepts with a modern counterpart need a
+lineage, and the tree is seeded from evidence (a coverage probe on the questions in hand) and
+grown when traces show a gap. Anything unmapped is invisible to the vocabulary check.
+
 ---
 
 ## 6. Retrieval — the tool loop

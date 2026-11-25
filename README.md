@@ -11,9 +11,10 @@ from where it shouldn't have.
 
 **Not a product.** The trace is the point; the final answer is a by-product.
 
-> **Status:** Phase 2 complete — the keystone. Marcus Aurelius searches his own notes through
-> hybrid retrieval, opens what he chooses, and answers with citations checked against what he
-> opened. **Phase 3, the Oracle, is in progress.** See [Build status](#build-status).
+> **Status:** Phase 3 complete — the Oracle. Marcus Aurelius searches his own notes, asks a
+> private Oracle about anything from after his time, and every turn ends with a check of the
+> modern vocabulary he used against what was legitimately given to him. **Next: Phase 4, the
+> Host.** See [Build status](#build-status).
 
 ---
 
@@ -295,8 +296,8 @@ Built in thin vertical slices. "Done" means the trace shows it, not that the cod
 | 0 | Bootstrap + live API spike | ✅ Done |
 | 1 | Substrate: event model, trace directory, per-role config, model-call wrapper, live relay | ✅ Done |
 | 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ✅ Done |
-| 3 | Oracle loop, on a shared tree of concept lineages | 🔧 In progress |
-| 4 | Host flow: triage, scoring, topology, cast | |
+| 3 | Oracle loop, on a shared tree of concept lineages | ✅ Done |
+| 4 | Host flow: triage, scoring, topology, cast | ⏭ Next |
 | 5 | Hub-and-spoke + Editor | |
 | 6 | Token-ring | |
 | 7 | Researcher + frozen fact pack | |
@@ -359,6 +360,26 @@ merged, three live turns for about $0.0015 in all.
 - **Stable is not correct, again.** Two runs of the same question shared 7 of 8 results and
   3 of 4 citations.
 
+### What Phase 3 showed
+
+Marcus's Epistemic Horizon is compiled from a shared tree of concept lineages, each concept's
+meaning tracked through the eras: 15 lineages, 58 senses. The Oracle explains modern things from
+what his world already had. 65 live calls in all, about $0.018.
+
+- **The hard leaks are old words in new senses.** "Anxiety" (Cicero's *anxietas*), "therapy",
+  "energy" (Aristotle's *energeia*), "dependence": in the breach terms, the coverage probe and the
+  Oracle lookup, the difficult cases were ancient words carrying modern meanings.
+- **A seed written from imagination missed most of what real answers use.** Grounding it in a
+  cheap probe of real answers took the unmapped share of fresh answers from about 70% to 25%.
+- **The Oracle builds from his world.** A smartphone, from couriers and fire signals; inflation,
+  from debased coinage; a blockchain, from account books and seals. It never refused: its
+  honesty lives in what it says it left out.
+- **The instruments leak too.** The Horizon's own description would have put "investors" into
+  Marcus's prompt; a guard, specified before the first run, caught it.
+- **A clean result is only as good as what the check can see.** Asked about anxiety as a medical
+  illness, the lookup took "anxiety" for Marcus's own word, and his answer scored zero unbridged
+  terms. Whether it carried modern ideas in plain words, term matching cannot tell.
+
 ---
 
 ## Models
@@ -420,7 +441,7 @@ python -m scripts.llm_smoke
 python corpora/marcus_aurelius/acquire.py      # download the pinned text, strip Long's apparatus
 python corpora/marcus_aurelius/chunk.py        # one chunk per section → data/chunks.jsonl
 python -m scripts.vector_probe --download --lengths   # first time only: fetch the embedding model
-python -m scripts.figure_turn "How should a person govern their own mind?"   # live, ~$0.0005
+python -m scripts.figure_turn "How should a person govern their own mind?" --condition A   # live, ~$0.001
 ```
 
 The probes run offline and cost nothing: `bm25_probe`, `vector_probe` and `retrieval_probe`
@@ -454,15 +475,19 @@ agent-choir-studio-2/
     tools.py             # a figure's corpus tools, bound per turn, budgets enforced in code
   choir/
     contribution.py      # the structured, cited answer a figure returns
-    figure_turn.py       # one figure turn, plus the deterministic citation checks
+    figure_turn.py       # one figure turn: corpus tools + Oracle, citation checks, reconciliation
+    oracle.py            # the Oracle: Horizon lookup, composed input, redaction, budget
+    reconcile.py         # deterministic leakage reconciliation after every turn
   prompts/
     figure_standin.md    # stand-in figure prompt, until Persona Dossiers exist
+    oracle.md            # the Oracle's instructions
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
   epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
   horizons/              # shared concept lineages, figure profiles, compiled Horizons
   demo/live_demo.py      # labelled fake corpus for the live demo run
-  scripts/               # llm_smoke, figure_turn, the retrieval probes, compile_horizon
+  scripts/               # llm_smoke, figure_turn, retrieval probes, compile_horizon,
+                         # horizon_coverage_probe, oracle_probe
   frontend/index.html    # vanilla page: renders any event type, live
   spikes/                # Phase 0 evidence, frozen
     tool_loop.py         # Phase 0 spike: model → tool → model round trip
