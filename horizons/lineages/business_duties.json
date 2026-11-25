@@ -1,0 +1,99 @@
+{
+  "schema_version": "1",
+  "lineage_id": "business_duties",
+  "label": "The duties of a business",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "business_duties.societas",
+      "label": "Partnership and guild obligations",
+      "summary": "A business's duties are what its partners owe each other and others under contract and law.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -200,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "partnership",
+        "guild",
+        "partners"
+      ],
+      "markers": [
+        "a business owes what its members owe under contract and law"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Gaius, Institutes III.148–154",
+          "note": "Roman law of partnership (societas), written in Marcus's lifetime."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "business_duties.corporation",
+      "label": "The limited-liability company",
+      "summary": "A company is a legal person; its owners' liability is limited to their stake.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1855,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "business_duties.societas"
+      ],
+      "terms": [
+        "limited liability",
+        "limited company"
+      ],
+      "markers": [
+        "a company is a legal person whose owners' liability is limited"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Limited Liability Act 1855 (UK)",
+          "note": "General limited liability for companies."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "business_duties.csr",
+      "label": "Corporate social responsibility",
+      "summary": "A company owes duties to workers, customers and the community, not only its owners.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1953,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "business_duties.corporation"
+      ],
+      "terms": [
+        "corporate social responsibility",
+        "stakeholders",
+        "ESG"
+      ],
+      "markers": [
+        "a company owes duties to workers, customers and the community beyond its owners"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Howard Bowen, Social Responsibilities of the Businessman (1953)",
+          "note": "Founding text of CSR."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

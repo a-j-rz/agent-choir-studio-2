@@ -56,6 +56,8 @@ ROLES: Mapping[str, RoleConfig] = MappingProxyType(
         "researcher": RoleConfig(model=LUNA, reasoning_effort="medium"),
         "editor": RoleConfig(model=LUNA, reasoning_effort="high"),
         "detective": RoleConfig(model=LUNA, reasoning_effort="high"),
+        # Offline build tooling only (Horizon coverage); never part of a figure run.
+        "builder": RoleConfig(model=LUNA, reasoning_effort="medium"),
     }
 )
 

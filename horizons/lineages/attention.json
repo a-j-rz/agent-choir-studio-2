@@ -1,0 +1,103 @@
+{
+  "schema_version": "1",
+  "lineage_id": "attention",
+  "label": "Attention and its direction",
+  "lcc_class": "B",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "attention.prosoche",
+      "label": "Stoic attention (prosochē)",
+      "summary": "Constant watchfulness over one's own judgements and impulses, as a discipline of the self.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -300,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "attention",
+        "attend",
+        "watchfulness",
+        "vigilance"
+      ],
+      "markers": [
+        "attention is directed inward, at one's own judgements",
+        "attention is a moral discipline"
+      ],
+      "hazards": [
+        "Marcus's own notes practise this constantly; the word 'attention' is legitimately his."
+      ],
+      "sources": [
+        {
+          "citation": "Epictetus, Discourses IV.12, 'On attention'",
+          "note": "The Stoic discipline of attention, taught in Marcus's lifetime."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "attention.psychological",
+      "label": "Attention as a psychological faculty",
+      "summary": "Attention is studied experimentally as a limited capacity of the mind that selects among stimuli.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1890,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "attention.prosoche"
+      ],
+      "terms": [
+        "attention span",
+        "focus of consciousness"
+      ],
+      "markers": [
+        "attention is a measurable, limited capacity"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "William James, The Principles of Psychology (1890), ch. XI",
+          "note": "The classic account."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "attention.economy",
+      "label": "Attention as a scarce resource",
+      "summary": "In an information-rich world, attention is what is scarce, and products compete to capture it.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1971,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "attention.psychological"
+      ],
+      "terms": [
+        "attention economy",
+        "information overload"
+      ],
+      "markers": [
+        "attention is scarce because information is abundant",
+        "products compete for and sell people's attention"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Herbert Simon, 'Designing organizations for an information-rich world' (1971)",
+          "note": "'A wealth of information creates a poverty of attention.'"
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": "1",
+  "lineage_id": "stimulant_drinks",
+  "label": "Stimulant drinks",
+  "lcc_class": "T",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "stimulant_drinks.wine",
+      "label": "Wine",
+      "summary": "Wine, usually mixed with water, is the everyday drink that lifts and relaxes.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -1000,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "wine",
+        "mixed wine"
+      ],
+      "markers": [
+        "wine is the ordinary stimulant and social drink"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Pliny the Elder, Natural History XIV",
+          "note": "Roman knowledge of wines."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "stimulant_drinks.tea",
+      "label": "Tea",
+      "summary": "A drink brewed from leaves, taken for alertness.",
+      "available_in": [
+        {
+          "tradition": "han-chinese",
+          "from": -59,
+          "precision": "circa"
+        }
+      ],
+      "prerequisites": [
+        "stimulant_drinks.wine"
+      ],
+      "terms": [
+        "tea"
+      ],
+      "markers": [
+        "a drink brewed from leaves is taken to stay alert"
+      ],
+      "hazards": [
+        "Existed in Han China in Marcus's lifetime but never reached the Roman world: unreached, not beyond."
+      ],
+      "sources": [
+        {
+          "citation": "Wang Bao, 'Contract with a Servant' (59 BCE)",
+          "note": "Early reference to buying and preparing tea."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "sense_id": "stimulant_drinks.coffee",
+      "label": "Coffee",
+      "summary": "A roasted-bean drink, drunk in coffeehouses as a stimulant and social habit.",
+      "available_in": [
+        {
+          "tradition": "european-early-modern",
+          "from": 1650,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "stimulant_drinks.tea"
+      ],
+      "terms": [
+        "coffee",
+        "coffeehouse"
+      ],
+      "markers": [
+        "a morning cup of a stimulating drink is an ordinary habit"
+      ],
+      "hazards": [
+        "Drunk in Yemen from the 15th century; reached Europe in the 17th."
+      ],
+      "sources": [
+        {
+          "citation": "First coffeehouses in England: Oxford c. 1650, London 1652",
+          "note": "Arrival in Europe."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "stimulant_drinks.caffeine",
+      "label": "Caffeine",
+      "summary": "A specific chemical compound in these drinks causes wakefulness.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1819,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "stimulant_drinks.coffee"
+      ],
+      "terms": [
+        "caffeine",
+        "energy drink"
+      ],
+      "markers": [
+        "a single chemical in the drink causes wakefulness"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Friedlieb Ferdinand Runge isolates caffeine, 1819",
+          "note": "Identification of the compound."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

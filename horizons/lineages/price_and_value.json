@@ -1,0 +1,197 @@
+{
+  "schema_version": "1",
+  "lineage_id": "price_and_value",
+  "label": "Price and value",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "price_and_value.classical",
+      "label": "Worth set by exchange",
+      "summary": "A thing is worth what it will fetch; need brings goods to exchange, and money measures them.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -350,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "price",
+        "value",
+        "worth",
+        "buyer",
+        "seller",
+        "market",
+        "money"
+      ],
+      "markers": [
+        "need is what makes goods comparable in exchange"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Aristotle, Nicomachean Ethics V.5",
+          "note": "Need holds exchange together; money as its measure."
+        },
+        {
+          "citation": "Publilius Syrus, Sententiae (1st c. BCE)",
+          "note": "Attributed maxim: a thing is worth what its buyer will pay."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "sense_id": "price_and_value.just_price",
+      "label": "The just price",
+      "summary": "Selling above a thing's just value is wrong; price carries a moral standard.",
+      "available_in": [
+        {
+          "tradition": "latin-medieval",
+          "from": 1270,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "price_and_value.classical"
+      ],
+      "terms": [
+        "just price"
+      ],
+      "markers": [
+        "charging more than a thing is worth is a sin"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Thomas Aquinas, Summa Theologiae II–II q. 77",
+          "note": "Fraud in buying and selling."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "price_and_value.smithian",
+      "label": "Market price and the invisible hand",
+      "summary": "Prices rise and fall with supply against demand, and self-interested exchange coordinates a whole economy.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1776,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "price_and_value.just_price"
+      ],
+      "terms": [
+        "supply and demand",
+        "invisible hand"
+      ],
+      "markers": [
+        "prices coordinate production with no one directing it",
+        "self-interest produces public benefit through markets"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Adam Smith, The Wealth of Nations (1776), book I ch. 7; book IV ch. 2",
+          "note": "Natural and market price; the invisible hand."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "price_and_value.marginal",
+      "label": "Marginal utility",
+      "summary": "Value comes from the usefulness of one more unit to the buyer, not from labour or substance.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1871,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "price_and_value.smithian"
+      ],
+      "terms": [
+        "marginal utility"
+      ],
+      "markers": [
+        "value depends on the last unit wanted"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Jevons, The Theory of Political Economy (1871); Menger, Principles of Economics (1871)",
+          "note": "The marginal revolution."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "price_and_value.equilibrium",
+      "label": "Supply-and-demand equilibrium",
+      "summary": "Price settles where supply and demand curves cross; responsiveness is measured as elasticity.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1890,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "price_and_value.marginal"
+      ],
+      "terms": [
+        "elasticity",
+        "demand curve"
+      ],
+      "markers": [
+        "price is set where supply meets demand"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Alfred Marshall, Principles of Economics (1890)",
+          "note": "The supply-and-demand diagram; elasticity."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "price_and_value.imperfect_competition",
+      "label": "Market power",
+      "summary": "Firms with few rivals can set prices above competitive levels; market power is analysed and regulated.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1933,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "price_and_value.equilibrium"
+      ],
+      "terms": [
+        "market power",
+        "imperfect competition"
+      ],
+      "markers": [
+        "a dominant firm can set prices above what competition would allow"
+      ],
+      "hazards": [
+        "'Monopoly' is not modern: Aristotle tells of Thales cornering the olive presses (Politics I.11)."
+      ],
+      "sources": [
+        {
+          "citation": "Joan Robinson, The Economics of Imperfect Competition (1933); Edward Chamberlin, The Theory of Monopolistic Competition (1933)",
+          "note": "Formal analysis of market power."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

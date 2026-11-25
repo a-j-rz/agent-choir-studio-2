@@ -1,0 +1,143 @@
+{
+  "schema_version": "1",
+  "lineage_id": "mental_disorder",
+  "label": "Disorders of the mind",
+  "lcc_class": "R",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "mental_disorder.humoral",
+      "label": "Melancholy and the humours",
+      "summary": "Lasting fear and despondency are a bodily condition, melancholia, caused by an excess of black bile.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -400,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "melancholy",
+        "melancholia",
+        "black bile",
+        "humours",
+        "anxiety",
+        "distress"
+      ],
+      "markers": [
+        "fear without cause comes from the body's humours"
+      ],
+      "hazards": [
+        "'Anxiety' is not a modern word here: Cicero already distinguishes anxietas, a lasting trait, from angor, a passing distress."
+      ],
+      "sources": [
+        {
+          "citation": "Hippocratic Aphorisms VI.23",
+          "note": "Fear and despondency lasting a long time indicate melancholia."
+        },
+        {
+          "citation": "Cicero, Tusculan Disputations IV.27",
+          "note": "anxietas distinguished from angor."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "mental_disorder.neurosis",
+      "label": "Nervous disorders (neuroses)",
+      "summary": "Disorders of sense and motion are disorders of the nervous system without fever or local disease.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1769,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "mental_disorder.humoral"
+      ],
+      "terms": [
+        "neurosis",
+        "nervous disorder"
+      ],
+      "markers": [
+        "mental suffering is a disease of the nerves"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "William Cullen, Synopsis Nosologiae Methodicae (1769)",
+          "note": "Coins 'neurosis'."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "mental_disorder.anxiety_neurosis",
+      "label": "Anxiety neurosis",
+      "summary": "Anxiety is a distinct clinical syndrome with psychological causes, separated from other nervous complaints.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1895,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "mental_disorder.neurosis"
+      ],
+      "terms": [
+        "anxiety neurosis",
+        "anxiety attack"
+      ],
+      "markers": [
+        "anxiety is a separate illness with its own cause"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Sigmund Freud, 'On the grounds for detaching a particular syndrome from neurasthenia under the description \"anxiety neurosis\"' (1895)",
+          "note": "Defines the syndrome."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "mental_disorder.diagnostic",
+      "label": "Anxiety disorder as a diagnosis",
+      "summary": "Anxiety disorders are defined by standard diagnostic criteria and treated as medical conditions.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1980,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "mental_disorder.anxiety_neurosis"
+      ],
+      "terms": [
+        "anxiety disorder",
+        "mental illness",
+        "mental health",
+        "psychiatric",
+        "psychiatry",
+        "mental health professional",
+        "mental health condition"
+      ],
+      "markers": [
+        "excessive worry for months meets criteria for a diagnosable disorder",
+        "anxiety is treated by medical professionals like other illness"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "American Psychiatric Association, DSM-III (1980)",
+          "note": "Introduces generalized anxiety disorder."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

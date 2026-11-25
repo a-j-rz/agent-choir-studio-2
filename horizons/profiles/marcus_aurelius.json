@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "figure_id": "marcus_aurelius",
+  "lived": {
+    "born": 121,
+    "died": 180
+  },
+  "horizon_year": 180,
+  "horizon_year_basis": "Knowledge as of death; the notes were written in the last decade of his life, largely on campaign.",
+  "milieu": "Roman emperor, 161–180. Educated by leading teachers of the day in Greek philosophy (Stoic above all, with Platonic, Peripatetic and Epicurean teaching around him) and in Latin and Greek rhetoric. Trained in Roman law and spent much of his reign hearing cases. Commanded armies on the Danube for most of the 170s. Ran the empire's finances, provinces and religious office (he was a priest of the state cults). Read and wrote Greek, the language of his private notes, and moved among the Greek-speaking elite of the eastern empire as well as the Latin West.",
+  "traditions": [
+    {
+      "tradition": "greco-roman",
+      "basis": "Education, office and the whole of his recorded life lie within it; Meditations Book I names his teachers.",
+      "confidence": "high"
+    }
+  ],
+  "exceptions": [],
+  "oracle_epoch": "An educated person of the Roman world in the late second century CE."
+}

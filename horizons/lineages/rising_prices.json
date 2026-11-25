@@ -1,0 +1,135 @@
+{
+  "schema_version": "1",
+  "lineage_id": "rising_prices",
+  "label": "Rising prices",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "rising_prices.debasement",
+      "label": "Debased coinage",
+      "summary": "Rulers reduce the silver in coins, and the coins buy less.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": 64,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "debasement",
+        "coinage",
+        "denarius",
+        "silver"
+      ],
+      "markers": [
+        "coins lose value because they contain less silver"
+      ],
+      "hazards": [
+        "Debasement continued in Marcus's own reign; he would know it from the treasury side."
+      ],
+      "sources": [
+        {
+          "citation": "Nero's coinage reform, 64 CE",
+          "note": "Reduces the weight and silver content of the denarius."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "sense_id": "rising_prices.price_edict",
+      "label": "Imperial price controls",
+      "summary": "The state fixes maximum prices across the empire to stop prices rising.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": 301,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "rising_prices.debasement"
+      ],
+      "terms": [
+        "maximum prices",
+        "price edict"
+      ],
+      "markers": [
+        "an empire-wide decree fixes the price of goods"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Diocletian, Edict on Maximum Prices (301)",
+          "note": "Imperial price controls."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "rising_prices.quantity_theory",
+      "label": "Quantity theory of money",
+      "summary": "General price rises follow from more money circulating, such as American silver flowing into Europe.",
+      "available_in": [
+        {
+          "tradition": "european-early-modern",
+          "from": 1568,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "rising_prices.price_edict"
+      ],
+      "terms": [
+        "money supply",
+        "quantity of money",
+        "price revolution"
+      ],
+      "markers": [
+        "more money in circulation raises all prices"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Jean Bodin, Reply to Malestroit (1568); David Hume, 'Of Money' (1752)",
+          "note": "Prices follow the quantity of money."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "rising_prices.inflation",
+      "label": "Inflation as a measured rate",
+      "summary": "The general rise in prices is measured as an annual rate from an official price index, and governments target it.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1919,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "rising_prices.quantity_theory"
+      ],
+      "terms": [
+        "inflation",
+        "deflation",
+        "price index",
+        "inflation rate"
+      ],
+      "markers": [
+        "prices rise by a measured percentage each year",
+        "governments aim at a target inflation rate"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Official consumer price indices, from the late 1910s",
+          "note": "Inflation measured as a rate."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

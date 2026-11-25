@@ -1,0 +1,105 @@
+{
+  "schema_version": "1",
+  "lineage_id": "energy",
+  "label": "Energy",
+  "lcc_class": "Q",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "energy.energeia",
+      "label": "Activity and actuality (energeia)",
+      "summary": "Energy is a thing's activity, the exercise of a capacity.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -350,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "energy",
+        "activity",
+        "vigour",
+        "actuality"
+      ],
+      "markers": [
+        "energy is the activity of a thing exercising its nature"
+      ],
+      "hazards": [
+        "'Energy' is ancient: the modern physical and commercial senses are what's new."
+      ],
+      "sources": [
+        {
+          "citation": "Aristotle, Metaphysics IX (Theta)",
+          "note": "Energeia and dynamis: actuality and potentiality."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "energy.physical",
+      "label": "Energy as a physical quantity",
+      "summary": "Energy is a measurable quantity that is conserved and converted between forms.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1807,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "energy.energeia"
+      ],
+      "terms": [
+        "kinetic energy",
+        "conservation of energy"
+      ],
+      "markers": [
+        "energy is a measurable quantity that is never created or destroyed"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Thomas Young, A Course of Lectures on Natural Philosophy (1807); Helmholtz, On the Conservation of Force (1847)",
+          "note": "The physical sense; conservation."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "energy.utility",
+      "label": "Energy as a supplied commodity",
+      "summary": "Energy is generated, sold and delivered through networks; its price shapes the economy.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1882,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "energy.physical"
+      ],
+      "terms": [
+        "electricity",
+        "energy bill",
+        "power grid",
+        "energy prices",
+        "fossil fuels"
+      ],
+      "markers": [
+        "energy is bought from suppliers through a network",
+        "energy prices drive what everything else costs"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Edison's Pearl Street Station, New York, 1882",
+          "note": "First commercial central power station."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

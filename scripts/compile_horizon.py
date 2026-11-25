@@ -40,7 +40,7 @@ def toy_files():
         "lineages/L1.json": _lineage("L1", [
             _sense("L1.s1", "A", 100, ["alpha", "shared"]),
             _sense("L1.s2", "B", 150, ["beta"]),
-            _sense("L1.s3", "A", 300, ["gamma", "shared2"], ["m3"]),
+            _sense("L1.s3", "A", 300, ["gamma", "sharedtwo"], ["m3"]),
             _sense("L1.s4", "A", 500, ["delta"], ["m4"])]),
         "lineages/L2.json": _lineage("L2", [
             _sense("L2.t1", "B", 50, ["pump"]),
@@ -77,10 +77,14 @@ EXPECTED_VARIANT = {
     "L2": ("t1", [("t2", 1)], [], []),
     "L3": (None, [("u1", 1)], [], ["mu1"]),
 }
-EXPECTED_VARIANT_TERMS = ["beta", "delta", "epsilon", "gamma", "shared2", "zeta"]
+EXPECTED_VARIANT_TERMS = ["beta", "delta", "epsilon", "gamma", "sharedtwo", "zeta"]
 # Main case + L4 (v1 in B from 900: a tradition the profile lacks, after the horizon).
 EXPECTED_L4 = ("L4", (None, [("v1", 1)], [], []))
 EXPECTED_L4_TERM = "theta"
+# Extended toy (3a-ii A): main toy + "habit" in L1.s1, "habits" and "smart phones" in L1.s4.
+EXPECTED_EXT_NOT_BREACH = "habits"        # stems to habit, which s1 makes available
+EXPECTED_EXT_BREACH = "smart phones"
+EXPECTED_EXT_HITS = [(["smart", "phone"], "smart phone", 3)]   # "I check my smart phone daily"
 
 
 def _short(sense_id):
@@ -173,6 +177,29 @@ def selftest():
         print(f"  {EXPECTED_L4_TERM!r} in breach_terms {compiled['breach_terms']}   "
               f"{'PASS' if ok else 'FAIL'}")
 
+    extended = toy_files()
+    l1 = extended["lineages/L1.json"]["senses"]
+    l1[0]["terms"].append("habit")
+    l1[3]["terms"] += ["habits", "smart phones"]
+    with tempfile.TemporaryDirectory() as tmp:
+        write_tree(Path(tmp), extended)
+        compiled = json.loads(horizon.build(Path(tmp), "toy"))
+        print("\nEXTENDED TOY (stems): + habit in s1; + habits, smart phones in s4")
+        ok = EXPECTED_EXT_NOT_BREACH not in compiled["breach_terms"]
+        failures += not ok
+        print(f"  {EXPECTED_EXT_NOT_BREACH!r} not a breach term   {'PASS' if ok else 'FAIL'}")
+        ok = EXPECTED_EXT_BREACH in compiled["breach_terms"]
+        failures += not ok
+        print(f"  {EXPECTED_EXT_BREACH!r} is a breach term   {'PASS' if ok else 'FAIL'}")
+        print(f"  breach_terms {compiled['breach_terms']}")
+        hits = horizon.find_breaches("I check my smart phone daily", compiled)
+        got = [(h["stems"], h["matched_surface"], h["start_token"]) for h in hits]
+        ok = got == EXPECTED_EXT_HITS
+        failures += not ok
+        print(f"  find_breaches('I check my smart phone daily')")
+        print(f"     expected {EXPECTED_EXT_HITS}")
+        print(f"     actual   {got}   {'PASS' if ok else 'FAIL'}")
+
     print("\nREJECTIONS")
     cases = []
     f = toy_files(); f["lineages/L1.json"]["lcc_class"] = "I"
@@ -187,6 +214,10 @@ def selftest():
     cases.append(("exception naming unknown sense", f))
     f = toy_files(); f["lineages/L1.json"]["senses"][0]["available_in"][0]["from"] = 0
     cases.append(("year 0", f))
+    f = toy_files(); f["lineages/L1.json"]["senses"][0]["terms"].append("—")
+    cases.append(("term with no stems ('—')", f))
+    f = toy_files(); f["lineages/L1.json"]["senses"][0]["terms"].append("DSM-5")
+    cases.append(("term with a digit ('DSM-5')", f))
     for label, files in cases:
         failures += _rejects(label, files)
 

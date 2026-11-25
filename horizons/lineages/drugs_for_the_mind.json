@@ -1,0 +1,148 @@
+{
+  "schema_version": "1",
+  "lineage_id": "drugs_for_the_mind",
+  "label": "Remedies that act on the mind",
+  "lcc_class": "R",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "drugs_for_the_mind.galenic",
+      "label": "Galenic remedies",
+      "summary": "Compound remedies, some containing opium, are given to restore the balance of the humours and calm the patient.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -300,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "remedy",
+        "hellebore",
+        "theriac",
+        "opium",
+        "physician",
+        "sedative"
+      ],
+      "markers": [
+        "a remedy works by rebalancing the humours"
+      ],
+      "hazards": [
+        "Galen prepared opium-containing theriac for Marcus himself: this is first-hand knowledge."
+      ],
+      "sources": [
+        {
+          "citation": "Galen, On Antidotes I",
+          "note": "Galen's account of preparing theriac for the emperor."
+        },
+        {
+          "citation": "Hippocratic corpus",
+          "note": "Hellebore as a purge for madness and melancholy."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "drugs_for_the_mind.synthetic",
+      "label": "Synthetic drugs",
+      "summary": "Pure active compounds are isolated or made by chemistry and dosed precisely.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1805,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "drugs_for_the_mind.galenic"
+      ],
+      "terms": [
+        "morphine",
+        "synthetic drug",
+        "chemical compound"
+      ],
+      "markers": [
+        "a single pure compound acts on the body at a known dose"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Sertürner's isolation of morphine from opium, 1805",
+          "note": "The first isolated alkaloid."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "drugs_for_the_mind.psychopharmacology",
+      "label": "Drugs for anxiety",
+      "summary": "Prescribed drugs act on the brain's chemistry to reduce anxiety.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1955,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "drugs_for_the_mind.synthetic"
+      ],
+      "terms": [
+        "tranquilliser",
+        "tranquilizer",
+        "benzodiazepine",
+        "anxiolytic",
+        "Valium",
+        "side effects"
+      ],
+      "markers": [
+        "a pill can reduce anxiety by acting on the brain",
+        "a patient can become dependent on a prescribed drug"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Meprobamate (Miltown), 1955; chlordiazepoxide (Librium), 1960",
+          "note": "First widely prescribed anti-anxiety drugs."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "drugs_for_the_mind.ssri",
+      "label": "Antidepressants for anxiety",
+      "summary": "Drugs that change serotonin signalling are prescribed long-term for anxiety and depression.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1987,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "drugs_for_the_mind.psychopharmacology"
+      ],
+      "terms": [
+        "SSRI",
+        "antidepressant",
+        "serotonin",
+        "Prozac",
+        "SNRI",
+        "SSRIs",
+        "SNRIs"
+      ],
+      "markers": [
+        "mood and anxiety follow brain chemicals such as serotonin"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Fluoxetine (Prozac), approved in the US 1987",
+          "note": "First of the SSRIs in wide use."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

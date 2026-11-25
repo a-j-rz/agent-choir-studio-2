@@ -1,0 +1,129 @@
+{
+  "schema_version": "1",
+  "lineage_id": "emergency_help",
+  "label": "Help in an emergency",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "emergency_help.vigiles",
+      "label": "Night watch and fire brigade",
+      "summary": "A standing city watch fights fires and keeps order at night.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": 6,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "night watch",
+        "fire brigade",
+        "vigiles"
+      ],
+      "markers": [
+        "the city keeps a standing watch against fire and disorder"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Cassius Dio, Roman History LV.26",
+          "note": "Augustus establishes the vigiles, 6 CE."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "emergency_help.ambulance",
+      "label": "Ambulance service",
+      "summary": "A dedicated service carries the wounded quickly to medical care.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1792,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "emergency_help.vigiles"
+      ],
+      "terms": [
+        "ambulance"
+      ],
+      "markers": [
+        "the injured are carried to care by a dedicated vehicle service"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Dominique-Jean Larrey's 'flying ambulances', French army, 1792–93",
+          "note": "First organised ambulance service."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "emergency_help.emergency_number",
+      "label": "Emergency telephone number",
+      "summary": "Anyone can summon police, fire or medical help by calling one public number.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1937,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "emergency_help.ambulance"
+      ],
+      "terms": [
+        "emergency services",
+        "emergency number",
+        "paramedic"
+      ],
+      "markers": [
+        "anyone can summon help at once by calling a public number"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "999 service, London, 1937",
+          "note": "First public emergency telephone number."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "emergency_help.crisis_line",
+      "label": "Telephone crisis line",
+      "summary": "A person in distress can telephone a trained listener at any hour.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1953,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "emergency_help.emergency_number"
+      ],
+      "terms": [
+        "crisis line",
+        "helpline",
+        "hotline"
+      ],
+      "markers": [
+        "a distressed person can phone a trained listener at any hour"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "The Samaritans, founded in London, 1953",
+          "note": "First telephone crisis service."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

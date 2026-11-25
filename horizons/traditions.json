@@ -1,4 +1,33 @@
 {
   "schema_version": "1",
-  "traditions": []
+  "traditions": [
+    {
+      "tradition_id": "greco-roman",
+      "label": "Greek and Roman world, c. 800 BCE – 500 CE"
+    },
+    {
+      "tradition_id": "han-chinese",
+      "label": "Chinese world, Han dynasty and after, c. 200 BCE onward"
+    },
+    {
+      "tradition_id": "latin-medieval",
+      "label": "Latin Christian West, c. 300 – 1500"
+    },
+    {
+      "tradition_id": "islamic-golden-age",
+      "label": "Arabic-language scholarship, c. 750 – 1300"
+    },
+    {
+      "tradition_id": "european-early-modern",
+      "label": "Europe, c. 1500 – 1750"
+    },
+    {
+      "tradition_id": "european-modern",
+      "label": "Europe and the Atlantic world, c. 1750 – 1900"
+    },
+    {
+      "tradition_id": "global-modern",
+      "label": "Worldwide science and institutions, c. 1900 onward"
+    }
+  ]
 }

@@ -1,0 +1,103 @@
+{
+  "schema_version": "1",
+  "lineage_id": "stress",
+  "label": "Stress",
+  "lcc_class": "R",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "stress.perturbation",
+      "label": "Distress as a passion",
+      "summary": "Disturbance of the mind is a passion arising from judgement, not a bodily load.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -300,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "distress",
+        "agitation",
+        "perturbation"
+      ],
+      "markers": [
+        "disturbance arises from one's own judgements"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Cicero, Tusculan Disputations IV.11–14",
+          "note": "Perturbationes animi: the Stoic classification of passions."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "stress.physiological",
+      "label": "Stress as a bodily response",
+      "summary": "Any demand on the body triggers a general physiological stress response; prolonged, it causes illness.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1936,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "stress.perturbation"
+      ],
+      "terms": [
+        "stressor",
+        "stress response",
+        "stress hormone"
+      ],
+      "markers": [
+        "the body mounts a general physical response to any demand",
+        "prolonged stress damages health"
+      ],
+      "hazards": [
+        "The word 'stress' alone is left out: older English used it for hardship and pressure. Markers carry the modern sense."
+      ],
+      "sources": [
+        {
+          "citation": "Hans Selye, 'A syndrome produced by diverse nocuous agents', Nature (1936)",
+          "note": "The general adaptation syndrome."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "stress.management",
+      "label": "Stress management",
+      "summary": "Stress is reduced by learned coping techniques, often taught by professionals or employers.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1970,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "stress.physiological"
+      ],
+      "terms": [
+        "stress management",
+        "coping strategies",
+        "burnout"
+      ],
+      "markers": [
+        "stress can be reduced with techniques taught by professionals"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Lazarus and Folkman, Stress, Appraisal, and Coping (1984)",
+          "note": "The coping framework; stress-management programmes spread from the 1970s."
+        }
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

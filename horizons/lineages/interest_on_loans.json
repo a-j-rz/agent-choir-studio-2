@@ -1,0 +1,102 @@
+{
+  "schema_version": "1",
+  "lineage_id": "interest_on_loans",
+  "label": "Interest on loans",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "interest_on_loans.roman",
+      "label": "Roman lending at interest",
+      "summary": "Money is lent at interest under legal ceilings; debt and default are matters of law and honour.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -200,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "interest",
+        "loan",
+        "lender",
+        "debt",
+        "usury"
+      ],
+      "markers": [
+        "interest is a private charge, capped by law"
+      ],
+      "hazards": [
+        "'Usury' is not a modern word here: Latin usura is ordinary interest."
+      ],
+      "sources": [
+        {
+          "citation": "Cicero, Letters to Atticus V.21",
+          "note": "Cicero's edict in Cilicia caps interest at one per cent a month."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "interest_on_loans.prohibition",
+      "label": "Usury as sin",
+      "summary": "Taking interest is morally wrong, at first for clergy and later for all Christians.",
+      "available_in": [
+        {
+          "tradition": "latin-medieval",
+          "from": 325,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "interest_on_loans.roman"
+      ],
+      "terms": [
+        "sin of usury"
+      ],
+      "markers": [
+        "lending at interest is a sin"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Council of Nicaea (325), canon 17",
+          "note": "Clergy forbidden to lend at interest."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "interest_on_loans.central_bank",
+      "label": "Central banking and policy rates",
+      "summary": "A central bank sets the price of money for a whole economy, raising or lowering rates to steer it.",
+      "available_in": [
+        {
+          "tradition": "european-early-modern",
+          "from": 1694,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "interest_on_loans.prohibition"
+      ],
+      "terms": [
+        "central bank",
+        "base rate",
+        "monetary policy"
+      ],
+      "markers": [
+        "a national bank sets interest rates to steer the economy"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Bank of England, founded 1694",
+          "note": "Later the model of central banking."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

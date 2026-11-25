@@ -1,0 +1,136 @@
+{
+  "schema_version": "1",
+  "lineage_id": "trading_shares",
+  "label": "Owning and trading shares",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "trading_shares.publicani",
+      "label": "Shares in tax-farming companies",
+      "summary": "Investors hold shares in companies contracted to collect taxes and supply the state.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -200,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "shares",
+        "partners",
+        "company",
+        "tax-farming",
+        "publicani"
+      ],
+      "markers": [
+        "citizens hold shares in companies doing public contracts"
+      ],
+      "hazards": [
+        "Largely a Republican institution; much reduced under the emperors."
+      ],
+      "sources": [
+        {
+          "citation": "Polybius, Histories VI.17",
+          "note": "Public contracts and the wide participation of citizens in them."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "sense_id": "trading_shares.joint_stock",
+      "label": "Joint-stock company and stock exchange",
+      "summary": "Shares in a permanent company are bought and sold by strangers on an exchange.",
+      "available_in": [
+        {
+          "tradition": "european-early-modern",
+          "from": 1602,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "trading_shares.publicani"
+      ],
+      "terms": [
+        "stock exchange",
+        "joint-stock company",
+        "shareholder",
+        "dividend"
+      ],
+      "markers": [
+        "shares are traded continuously between strangers on an exchange"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Dutch East India Company (VOC), 1602",
+          "note": "First permanently traded share capital."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "trading_shares.bubble",
+      "label": "Speculative bubbles",
+      "summary": "Share prices rise far beyond any value on expectation alone, then collapse.",
+      "available_in": [
+        {
+          "tradition": "european-early-modern",
+          "from": 1720,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "trading_shares.joint_stock"
+      ],
+      "terms": [
+        "speculative bubble"
+      ],
+      "markers": [
+        "prices rise because buyers expect them to keep rising"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "South Sea Bubble, 1720",
+          "note": "Speculative mania and collapse."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "trading_shares.modern_markets",
+      "label": "Modern financial markets",
+      "summary": "Mass investment through markets and funds; profiting from price movements is ordinary finance.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1920,
+          "precision": "decade"
+        }
+      ],
+      "prerequisites": [
+        "trading_shares.bubble"
+      ],
+      "terms": [
+        "stock market",
+        "investor",
+        "portfolio",
+        "hedge fund"
+      ],
+      "markers": [
+        "ordinary people invest savings in markets for returns",
+        "profiting from price movements is a normal activity"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Growth of mass share ownership and funds in the 20th century",
+          "note": "Broad historical summary."
+        }
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

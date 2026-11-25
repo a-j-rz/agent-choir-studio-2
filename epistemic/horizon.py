@@ -15,8 +15,14 @@ arithmetic — no model, no judgement:
               (Why by date: under a tradition-based split, a figure whose only tradition is
               greco-roman would see every modern sense as "unreached" — beyond would be empty
               and bridge distance would never be computed.)
-  breach_terms (global) = terms of every beyond/unreached sense minus terms of every
-              available sense, compared trimmed and case-insensitive, sorted
+  breach (global, by stems) = stem sequences of every beyond/unreached sense's terms minus
+              stem sequences of every available sense's terms. A term is matched as the
+              sequence of stems retrieval.bm25.analyse gives it — the same tokeniser and
+              stemmer as BM25 — so "habits" is cancelled by "habit". Acronym plurals do not
+              stem to their singulars ("SSRIs" -> ssris), and digits are dropped ("DSM-5"
+              -> dsm): those belong in the content, not in a matcher rule.
+
+find_breaches(text, compiled) reports every breach stem sequence found contiguously in a text.
 
 The compiled file is what is reviewed and committed; sources_sha256 makes it detectably stale.
 """
@@ -29,9 +35,12 @@ from typing import Annotated, Literal
 
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field, ValidationError, model_validator
 
+from retrieval.bm25 import analyse
 
-SCHEMA_VERSION = "1"
-COMPILER_VERSION = "1"
+
+SCHEMA_VERSION = "1"  # lineage, profile and traditions files
+COMPILED_SCHEMA_VERSION = "2"  # 2: breach_stems, available_stems; matching by stems
+COMPILER_VERSION = "2"
 HORIZONS_DIR = Path(__file__).resolve().parent.parent / "horizons"
 LCC_CLASSES = frozenset("ABCDEFGHJKLMNPQRSTUVZ")  # Library of Congress main classes
 
@@ -48,6 +57,11 @@ def _not_zero(year: int) -> int:
 
 Year = Annotated[int, AfterValidator(_not_zero)]  # BCE negative: -50 is 50 BCE
 Confidence = Literal["high", "medium", "low"]
+
+
+def term_stems(term: str) -> tuple[str, ...]:
+    """The term as BM25 sees it: its sequence of stems. Matching is on these."""
+    return tuple(stem for _, stem in analyse(term))
 
 
 def norm_term(term: str) -> str:
@@ -101,6 +115,12 @@ class Sense(_Frozen):
             key = norm_term(term)
             if not key:
                 raise ValueError(f"{self.sense_id}: empty term")
+            if re.search(r"\d", term):
+                raise ValueError(f"{self.sense_id}: term {term!r} contains a digit; the "
+                                 "tokeniser drops digits, so it would match without them")
+            if not term_stems(term):
+                raise ValueError(f"{self.sense_id}: term {term!r} yields no stems, "
+                                 "so it could never match")
             if key in seen:
                 dupes.append(term)
             seen.add(key)
@@ -266,16 +286,24 @@ def compile_horizon(traditions, lineages, profile, sources_sha256) -> dict:
     def not_yet_anywhere(sense):
         return min(a.from_ for a in sense.available_in) > profile.horizon_year
 
-    records, available_terms, breach_candidates = [], set(), set()
+    records = []
+    available, candidates = {}, {}  # stems -> {"terms": set, "lineages": set}
+
+    def add(index, sense, lineage_id):
+        for term in sense.terms:
+            entry = index.setdefault(term_stems(term), {"terms": set(), "lineages": set()})
+            entry["terms"].add(norm_term(term))
+            entry["lineages"].add(lineage_id)
+
     for lineage in sorted(lineages, key=lambda lin: lin.lineage_id):
         status = [availability(s) for s in lineage.senses]
         last = max((i for i, (ok, _) in enumerate(status) if ok), default=-1)
         beyond, unreached, markers = [], [], []
         for sense, (ok, _) in zip(lineage.senses, status):
             if ok:
-                available_terms.update(norm_term(t) for t in sense.terms)
+                add(available, sense, lineage.lineage_id)
                 continue
-            breach_candidates.update(norm_term(t) for t in sense.terms)
+            add(candidates, sense, lineage.lineage_id)
             markers += [m for m in sense.markers if m not in markers]
             item = {"sense_id": sense.sense_id, "label": sense.label,
                     "terms": list(sense.terms), "markers": list(sense.markers)}
@@ -283,20 +311,54 @@ def compile_horizon(traditions, lineages, profile, sources_sha256) -> dict:
                 beyond.append({**item, "bridge_distance": len(beyond) + 1})
             else:
                 unreached.append(item)
-        available = None
+        available_sense = None
         if last >= 0:
             sense = lineage.senses[last]
-            available = {"sense_id": sense.sense_id, "label": sense.label, "via": status[last][1]}
+            available_sense = {"sense_id": sense.sense_id, "label": sense.label,
+                               "via": status[last][1]}
         records.append({"lineage_id": lineage.lineage_id, "label": lineage.label,
                         "lcc_class": lineage.lcc_class, "wikidata": lineage.wikidata,
-                        "available_sense": available, "beyond": beyond,
+                        "available_sense": available_sense, "beyond": beyond,
                         "unreached": unreached, "breach_markers": markers})
 
-    return {"schema_version": SCHEMA_VERSION, "compiler_version": COMPILER_VERSION,
+    def entries(index, keys):
+        return [{"stems": list(k), "terms": sorted(index[k]["terms"]),
+                 "lineages": sorted(index[k]["lineages"])} for k in sorted(keys)]
+
+    breach = set(candidates) - set(available)
+    return {"schema_version": COMPILED_SCHEMA_VERSION, "compiler_version": COMPILER_VERSION,
             "figure_id": profile.figure_id, "horizon_year": profile.horizon_year,
             "oracle_epoch": profile.oracle_epoch, "sources_sha256": sources_sha256,
             "lineages": records,
-            "breach_terms": sorted(breach_candidates - available_terms)}
+            "breach_terms": sorted({t for k in breach for t in candidates[k]["terms"]}),
+            "breach_stems": entries(candidates, breach),
+            "available_stems": entries(available, available)}
+
+
+def find_breaches(text: str, compiled: dict) -> list[dict]:
+    """Every breach stem sequence occurring contiguously in the text, as BM25 tokenises it.
+
+    Where matches overlap, the longest wins, then the earliest ("mobile phone" is not also
+    counted as "phone" at the same place). Output sorted by start_token. Deterministic.
+    """
+    tokens = analyse(text)
+    stems = [stem for _, stem in tokens]
+    found = []
+    for entry in compiled["breach_stems"]:
+        seq, n = entry["stems"], len(entry["stems"])
+        for start in range(len(stems) - n + 1):
+            if stems[start:start + n] == seq:
+                found.append((n, start, entry))
+    taken, hits = set(), []
+    for n, start, entry in sorted(found, key=lambda f: (-f[0], f[1], f[2]["stems"])):
+        span = set(range(start, start + n))
+        if span & taken:
+            continue
+        taken |= span
+        hits.append({"stems": entry["stems"],
+                     "matched_surface": " ".join(s for s, _ in tokens[start:start + n]),
+                     "lineages": entry["lineages"], "start_token": start})
+    return sorted(hits, key=lambda h: h["start_token"])
 
 
 def render(compiled: dict) -> str:

@@ -1,0 +1,102 @@
+{
+  "schema_version": "1",
+  "lineage_id": "habit",
+  "label": "Habit and how it is formed",
+  "lcc_class": "B",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "habit.hexis",
+      "label": "Habit as character (hexis)",
+      "summary": "Character is formed by repeated action: we become just by doing just acts.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -350,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "habit",
+        "practice",
+        "character",
+        "disposition"
+      ],
+      "markers": [
+        "repeated action shapes the soul",
+        "habit is a moral achievement or failure"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Aristotle, Nicomachean Ethics II.1",
+          "note": "Virtue comes about by habituation."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "habit.nervous",
+      "label": "Habit as nervous pathways",
+      "summary": "Habits are grooves worn in the nervous system by repetition, making action automatic.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1890,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "habit.hexis"
+      ],
+      "terms": [
+        "automatic behaviour"
+      ],
+      "markers": [
+        "habit is a physical change in the nervous system"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "William James, The Principles of Psychology (1890), ch. IV, 'Habit'",
+          "note": "Habit as plasticity of nervous matter."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "habit.reinforcement",
+      "label": "Habit as reinforcement",
+      "summary": "Behaviour is shaped by rewards; unpredictable rewards produce the most persistent behaviour.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1938,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "habit.nervous"
+      ],
+      "terms": [
+        "reinforcement",
+        "variable reward",
+        "reward schedule",
+        "operant conditioning"
+      ],
+      "markers": [
+        "unpredictable rewards make a behaviour hardest to stop",
+        "behaviour can be engineered by designing rewards"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "B. F. Skinner, The Behavior of Organisms (1938); Ferster and Skinner, Schedules of Reinforcement (1957)",
+          "note": "Operant conditioning and reward schedules."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

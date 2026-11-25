@@ -1,0 +1,3171 @@
+{
+  "available_stems": [
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "activ"
+      ],
+      "terms": [
+        "activity"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "actual"
+      ],
+      "terms": [
+        "actuality"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "agit"
+      ],
+      "terms": [
+        "agitation"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "anxieti"
+      ],
+      "terms": [
+        "anxiety"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "assent"
+      ],
+      "terms": [
+        "assent"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "attend"
+      ],
+      "terms": [
+        "attend"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "attent"
+      ],
+      "terms": [
+        "attention"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "beacon"
+      ],
+      "terms": [
+        "beacon"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "black",
+        "bile"
+      ],
+      "terms": [
+        "black bile"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "buyer"
+      ],
+      "terms": [
+        "buyer"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "charact"
+      ],
+      "terms": [
+        "character"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "coinag"
+      ],
+      "terms": [
+        "coinage"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "compani"
+      ],
+      "terms": [
+        "company"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "courier"
+      ],
+      "terms": [
+        "courier"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "debas"
+      ],
+      "terms": [
+        "debasement"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "debt"
+      ],
+      "terms": [
+        "debt"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "denarius"
+      ],
+      "terms": [
+        "denarius"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "dispatch"
+      ],
+      "terms": [
+        "dispatch"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "disposit"
+      ],
+      "terms": [
+        "disposition"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder",
+        "stress"
+      ],
+      "stems": [
+        "distress"
+      ],
+      "terms": [
+        "distress"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "energi"
+      ],
+      "terms": [
+        "energy"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "fire",
+        "brigad"
+      ],
+      "terms": [
+        "fire brigade"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "guild"
+      ],
+      "terms": [
+        "guild"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "habit"
+      ],
+      "terms": [
+        "habit"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "hellebor"
+      ],
+      "terms": [
+        "hellebore"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "humour"
+      ],
+      "terms": [
+        "humours"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "imperi",
+        "post"
+      ],
+      "terms": [
+        "imperial post"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "impress"
+      ],
+      "terms": [
+        "impressions"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "interest"
+      ],
+      "terms": [
+        "interest"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "judgement"
+      ],
+      "terms": [
+        "judgement"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "lender"
+      ],
+      "terms": [
+        "lender"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "letter"
+      ],
+      "terms": [
+        "letter"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "loan"
+      ],
+      "terms": [
+        "loan"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "market"
+      ],
+      "terms": [
+        "market"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "melancholi"
+      ],
+      "terms": [
+        "melancholy"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "melancholia"
+      ],
+      "terms": [
+        "melancholia"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "messeng"
+      ],
+      "terms": [
+        "messenger"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "mix",
+        "wine"
+      ],
+      "terms": [
+        "mixed wine"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "money"
+      ],
+      "terms": [
+        "money"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "night",
+        "watch"
+      ],
+      "terms": [
+        "night watch"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "opium"
+      ],
+      "terms": [
+        "opium"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties",
+        "trading_shares"
+      ],
+      "stems": [
+        "partner"
+      ],
+      "terms": [
+        "partners"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "partnership"
+      ],
+      "terms": [
+        "partnership"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "passion"
+      ],
+      "terms": [
+        "passions"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "perturb"
+      ],
+      "terms": [
+        "perturbation"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "physician"
+      ],
+      "terms": [
+        "physician"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "practic"
+      ],
+      "terms": [
+        "practice"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "price"
+      ],
+      "terms": [
+        "price"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "publicani"
+      ],
+      "terms": [
+        "publicani"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "remedi"
+      ],
+      "terms": [
+        "remedy"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "sedat"
+      ],
+      "terms": [
+        "sedative"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "seller"
+      ],
+      "terms": [
+        "seller"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "share"
+      ],
+      "terms": [
+        "shares"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "silver"
+      ],
+      "terms": [
+        "silver"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "tax",
+        "farm"
+      ],
+      "terms": [
+        "tax-farming"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "therapi"
+      ],
+      "terms": [
+        "therapy"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "theriac"
+      ],
+      "terms": [
+        "theriac"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "usuri"
+      ],
+      "terms": [
+        "usury"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "valu"
+      ],
+      "terms": [
+        "value"
+      ]
+    },
+    {
+      "lineages": [
+        "attention",
+        "emergency_help"
+      ],
+      "stems": [
+        "vigil"
+      ],
+      "terms": [
+        "vigilance",
+        "vigiles"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "vigour"
+      ],
+      "terms": [
+        "vigour"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "watch"
+      ],
+      "terms": [
+        "watchfulness"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "wine"
+      ],
+      "terms": [
+        "wine"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "worth"
+      ],
+      "terms": [
+        "worth"
+      ]
+    }
+  ],
+  "breach_stems": [
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "ambul"
+      ],
+      "terms": [
+        "ambulance"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "antidepress"
+      ],
+      "terms": [
+        "antidepressant"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "anxieti",
+        "attack"
+      ],
+      "terms": [
+        "anxiety attack"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "anxieti",
+        "disord"
+      ],
+      "terms": [
+        "anxiety disorder"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "anxieti",
+        "neurosi"
+      ],
+      "terms": [
+        "anxiety neurosis"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "anxiolyt"
+      ],
+      "terms": [
+        "anxiolytic"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "app"
+      ],
+      "terms": [
+        "app"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "attent",
+        "economi"
+      ],
+      "terms": [
+        "attention economy"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "attent",
+        "span"
+      ],
+      "terms": [
+        "attention span"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "automat",
+        "behaviour"
+      ],
+      "terms": [
+        "automatic behaviour"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "base",
+        "rate"
+      ],
+      "terms": [
+        "base rate"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "benzodiazepin"
+      ],
+      "terms": [
+        "benzodiazepine"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "burnout"
+      ],
+      "terms": [
+        "burnout"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "caffein"
+      ],
+      "terms": [
+        "caffeine"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "cbt"
+      ],
+      "terms": [
+        "cbt"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "cell",
+        "phone"
+      ],
+      "terms": [
+        "cell phone"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "central",
+        "bank"
+      ],
+      "terms": [
+        "central bank"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "chemic",
+        "compound"
+      ],
+      "terms": [
+        "chemical compound"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "coffe"
+      ],
+      "terms": [
+        "coffee"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "coffeehous"
+      ],
+      "terms": [
+        "coffeehouse"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "cognit",
+        "behavior",
+        "therapi"
+      ],
+      "terms": [
+        "cognitive behavioral therapy"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "cognit",
+        "behaviour",
+        "therapi"
+      ],
+      "terms": [
+        "cognitive behavioural therapy"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "cognit",
+        "distort"
+      ],
+      "terms": [
+        "cognitive distortion"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "conserv",
+        "of",
+        "energi"
+      ],
+      "terms": [
+        "conservation of energy"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "cope",
+        "strategi"
+      ],
+      "terms": [
+        "coping strategies"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "corpor",
+        "social",
+        "respons"
+      ],
+      "terms": [
+        "corporate social responsibility"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "crisi",
+        "line"
+      ],
+      "terms": [
+        "crisis line"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "deflat"
+      ],
+      "terms": [
+        "deflation"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "demand",
+        "curv"
+      ],
+      "terms": [
+        "demand curve"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "dividend"
+      ],
+      "terms": [
+        "dividend"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "e",
+        "mail"
+      ],
+      "terms": [
+        "e-mail"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "elast"
+      ],
+      "terms": [
+        "elasticity"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "electr"
+      ],
+      "terms": [
+        "electricity"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "email"
+      ],
+      "terms": [
+        "email"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "emergenc",
+        "number"
+      ],
+      "terms": [
+        "emergency number"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "emergenc",
+        "servic"
+      ],
+      "terms": [
+        "emergency services"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "energi",
+        "bill"
+      ],
+      "terms": [
+        "energy bill"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "energi",
+        "drink"
+      ],
+      "terms": [
+        "energy drink"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "energi",
+        "price"
+      ],
+      "terms": [
+        "energy prices"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "esg"
+      ],
+      "terms": [
+        "esg"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "focus",
+        "mode"
+      ],
+      "terms": [
+        "focus mode"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "focus",
+        "of",
+        "conscious"
+      ],
+      "terms": [
+        "focus of consciousness"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "fossil",
+        "fuel"
+      ],
+      "terms": [
+        "fossil fuels"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "hedg",
+        "fund"
+      ],
+      "terms": [
+        "hedge fund"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "helplin"
+      ],
+      "terms": [
+        "helpline"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "hotlin"
+      ],
+      "terms": [
+        "hotline"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "imperfect",
+        "competit"
+      ],
+      "terms": [
+        "imperfect competition"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "inbox"
+      ],
+      "terms": [
+        "inbox"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "inflat"
+      ],
+      "terms": [
+        "inflation"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "inflat",
+        "rate"
+      ],
+      "terms": [
+        "inflation rate"
+      ]
+    },
+    {
+      "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "inform",
+        "overload"
+      ],
+      "terms": [
+        "information overload"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "investor"
+      ],
+      "terms": [
+        "investor"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "invis",
+        "hand"
+      ],
+      "terms": [
+        "invisible hand"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "joint",
+        "stock",
+        "compani"
+      ],
+      "terms": [
+        "joint-stock company"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "just",
+        "price"
+      ],
+      "terms": [
+        "just price"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "kinet",
+        "energi"
+      ],
+      "terms": [
+        "kinetic energy"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "limit",
+        "compani"
+      ],
+      "terms": [
+        "limited company"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "limit",
+        "liabil"
+      ],
+      "terms": [
+        "limited liability"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "margin",
+        "util"
+      ],
+      "terms": [
+        "marginal utility"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "market",
+        "power"
+      ],
+      "terms": [
+        "market power"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "maximum",
+        "price"
+      ],
+      "terms": [
+        "maximum prices"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "mental",
+        "health"
+      ],
+      "terms": [
+        "mental health"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "mental",
+        "health",
+        "condit"
+      ],
+      "terms": [
+        "mental health condition"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "mental",
+        "health",
+        "profession"
+      ],
+      "terms": [
+        "mental health professional"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "mental",
+        "ill"
+      ],
+      "terms": [
+        "mental illness"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "mobil",
+        "phone"
+      ],
+      "terms": [
+        "mobile phone"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "monetari",
+        "polici"
+      ],
+      "terms": [
+        "monetary policy"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "money",
+        "suppli"
+      ],
+      "terms": [
+        "money supply"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "morphin"
+      ],
+      "terms": [
+        "morphine"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "mors",
+        "code"
+      ],
+      "terms": [
+        "morse code"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "nervous",
+        "disord"
+      ],
+      "terms": [
+        "nervous disorder"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "neurosi"
+      ],
+      "terms": [
+        "neurosis"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "notif"
+      ],
+      "terms": [
+        "notification"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "oper",
+        "condit"
+      ],
+      "terms": [
+        "operant conditioning"
+      ]
+    },
+    {
+      "lineages": [
+        "emergency_help"
+      ],
+      "stems": [
+        "paramed"
+      ],
+      "terms": [
+        "paramedic"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "phone"
+      ],
+      "terms": [
+        "phone"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "phone",
+        "call"
+      ],
+      "terms": [
+        "phone call"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "portfolio"
+      ],
+      "terms": [
+        "portfolio"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "power",
+        "grid"
+      ],
+      "terms": [
+        "power grid"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "price",
+        "edict"
+      ],
+      "terms": [
+        "price edict"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "price",
+        "index"
+      ],
+      "terms": [
+        "price index"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "price",
+        "revolut"
+      ],
+      "terms": [
+        "price revolution"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "prozac"
+      ],
+      "terms": [
+        "prozac"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "psychiatr"
+      ],
+      "terms": [
+        "psychiatric"
+      ]
+    },
+    {
+      "lineages": [
+        "mental_disorder"
+      ],
+      "stems": [
+        "psychiatri"
+      ],
+      "terms": [
+        "psychiatry"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "psychoanalysi"
+      ],
+      "terms": [
+        "psychoanalysis"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "quantiti",
+        "of",
+        "money"
+      ],
+      "terms": [
+        "quantity of money"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "reinforc"
+      ],
+      "terms": [
+        "reinforcement"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "reward",
+        "schedul"
+      ],
+      "terms": [
+        "reward schedule"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "scroll"
+      ],
+      "terms": [
+        "scrolling"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "semaphor"
+      ],
+      "terms": [
+        "semaphore"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "serotonin"
+      ],
+      "terms": [
+        "serotonin"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "sharehold"
+      ],
+      "terms": [
+        "shareholder"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "side",
+        "effect"
+      ],
+      "terms": [
+        "side effects"
+      ]
+    },
+    {
+      "lineages": [
+        "interest_on_loans"
+      ],
+      "stems": [
+        "sin",
+        "of",
+        "usuri"
+      ],
+      "terms": [
+        "sin of usury"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "smartphon"
+      ],
+      "terms": [
+        "smartphone"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "snri"
+      ],
+      "terms": [
+        "snri"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "snris"
+      ],
+      "terms": [
+        "snris"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "social",
+        "feed"
+      ],
+      "terms": [
+        "social feed"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "social",
+        "media"
+      ],
+      "terms": [
+        "social media"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "specul",
+        "bubbl"
+      ],
+      "terms": [
+        "speculative bubble"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "ssri"
+      ],
+      "terms": [
+        "ssri"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "ssris"
+      ],
+      "terms": [
+        "ssris"
+      ]
+    },
+    {
+      "lineages": [
+        "business_duties"
+      ],
+      "stems": [
+        "stakehold"
+      ],
+      "terms": [
+        "stakeholders"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "stock",
+        "exchang"
+      ],
+      "terms": [
+        "stock exchange"
+      ]
+    },
+    {
+      "lineages": [
+        "trading_shares"
+      ],
+      "stems": [
+        "stock",
+        "market"
+      ],
+      "terms": [
+        "stock market"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "stress",
+        "hormon"
+      ],
+      "terms": [
+        "stress hormone"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "stress",
+        "manag"
+      ],
+      "terms": [
+        "stress management"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "stress",
+        "respons"
+      ],
+      "terms": [
+        "stress response"
+      ]
+    },
+    {
+      "lineages": [
+        "stress"
+      ],
+      "stems": [
+        "stressor"
+      ],
+      "terms": [
+        "stressor"
+      ]
+    },
+    {
+      "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "suppli",
+        "and",
+        "demand"
+      ],
+      "terms": [
+        "supply and demand"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "synthet",
+        "drug"
+      ],
+      "terms": [
+        "synthetic drug"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "talk",
+        "cure"
+      ],
+      "terms": [
+        "talking cure"
+      ]
+    },
+    {
+      "lineages": [
+        "stimulant_drinks"
+      ],
+      "stems": [
+        "tea"
+      ],
+      "terms": [
+        "tea"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "telegram"
+      ],
+      "terms": [
+        "telegram"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "telegraph"
+      ],
+      "terms": [
+        "telegraph"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "telephon"
+      ],
+      "terms": [
+        "telephone"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "text",
+        "messag"
+      ],
+      "terms": [
+        "text message"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "the",
+        "unconsci"
+      ],
+      "terms": [
+        "the unconscious"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "therapist"
+      ],
+      "terms": [
+        "therapist"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "tranquil"
+      ],
+      "terms": [
+        "tranquilizer"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "tranquillis"
+      ],
+      "terms": [
+        "tranquilliser"
+      ]
+    },
+    {
+      "lineages": [
+        "drugs_for_the_mind"
+      ],
+      "stems": [
+        "valium"
+      ],
+      "terms": [
+        "valium"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "variabl",
+        "reward"
+      ],
+      "terms": [
+        "variable reward"
+      ]
+    }
+  ],
+  "breach_terms": [
+    "ambulance",
+    "antidepressant",
+    "anxiety attack",
+    "anxiety disorder",
+    "anxiety neurosis",
+    "anxiolytic",
+    "app",
+    "attention economy",
+    "attention span",
+    "automatic behaviour",
+    "base rate",
+    "benzodiazepine",
+    "burnout",
+    "caffeine",
+    "cbt",
+    "cell phone",
+    "central bank",
+    "chemical compound",
+    "coffee",
+    "coffeehouse",
+    "cognitive behavioral therapy",
+    "cognitive behavioural therapy",
+    "cognitive distortion",
+    "conservation of energy",
+    "coping strategies",
+    "corporate social responsibility",
+    "crisis line",
+    "deflation",
+    "demand curve",
+    "dividend",
+    "e-mail",
+    "elasticity",
+    "electricity",
+    "email",
+    "emergency number",
+    "emergency services",
+    "energy bill",
+    "energy drink",
+    "energy prices",
+    "esg",
+    "focus mode",
+    "focus of consciousness",
+    "fossil fuels",
+    "hedge fund",
+    "helpline",
+    "hotline",
+    "imperfect competition",
+    "inbox",
+    "inflation",
+    "inflation rate",
+    "information overload",
+    "investor",
+    "invisible hand",
+    "joint-stock company",
+    "just price",
+    "kinetic energy",
+    "limited company",
+    "limited liability",
+    "marginal utility",
+    "market power",
+    "maximum prices",
+    "mental health",
+    "mental health condition",
+    "mental health professional",
+    "mental illness",
+    "mobile phone",
+    "monetary policy",
+    "money supply",
+    "morphine",
+    "morse code",
+    "nervous disorder",
+    "neurosis",
+    "notification",
+    "operant conditioning",
+    "paramedic",
+    "phone",
+    "phone call",
+    "portfolio",
+    "power grid",
+    "price edict",
+    "price index",
+    "price revolution",
+    "prozac",
+    "psychiatric",
+    "psychiatry",
+    "psychoanalysis",
+    "quantity of money",
+    "reinforcement",
+    "reward schedule",
+    "scrolling",
+    "semaphore",
+    "serotonin",
+    "shareholder",
+    "side effects",
+    "sin of usury",
+    "smartphone",
+    "snri",
+    "snris",
+    "social feed",
+    "social media",
+    "speculative bubble",
+    "ssri",
+    "ssris",
+    "stakeholders",
+    "stock exchange",
+    "stock market",
+    "stress hormone",
+    "stress management",
+    "stress response",
+    "stressor",
+    "supply and demand",
+    "synthetic drug",
+    "talking cure",
+    "tea",
+    "telegram",
+    "telegraph",
+    "telephone",
+    "text message",
+    "the unconscious",
+    "therapist",
+    "tranquilizer",
+    "tranquilliser",
+    "valium",
+    "variable reward"
+  ],
+  "compiler_version": "2",
+  "figure_id": "marcus_aurelius",
+  "horizon_year": 180,
+  "lineages": [
+    {
+      "available_sense": {
+        "label": "Stoic attention (prosochē)",
+        "sense_id": "attention.prosoche",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Attention as a psychological faculty",
+          "markers": [
+            "attention is a measurable, limited capacity"
+          ],
+          "sense_id": "attention.psychological",
+          "terms": [
+            "attention span",
+            "focus of consciousness"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Attention as a scarce resource",
+          "markers": [
+            "attention is scarce because information is abundant",
+            "products compete for and sell people's attention"
+          ],
+          "sense_id": "attention.economy",
+          "terms": [
+            "attention economy",
+            "information overload"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "attention is a measurable, limited capacity",
+        "attention is scarce because information is abundant",
+        "products compete for and sell people's attention"
+      ],
+      "label": "Attention and its direction",
+      "lcc_class": "B",
+      "lineage_id": "attention",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Partnership and guild obligations",
+        "sense_id": "business_duties.societas",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "The limited-liability company",
+          "markers": [
+            "a company is a legal person whose owners' liability is limited"
+          ],
+          "sense_id": "business_duties.corporation",
+          "terms": [
+            "limited liability",
+            "limited company"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Corporate social responsibility",
+          "markers": [
+            "a company owes duties to workers, customers and the community beyond its owners"
+          ],
+          "sense_id": "business_duties.csr",
+          "terms": [
+            "corporate social responsibility",
+            "stakeholders",
+            "ESG"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "a company is a legal person whose owners' liability is limited",
+        "a company owes duties to workers, customers and the community beyond its owners"
+      ],
+      "label": "The duties of a business",
+      "lcc_class": "H",
+      "lineage_id": "business_duties",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Galenic remedies",
+        "sense_id": "drugs_for_the_mind.galenic",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Synthetic drugs",
+          "markers": [
+            "a single pure compound acts on the body at a known dose"
+          ],
+          "sense_id": "drugs_for_the_mind.synthetic",
+          "terms": [
+            "morphine",
+            "synthetic drug",
+            "chemical compound"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Drugs for anxiety",
+          "markers": [
+            "a pill can reduce anxiety by acting on the brain",
+            "a patient can become dependent on a prescribed drug"
+          ],
+          "sense_id": "drugs_for_the_mind.psychopharmacology",
+          "terms": [
+            "tranquilliser",
+            "tranquilizer",
+            "benzodiazepine",
+            "anxiolytic",
+            "Valium",
+            "side effects"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Antidepressants for anxiety",
+          "markers": [
+            "mood and anxiety follow brain chemicals such as serotonin"
+          ],
+          "sense_id": "drugs_for_the_mind.ssri",
+          "terms": [
+            "SSRI",
+            "antidepressant",
+            "serotonin",
+            "Prozac",
+            "SNRI",
+            "SSRIs",
+            "SNRIs"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "a single pure compound acts on the body at a known dose",
+        "a pill can reduce anxiety by acting on the brain",
+        "a patient can become dependent on a prescribed drug",
+        "mood and anxiety follow brain chemicals such as serotonin"
+      ],
+      "label": "Remedies that act on the mind",
+      "lcc_class": "R",
+      "lineage_id": "drugs_for_the_mind",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Night watch and fire brigade",
+        "sense_id": "emergency_help.vigiles",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Ambulance service",
+          "markers": [
+            "the injured are carried to care by a dedicated vehicle service"
+          ],
+          "sense_id": "emergency_help.ambulance",
+          "terms": [
+            "ambulance"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Emergency telephone number",
+          "markers": [
+            "anyone can summon help at once by calling a public number"
+          ],
+          "sense_id": "emergency_help.emergency_number",
+          "terms": [
+            "emergency services",
+            "emergency number",
+            "paramedic"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Telephone crisis line",
+          "markers": [
+            "a distressed person can phone a trained listener at any hour"
+          ],
+          "sense_id": "emergency_help.crisis_line",
+          "terms": [
+            "crisis line",
+            "helpline",
+            "hotline"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "the injured are carried to care by a dedicated vehicle service",
+        "anyone can summon help at once by calling a public number",
+        "a distressed person can phone a trained listener at any hour"
+      ],
+      "label": "Help in an emergency",
+      "lcc_class": "H",
+      "lineage_id": "emergency_help",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Activity and actuality (energeia)",
+        "sense_id": "energy.energeia",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Energy as a physical quantity",
+          "markers": [
+            "energy is a measurable quantity that is never created or destroyed"
+          ],
+          "sense_id": "energy.physical",
+          "terms": [
+            "kinetic energy",
+            "conservation of energy"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Energy as a supplied commodity",
+          "markers": [
+            "energy is bought from suppliers through a network",
+            "energy prices drive what everything else costs"
+          ],
+          "sense_id": "energy.utility",
+          "terms": [
+            "electricity",
+            "energy bill",
+            "power grid",
+            "energy prices",
+            "fossil fuels"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "energy is a measurable quantity that is never created or destroyed",
+        "energy is bought from suppliers through a network",
+        "energy prices drive what everything else costs"
+      ],
+      "label": "Energy",
+      "lcc_class": "Q",
+      "lineage_id": "energy",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Habit as character (hexis)",
+        "sense_id": "habit.hexis",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Habit as nervous pathways",
+          "markers": [
+            "habit is a physical change in the nervous system"
+          ],
+          "sense_id": "habit.nervous",
+          "terms": [
+            "automatic behaviour"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Habit as reinforcement",
+          "markers": [
+            "unpredictable rewards make a behaviour hardest to stop",
+            "behaviour can be engineered by designing rewards"
+          ],
+          "sense_id": "habit.reinforcement",
+          "terms": [
+            "reinforcement",
+            "variable reward",
+            "reward schedule",
+            "operant conditioning"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "habit is a physical change in the nervous system",
+        "unpredictable rewards make a behaviour hardest to stop",
+        "behaviour can be engineered by designing rewards"
+      ],
+      "label": "Habit and how it is formed",
+      "lcc_class": "B",
+      "lineage_id": "habit",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Roman lending at interest",
+        "sense_id": "interest_on_loans.roman",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Usury as sin",
+          "markers": [
+            "lending at interest is a sin"
+          ],
+          "sense_id": "interest_on_loans.prohibition",
+          "terms": [
+            "sin of usury"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Central banking and policy rates",
+          "markers": [
+            "a national bank sets interest rates to steer the economy"
+          ],
+          "sense_id": "interest_on_loans.central_bank",
+          "terms": [
+            "central bank",
+            "base rate",
+            "monetary policy"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "lending at interest is a sin",
+        "a national bank sets interest rates to steer the economy"
+      ],
+      "label": "Interest on loans",
+      "lcc_class": "H",
+      "lineage_id": "interest_on_loans",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Melancholy and the humours",
+        "sense_id": "mental_disorder.humoral",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Nervous disorders (neuroses)",
+          "markers": [
+            "mental suffering is a disease of the nerves"
+          ],
+          "sense_id": "mental_disorder.neurosis",
+          "terms": [
+            "neurosis",
+            "nervous disorder"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Anxiety neurosis",
+          "markers": [
+            "anxiety is a separate illness with its own cause"
+          ],
+          "sense_id": "mental_disorder.anxiety_neurosis",
+          "terms": [
+            "anxiety neurosis",
+            "anxiety attack"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Anxiety disorder as a diagnosis",
+          "markers": [
+            "excessive worry for months meets criteria for a diagnosable disorder",
+            "anxiety is treated by medical professionals like other illness"
+          ],
+          "sense_id": "mental_disorder.diagnostic",
+          "terms": [
+            "anxiety disorder",
+            "mental illness",
+            "mental health",
+            "psychiatric",
+            "psychiatry",
+            "mental health professional",
+            "mental health condition"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "mental suffering is a disease of the nerves",
+        "anxiety is a separate illness with its own cause",
+        "excessive worry for months meets criteria for a diagnosable disorder",
+        "anxiety is treated by medical professionals like other illness"
+      ],
+      "label": "Disorders of the mind",
+      "lcc_class": "R",
+      "lineage_id": "mental_disorder",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Couriers, letters and fire signals",
+        "sense_id": "messages_at_distance.courier_and_signal",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Optical telegraph",
+          "markers": [
+            "a message crosses a country in minutes without a carrier"
+          ],
+          "sense_id": "messages_at_distance.optical_telegraph",
+          "terms": [
+            "telegraph",
+            "semaphore"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Electric telegraph",
+          "markers": [
+            "messages travel along wires at near-instant speed"
+          ],
+          "sense_id": "messages_at_distance.electric_telegraph",
+          "terms": [
+            "telegram",
+            "Morse code"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Telephone",
+          "markers": [
+            "two people converse live across great distances"
+          ],
+          "sense_id": "messages_at_distance.telephone",
+          "terms": [
+            "telephone",
+            "phone call",
+            "phone"
+          ]
+        },
+        {
+          "bridge_distance": 4,
+          "label": "Email",
+          "markers": [
+            "written messages arrive instantly and pile up waiting to be read"
+          ],
+          "sense_id": "messages_at_distance.email",
+          "terms": [
+            "email",
+            "e-mail",
+            "inbox"
+          ]
+        },
+        {
+          "bridge_distance": 5,
+          "label": "Mobile phone",
+          "markers": [
+            "anyone can be reached anywhere, at any hour",
+            "messages arrive instantly wherever the person is"
+          ],
+          "sense_id": "messages_at_distance.mobile_phone",
+          "terms": [
+            "mobile phone",
+            "cell phone",
+            "text message"
+          ]
+        },
+        {
+          "bridge_distance": 6,
+          "label": "Smartphone",
+          "markers": [
+            "a device constantly signals for its owner's attention",
+            "endless content is designed to keep the user looking",
+            "alerts from a device interrupt its owner throughout the day",
+            "messages are checked on a screen many times a day"
+          ],
+          "sense_id": "messages_at_distance.smartphone",
+          "terms": [
+            "smartphone",
+            "app",
+            "notification",
+            "social media",
+            "scrolling",
+            "social feed",
+            "focus mode"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "a message crosses a country in minutes without a carrier",
+        "messages travel along wires at near-instant speed",
+        "two people converse live across great distances",
+        "written messages arrive instantly and pile up waiting to be read",
+        "anyone can be reached anywhere, at any hour",
+        "messages arrive instantly wherever the person is",
+        "a device constantly signals for its owner's attention",
+        "endless content is designed to keep the user looking",
+        "alerts from a device interrupt its owner throughout the day",
+        "messages are checked on a screen many times a day"
+      ],
+      "label": "Sending messages over distance",
+      "lcc_class": "T",
+      "lineage_id": "messages_at_distance",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Worth set by exchange",
+        "sense_id": "price_and_value.classical",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "The just price",
+          "markers": [
+            "charging more than a thing is worth is a sin"
+          ],
+          "sense_id": "price_and_value.just_price",
+          "terms": [
+            "just price"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Market price and the invisible hand",
+          "markers": [
+            "prices coordinate production with no one directing it",
+            "self-interest produces public benefit through markets"
+          ],
+          "sense_id": "price_and_value.smithian",
+          "terms": [
+            "supply and demand",
+            "invisible hand"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Marginal utility",
+          "markers": [
+            "value depends on the last unit wanted"
+          ],
+          "sense_id": "price_and_value.marginal",
+          "terms": [
+            "marginal utility"
+          ]
+        },
+        {
+          "bridge_distance": 4,
+          "label": "Supply-and-demand equilibrium",
+          "markers": [
+            "price is set where supply meets demand"
+          ],
+          "sense_id": "price_and_value.equilibrium",
+          "terms": [
+            "elasticity",
+            "demand curve"
+          ]
+        },
+        {
+          "bridge_distance": 5,
+          "label": "Market power",
+          "markers": [
+            "a dominant firm can set prices above what competition would allow"
+          ],
+          "sense_id": "price_and_value.imperfect_competition",
+          "terms": [
+            "market power",
+            "imperfect competition"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "charging more than a thing is worth is a sin",
+        "prices coordinate production with no one directing it",
+        "self-interest produces public benefit through markets",
+        "value depends on the last unit wanted",
+        "price is set where supply meets demand",
+        "a dominant firm can set prices above what competition would allow"
+      ],
+      "label": "Price and value",
+      "lcc_class": "H",
+      "lineage_id": "price_and_value",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Debased coinage",
+        "sense_id": "rising_prices.debasement",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Imperial price controls",
+          "markers": [
+            "an empire-wide decree fixes the price of goods"
+          ],
+          "sense_id": "rising_prices.price_edict",
+          "terms": [
+            "maximum prices",
+            "price edict"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Quantity theory of money",
+          "markers": [
+            "more money in circulation raises all prices"
+          ],
+          "sense_id": "rising_prices.quantity_theory",
+          "terms": [
+            "money supply",
+            "quantity of money",
+            "price revolution"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Inflation as a measured rate",
+          "markers": [
+            "prices rise by a measured percentage each year",
+            "governments aim at a target inflation rate"
+          ],
+          "sense_id": "rising_prices.inflation",
+          "terms": [
+            "inflation",
+            "deflation",
+            "price index",
+            "inflation rate"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "an empire-wide decree fixes the price of goods",
+        "more money in circulation raises all prices",
+        "prices rise by a measured percentage each year",
+        "governments aim at a target inflation rate"
+      ],
+      "label": "Rising prices",
+      "lcc_class": "H",
+      "lineage_id": "rising_prices",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Wine",
+        "sense_id": "stimulant_drinks.wine",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Coffee",
+          "markers": [
+            "a morning cup of a stimulating drink is an ordinary habit"
+          ],
+          "sense_id": "stimulant_drinks.coffee",
+          "terms": [
+            "coffee",
+            "coffeehouse"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Caffeine",
+          "markers": [
+            "a single chemical in the drink causes wakefulness"
+          ],
+          "sense_id": "stimulant_drinks.caffeine",
+          "terms": [
+            "caffeine",
+            "energy drink"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "a drink brewed from leaves is taken to stay alert",
+        "a morning cup of a stimulating drink is an ordinary habit",
+        "a single chemical in the drink causes wakefulness"
+      ],
+      "label": "Stimulant drinks",
+      "lcc_class": "T",
+      "lineage_id": "stimulant_drinks",
+      "unreached": [
+        {
+          "label": "Tea",
+          "markers": [
+            "a drink brewed from leaves is taken to stay alert"
+          ],
+          "sense_id": "stimulant_drinks.tea",
+          "terms": [
+            "tea"
+          ]
+        }
+      ],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Distress as a passion",
+        "sense_id": "stress.perturbation",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Stress as a bodily response",
+          "markers": [
+            "the body mounts a general physical response to any demand",
+            "prolonged stress damages health"
+          ],
+          "sense_id": "stress.physiological",
+          "terms": [
+            "stressor",
+            "stress response",
+            "stress hormone"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Stress management",
+          "markers": [
+            "stress can be reduced with techniques taught by professionals"
+          ],
+          "sense_id": "stress.management",
+          "terms": [
+            "stress management",
+            "coping strategies",
+            "burnout"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "the body mounts a general physical response to any demand",
+        "prolonged stress damages health",
+        "stress can be reduced with techniques taught by professionals"
+      ],
+      "label": "Stress",
+      "lcc_class": "R",
+      "lineage_id": "stress",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Stoic therapy of the passions",
+        "sense_id": "talking_cures.stoic_therapy",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Psychoanalysis",
+          "markers": [
+            "hidden unconscious causes produce symptoms",
+            "talking to an analyst over many sessions relieves them"
+          ],
+          "sense_id": "talking_cures.psychoanalysis",
+          "terms": [
+            "psychoanalysis",
+            "talking cure",
+            "the unconscious"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Cognitive and behavioural therapy",
+          "markers": [
+            "thoughts are tested like hypotheses in structured sessions",
+            "a therapist treats anxiety as a clinical condition",
+            "'therapy' means a course of sessions with a trained professional"
+          ],
+          "sense_id": "talking_cures.cognitive",
+          "terms": [
+            "cognitive behavioural therapy",
+            "cognitive behavioral therapy",
+            "CBT",
+            "cognitive distortion",
+            "therapist"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "hidden unconscious causes produce symptoms",
+        "talking to an analyst over many sessions relieves them",
+        "thoughts are tested like hypotheses in structured sessions",
+        "a therapist treats anxiety as a clinical condition",
+        "'therapy' means a course of sessions with a trained professional"
+      ],
+      "label": "Cures by reasoning and talk",
+      "lcc_class": "R",
+      "lineage_id": "talking_cures",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
+        "label": "Shares in tax-farming companies",
+        "sense_id": "trading_shares.publicani",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Joint-stock company and stock exchange",
+          "markers": [
+            "shares are traded continuously between strangers on an exchange"
+          ],
+          "sense_id": "trading_shares.joint_stock",
+          "terms": [
+            "stock exchange",
+            "joint-stock company",
+            "shareholder",
+            "dividend"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Speculative bubbles",
+          "markers": [
+            "prices rise because buyers expect them to keep rising"
+          ],
+          "sense_id": "trading_shares.bubble",
+          "terms": [
+            "speculative bubble"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Modern financial markets",
+          "markers": [
+            "ordinary people invest savings in markets for returns",
+            "profiting from price movements is a normal activity"
+          ],
+          "sense_id": "trading_shares.modern_markets",
+          "terms": [
+            "stock market",
+            "investor",
+            "portfolio",
+            "hedge fund"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "shares are traded continuously between strangers on an exchange",
+        "prices rise because buyers expect them to keep rising",
+        "ordinary people invest savings in markets for returns",
+        "profiting from price movements is a normal activity"
+      ],
+      "label": "Owning and trading shares",
+      "lcc_class": "H",
+      "lineage_id": "trading_shares",
+      "unreached": [],
+      "wikidata": null
+    }
+  ],
+  "oracle_epoch": "An educated person of the Roman world in the late second century CE.",
+  "schema_version": "2",
+  "sources_sha256": "785058047e4c96f20579db1ecac8067572aaebdce2ecf9a24c3edc132faad95d"
+}

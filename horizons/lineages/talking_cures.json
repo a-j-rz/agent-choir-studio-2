@@ -1,0 +1,118 @@
+{
+  "schema_version": "1",
+  "lineage_id": "talking_cures",
+  "label": "Cures by reasoning and talk",
+  "lcc_class": "R",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "talking_cures.stoic_therapy",
+      "label": "Stoic therapy of the passions",
+      "summary": "Distress comes from false judgements about what is good or bad; correcting the judgement removes the passion.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -250,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "passions",
+        "assent",
+        "judgement",
+        "impressions",
+        "therapy"
+      ],
+      "markers": [
+        "it is not things that disturb us but our judgements about them",
+        "a passion is cured by correcting a false belief"
+      ],
+      "hazards": [
+        "Modern cognitive therapy openly borrowed this from Epictetus, so the model may blur the two. The old sense is Marcus's own; the clinical method is not."
+      ],
+      "sources": [
+        {
+          "citation": "Chrysippus, On Passions, book IV 'Therapeutikon' (lost; reported by Galen)",
+          "note": "The Stoic therapy of the passions."
+        },
+        {
+          "citation": "Cicero, Tusculan Disputations III–IV",
+          "note": "Latin account of the Stoic cure of distress."
+        },
+        {
+          "citation": "Epictetus, Handbook 5",
+          "note": "'It is not things that disturb people, but their judgements about things.'"
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "talking_cures.psychoanalysis",
+      "label": "Psychoanalysis",
+      "summary": "Symptoms come from unconscious conflicts, relieved by talking freely to an analyst.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1895,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "talking_cures.stoic_therapy"
+      ],
+      "terms": [
+        "psychoanalysis",
+        "talking cure",
+        "the unconscious"
+      ],
+      "markers": [
+        "hidden unconscious causes produce symptoms",
+        "talking to an analyst over many sessions relieves them"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Breuer and Freud, Studies on Hysteria (1895)",
+          "note": "The 'talking cure'."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "talking_cures.cognitive",
+      "label": "Cognitive and behavioural therapy",
+      "summary": "A structured clinical method in which a therapist helps a patient identify and test distorted thoughts.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1955,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "talking_cures.psychoanalysis"
+      ],
+      "terms": [
+        "cognitive behavioural therapy",
+        "cognitive behavioral therapy",
+        "CBT",
+        "cognitive distortion",
+        "therapist"
+      ],
+      "markers": [
+        "thoughts are tested like hypotheses in structured sessions",
+        "a therapist treats anxiety as a clinical condition",
+        "'therapy' means a course of sessions with a trained professional"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Albert Ellis, rational therapy, from 1955; A. T. Beck, cognitive therapy, 1960s",
+          "note": "Ellis cites Epictetus as a source."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

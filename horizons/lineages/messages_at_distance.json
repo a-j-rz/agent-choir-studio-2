@@ -1,0 +1,242 @@
+{
+  "schema_version": "1",
+  "lineage_id": "messages_at_distance",
+  "label": "Sending messages over distance",
+  "lcc_class": "T",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "messages_at_distance.courier_and_signal",
+      "label": "Couriers, letters and fire signals",
+      "summary": "Messages travel at the speed of a rider or ship; beacons and torch codes carry a few prearranged signals faster.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -500,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "courier",
+        "messenger",
+        "letter",
+        "dispatch",
+        "beacon",
+        "imperial post"
+      ],
+      "markers": [
+        "news arrives days or weeks after the event",
+        "a message is a physical object carried by a person"
+      ],
+      "hazards": [
+        "The imperial post moved officials and dispatches, not private conversation."
+      ],
+      "sources": [
+        {
+          "citation": "Polybius, Histories X.43–47",
+          "note": "Fire signalling and its limits, including a torch alphabet."
+        },
+        {
+          "citation": "Suetonius, Life of Augustus 49.3",
+          "note": "Augustus establishes relays of couriers and vehicles: the imperial post."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.optical_telegraph",
+      "label": "Optical telegraph",
+      "summary": "Chains of semaphore towers relay coded messages across a country in minutes.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1794,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.courier_and_signal"
+      ],
+      "terms": [
+        "telegraph",
+        "semaphore"
+      ],
+      "markers": [
+        "a message crosses a country in minutes without a carrier"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Chappe semaphore line, Paris–Lille, 1794",
+          "note": "First operational line."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.electric_telegraph",
+      "label": "Electric telegraph",
+      "summary": "Coded electrical pulses along wires carry messages almost instantly between distant offices.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1837,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.optical_telegraph"
+      ],
+      "terms": [
+        "telegram",
+        "Morse code"
+      ],
+      "markers": [
+        "messages travel along wires at near-instant speed"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Cooke and Wheatstone patent, 1837; Morse line Washington–Baltimore, 1844",
+          "note": "Commercial electric telegraphy."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.telephone",
+      "label": "Telephone",
+      "summary": "The voice itself is carried live over wires between two people.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1876,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.electric_telegraph"
+      ],
+      "terms": [
+        "telephone",
+        "phone call",
+        "phone"
+      ],
+      "markers": [
+        "two people converse live across great distances"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Bell, US patent 174,465, 1876",
+          "note": "Telephone patent."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.email",
+      "label": "Email",
+      "summary": "Written messages arrive instantly over computer networks and wait in an inbox.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1971,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.telephone"
+      ],
+      "terms": [
+        "email",
+        "e-mail",
+        "inbox"
+      ],
+      "markers": [
+        "written messages arrive instantly and pile up waiting to be read"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Ray Tomlinson, network email on ARPANET, 1971",
+          "note": "First email between computers."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.mobile_phone",
+      "label": "Mobile phone",
+      "summary": "A pocket device connects by radio to a network from almost anywhere, for calls and short text messages.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1973,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.telephone"
+      ],
+      "terms": [
+        "mobile phone",
+        "cell phone",
+        "text message"
+      ],
+      "markers": [
+        "anyone can be reached anywhere, at any hour",
+        "messages arrive instantly wherever the person is"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Motorola handheld call, 1973; commercial cellular service from 1983",
+          "note": "Handheld mobile telephony."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.smartphone",
+      "label": "Smartphone",
+      "summary": "A networked pocket computer that delivers news, messages and feeds continuously and signals for attention.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 2007,
+          "precision": "circa"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.mobile_phone"
+      ],
+      "terms": [
+        "smartphone",
+        "app",
+        "notification",
+        "social media",
+        "scrolling",
+        "social feed",
+        "focus mode"
+      ],
+      "markers": [
+        "a device constantly signals for its owner's attention",
+        "endless content is designed to keep the user looking",
+        "alerts from a device interrupt its owner throughout the day",
+        "messages are checked on a screen many times a day"
+      ],
+      "hazards": [
+        "'Checking' a device is a modern habit with no ancient equivalent; letters were not constant."
+      ],
+      "sources": [
+        {
+          "citation": "Mass-market touchscreen smartphones from 2007",
+          "note": "Earlier devices existed (1994); 2007 marks mass adoption."
+        }
+      ],
+      "confidence": "medium"
+    }
+  ]
+}
