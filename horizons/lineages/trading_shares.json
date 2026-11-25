@@ -8,7 +8,7 @@
     {
       "sense_id": "trading_shares.publicani",
       "label": "Shares in tax-farming companies",
-      "summary": "Investors hold shares in companies contracted to collect taxes and supply the state.",
+      "summary": "Wealthy citizens hold shares in companies contracted to collect taxes and supply the state.",
       "available_in": [
         {
           "tradition": "greco-roman",

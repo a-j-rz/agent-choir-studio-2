@@ -20,9 +20,9 @@ TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
 RunStatus = Literal["complete", "failed", "aborted"]
 
 # summary.json's own shape version, separate from the event schema (core.events).
-# 3: config gains oracle (3b). 2: config nested as {roles, embedding, retrieval} (2e).
+# 4: annotations (3c). 3: config gains oracle (3b). 2: config nested as {roles, embedding, retrieval} (2e).
 # 1: config was {role: ...} flat.
-SUMMARY_SCHEMA_VERSION = "3"
+SUMMARY_SCHEMA_VERSION = "4"
 
 
 def new_run_id(now: datetime) -> str:
@@ -44,6 +44,7 @@ class RunTrace:
         self._seq = 0
         self._last_type: str | None = None
         self._finished = False
+        self._annotations: dict[str, Any] = {}  # run-level facts a body records for summary.json
         # Unbounded, so put_nowait can never raise QueueFull: emit() must never block or await,
         # because it runs inside `finally` blocks. Nobody reading it (a CLI run) is harmless.
         self.live: asyncio.Queue[Event | None] = asyncio.Queue()
@@ -91,6 +92,17 @@ class RunTrace:
         (self.dir / "raw" / name).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         return name
 
+    def annotate(self, key: str, value: Any) -> None:
+        """Record a run-level fact (e.g. an experimental condition) for summary.json.
+
+        A key may be set once; a second, different value fails loudly.
+        """
+        if self._finished:
+            raise RuntimeError(f"run {self.run_id} is finished; cannot annotate {key!r}")
+        if key in self._annotations and self._annotations[key] != value:
+            raise ValueError(f"annotation {key!r} already set to {self._annotations[key]!r}")
+        self._annotations[key] = value
+
     def finish(self, status: RunStatus) -> None:
         """Close events.jsonl and write summary.json. A second call is a no-op."""
         if self._finished:
@@ -110,6 +122,7 @@ class RunTrace:
             "event_count": self._seq,
             "last_event_type": self._last_type,
             "config": self._config,
+            "annotations": self._annotations,
         }
         (self.dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
         self.live.put_nowait(None)  # end of stream: the relay stops after the summary exists
