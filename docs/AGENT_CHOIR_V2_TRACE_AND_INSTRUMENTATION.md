@@ -108,6 +108,31 @@ sequenceDiagram
     UI->>UI: run_complete → close the stream explicitly
 ```
 
+### Events built so far (Phases 1–2)
+
+| Event | Emitted by | Carries |
+|---|---|---|
+| `run_started` · `run_complete` · `run_failed` · `run_aborted` | the runner | lifecycle; exactly one ending per run, written in a `finally` |
+| `round_trip` | `call_model` | per model call: tokens (input, cached, cache-write, output, reasoning), latency, estimated cost, the tool calls requested, and the name of its raw file |
+| `round_trip_cap_reached` | `call_model` | the cap, and the tool calls left unexecuted |
+| `tool_result` | `call_model` | **what the model was given**: tool name, arguments, the exact result, duration |
+| `figure_bound` | figure turn | which figure's index the turn's tools were bound to |
+| `corpus_search` | search tool | **how retrieval worked**: the query and the exact embedded text, depth, how many chunks BM25 matched in all, the merged 8 with each one's lexical rank, semantic rank, source (`both` / `lexical_only` / `semantic_only`) and RRF score, and the raw file holding both full candidate lists |
+| `passage_opened` | open tools | passage, `via` (`open_passage` / `open_context`), whether a search had surfaced it, opens used |
+| `corpus_search_refused` · `passage_open_refused` | tools | the reason; the model receives an error and the turn continues |
+| `contribution` | figure turn | the parsed contribution and the stop reason |
+| `citation_check` | figure turn | cited vs opened vs surfaced, unknown ids, the source of each citation, and how many extra message items arrived |
+| `contribution_invalid` | figure turn | every message text and why each failed validation; the run then fails |
+
+Two layers are kept deliberately apart: `tool_result` records **what the model saw**;
+`corpus_search` and its raw file record **how retrieval chose it**. Raw files are named
+`raw/<seq>-<stem>.json`, where `<seq>` is the sequence number of the event that names the file;
+nothing that awaits may run between writing the file and emitting its event.
+
+`summary.json` is at schema **2**: its config snapshot nests `roles`, `embedding` and
+`retrieval`, so every run records the model, effort, embedding model and revision, and every
+retrieval setting it ran with.
+
 ---
 
 ## 5. Where the seven observables physically live

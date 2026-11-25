@@ -158,7 +158,7 @@ is relevant:
 | Dropping the query instruction moves ranks materially (IX.15 #5 → #1, X.2 #8 → #24) | A silent setting with real effects; kept as documented (B4) | Phase 10 regression set |
 | The vector top 8 spans ~0.03 cosine; the 14-word I.1 ranks vector #319 | Cosines carry little meaning beyond rank; very short chunks embed weakly; each path misses what the other finds | Supports RRF on ranks; Phase 9 chunking |
 | With 8 merged slots, RRF gives each list ~4 unless items appear in both; deeper lists crowd out single-path catches (2 → 1 → 0 at depths 8 / 15 / 30) | Depth 8 chosen on that evidence | `core/config.py`; re-test against the regression set |
-| IX.15 surfaced twice (semantic-only, #7 and #5) and was never opened | A catch can be lost at every stage: retrieved → merged → previewed → opened → cited, and the trace shows which | Preview length is a measured lever; Phase 10 |
+| IX.15 surfaced twice (semantic-only, #7 and #5) and was never opened | A catch can be lost at every stage: retrieved → merged → previewed → opened → cited, and the trace shows which | The figure's open decision is unexplained at low effort (0 reasoning tokens); Phase 10 |
 | The figure's queries come from prior knowledge (Stoic vocabulary; "Book 4 Book 6 Book 11") | Memory steers retrieval before any claim is made | Leakage & Detective: distinguish memory used to *search* from memory used to *assert* |
 | One search, four opens, zero reasoning tokens in every run at `low` | **Effort is a ceiling** again: the figure stops at *enough*. Not yet evidence of struggling (H1) | Watch from Phase 5, when topology asks more of a figure |
 | Runs 1 and 3 shared 7 of 8 merged results and 3 of 4 citations | Stability, not correctness (the Phase 0 warning) | Phase 10 |

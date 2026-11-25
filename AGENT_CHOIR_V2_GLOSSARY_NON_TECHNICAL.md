@@ -177,6 +177,12 @@ model if its trace shows it struggling.
 they're what you're billed for, and they fill the model's **context window** — how much text it
 can consider at once.
 
+*Three different tokenisers are in play here, and their counts don't carry over.* Keyword search
+(BM25) splits text into whole words. The embedding model splits it into common word-pieces from
+its own vocabulary: "mind" stays whole, while "thyself" becomes `thy` + `##sel` + `##f` and
+"doth" becomes `dot` + `##h`. Its 512-token limit counts those pieces. And the chat model you pay
+for uses a third vocabulary again.
+
 **Reasoning effort.** A dial on the model: how hard it thinks before answering, from *none* to
 *max*. More effort costs more tokens and more time. With one model for every role, this dial is
 what makes the Editor different from a figure.
@@ -190,6 +196,23 @@ flowchart LR
 mid-thought. The model can't reach into your computer; it can only say "please run
 `search_my_corpus('justice')`." Local Python runs it, hands back the result, and the model
 carries on. **This loop is the single biggest new thing in V2** — V1 had no tools at all.
+
+**The model never runs anything.** It reads a *menu* of tools (names, descriptions, the
+parameters each takes) and replies with a *request*. The request is structured text, closer to a
+filled-in form than to conversation. Whether it gets run is decided by the program running the
+loop.
+
+**Host.** That program: it sends text to the model, reads the tool requests, runs or refuses
+them, and returns the results as text. Here the host is our Python, on the local machine, and
+every connection goes *out* to the model API; nothing connects in.
+
+**MCP (Model Context Protocol).** A standard way for a host to discover and call tools offered
+by a separate program, an **MCP server**: a running process that does real work (queries a
+database, calls an API, sometimes changes things), not a passive store. The model still only
+sees a menu and writes requests. What matters is who the host is and what it can reach: in a
+desktop app the host and server can both be on your machine; with a hosted remote connector, the
+provider's servers call the MCP server's internet address. This project deliberately doesn't use
+MCP for its corpus: the hand-written tool loop is the thing being learned.
 
 **`call_id`.** A ticket number on each tool request. The answer goes back stamped with the same
 number, so the model knows which result belongs to which request.
@@ -287,6 +310,13 @@ flowchart LR
 *meaning*, so passages about the same idea land close together even when they share no words.
 The list is the **vector**; a small local program, the **embedding model**, makes them.
 
+**Point, dimensions.** Each passage becomes one **point**: a single location in a space. On a
+map, a point needs 2 numbers; in a room, 3. Here each point needs **384** numbers, one per
+**dimension**, a figure fixed when the model was trained. The individual axes mean nothing
+readable; meaning is spread across all 384 together, which is why vector search can say *that*
+two passages are close but never *why*. Marcus's whole corpus is 504 points: a table of
+504 × 384 numbers. Vectors from different models live in different spaces and can't be compared.
+
 ```mermaid
 flowchart LR
     subgraph Space["A map of meaning — close means similar"]
@@ -296,18 +326,44 @@ flowchart LR
 ```
 
 **Cosine similarity.** The measure of how close two vectors are — how similar in meaning.
+Picture each point as an arrow from the centre: cosine compares the *direction* two arrows point,
+ignoring their length. 1 means the same direction; 0 means unrelated. In practice this model's
+scores bunch tightly (a whole top 8 within about 0.03), so the **rank** carries the information,
+not the raw number: 0.62 doesn't mean "62% relevant".
 
 **Semantic search.** Searching by meaning, using embeddings. Finds the passage about mercy when you
 asked about forgiveness.
 
 **Lexical search (BM25).** Searching by actual words — classic keyword matching, ranked sensibly.
-Catches exact period terms that meaning-search can blur.
+Catches exact period terms that meaning-search can blur. The name stands for "Best Matching 25",
+the 25th formula tried in a 1990s research search engine. For each query word a passage
+contains, it adds up: how **rare** the word is (IDF), how often the passage uses it (with
+diminishing returns), and a correction so long passages don't win just by being long.
+
+**IDF (inverse document frequency).** How rare a word is across the whole corpus, used as its
+weight. "Of", in 382 of 504 passages, counts for about 0.3; "govern", in about 16 of 504, for about
+3.4. It's purely statistical: it can't tell a meaningful word from a broken piece of one. The
+`s` left over from splitting "one's" appeared in 61 passages, rare enough to carry real weight,
+until the tokeniser was fixed.
+
+**Stemming.** Cutting words back to a shared root before matching, so "governing", "governs" and
+"governed" all become `govern`. It also lumps "government" in, purely by spelling: stemming
+misses less and sometimes finds things it shouldn't. Silent misses are the worse failure here,
+so it's on. It can't translate: "doth" never becomes "does".
 
 **Hybrid retrieval.** Using **both** at once, because each catches what the other misses.
 
-**RRF (Reciprocal Rank Fusion).** The simple, no-knobs method that merges the two ranked lists:
-a passage that ranks well in *either* list rises. Chosen because it's easy to explain and inspect,
+**RRF (Reciprocal Rank Fusion).** The simple, no-knobs method that merges the two ranked lists.
+The two searches score in incompatible units, but both agree on *position*, so each list gives a
+passage `1 / (60 + rank)` points and the two are added. The 60 keeps #1 from swamping #5. The
+built-in assumption is that **agreement is evidence**: a passage at #5 in both lists
+(0.031) beats one at #1 in only one (0.016). Chosen because it's easy to explain and inspect,
 unlike an opaque re-ranking model.
+
+**Depth.** How far down each list the merge looks. A deeper cut adds more passages both methods
+mildly agree on, which crowd out each method's single strong find: the very catches hybrid
+retrieval exists for. Measured on Marcus: catches surviving fell from 2 to 0 as depth went from
+8 to 30, so each list contributes its own top 8.
 
 ```mermaid
 flowchart TD

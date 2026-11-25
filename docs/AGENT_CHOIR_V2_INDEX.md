@@ -117,14 +117,17 @@ flowchart TD
 
 ## Status
 
-*As of 2026-11-12.* V2 started greenfield. **Phase 0 is complete:** the repository
+*As of 2026-11-25.* V2 started greenfield. **Phase 0 is complete:** the repository
 stands up with identity hygiene verified before commit one, a FastAPI skeleton streams
 events to a vanilla page, and a live spike has proven the model → tool → model loop on
 `gpt-6-luna` through the Responses API. Its findings are recorded in the Build Plan.
 **Phase 1, the substrate, is complete too:** every event is traced write-first and streamed
-live, and every model call goes through one async, traced wrapper. **Next is Phase 2, the
-keystone.** The Build Plan carries the live status; this
-section is a pointer, not a second source of truth.
+live, and every model call goes through one async, traced wrapper. **Phase 2, the keystone, is
+complete (2026-11-21):** Marcus Aurelius takes a live turn over his own corpus, searching with
+hybrid retrieval, opening what he chooses and citing only what he opened, with every stage in
+the trace. **Phase 3, the Oracle, is in progress**, built on a shared tree of concept lineages
+from which each figure's Epistemic Horizon is compiled (Decisions E1). The Build Plan carries
+the live status; this section is a pointer, not a second source of truth.
 
 Every role currently runs on one model, with reasoning effort as the per-role dial and
 promotion only on trace evidence (Decisions H1).

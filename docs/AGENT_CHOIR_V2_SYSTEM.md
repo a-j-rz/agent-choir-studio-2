@@ -240,6 +240,10 @@ Frontend:     Minimal vanilla HTML + JS (no framework, no build step)
 Model API:    OpenAI Responses API (direct) — see Decisions H2
 Concurrency:  asyncio
 Schemas:      Pydantic
+Retrieval:    hand-written BM25 (Snowball stemming), local embeddings (bge-small-en-v1.5 via
+              sentence-transformers, CPU, pinned revision, cached per figure), RRF merge —
+              Decisions B1–B7
+Outputs:      structured outputs (JSON schema) for contributions — Decisions H4
 Trace:        local structured artefacts (see Trace & Instrumentation)
 Config:       .env / environment variables
 SCM:          GitHub from commit one
@@ -284,3 +288,50 @@ The **load-bearing principle** (from V1) still governs the pattern: capability b
 converts into quality, and is floored where the role is narrow. V2 now *tests* that principle
 seat by seat rather than assuming it. Model choice is the fine-tuning within a topology's position
 on the iron triangle; topology is the coarse setting.
+
+### What leaves the machine
+
+Every corpus tool is plain **function calling**: the model reads a menu of tools (names,
+descriptions, parameter schemas) and replies with a *request* to use one. Our Python decides
+whether to run it, runs it locally, and sends the result back in the next request. Every
+connection goes from this machine to the model API; nothing connects in, and no tool is
+reachable from outside.
+
+```mermaid
+flowchart LR
+    subgraph LOCAL["This machine — the host"]
+        H["Our Python<br/>runs the loop"]
+        T["Tools + index<br/>all 504 chunks, BM25,<br/>vectors, RRF, budgets"]
+        TR[("Trace")]
+        H --> T
+        H --> TR
+    end
+    subgraph API["Model API"]
+        M["The model<br/>text in, text out"]
+    end
+    H -->|"prompt, question, tool menu,<br/>the turn so far — every round trip"| M
+    M -->|"answer, or a request<br/>to use a tool"| H
+```
+
+| Stays local | Sent to the model, every round trip |
+|---|---|
+| The whole corpus, both indexes, the embedding model | The figure's prompt and the question |
+| Scores, ranks, both candidate lists, the merge | The tool menu and the output schema |
+| Budgets, refusals, the trace | Everything said so far this turn: the figure's queries, and what each tool returned to it |
+
+So the only corpus text that leaves is what a tool returns: up to 8 previews per search and the
+passages the figure opens. The API is used statelessly: each round trip re-sends the whole turn,
+which is why input tokens grow within a turn.
+
+**Why this isn't MCP, and why that matters.** MCP standardises the same idea: a *host* program
+discovers tools from an MCP server, runs them when the model asks, and returns the results as
+text. The model never touches a tool in either case. What differs is who the host is and what it
+can reach. With a hosted remote MCP tool, the model provider's servers call the MCP server's
+address, so the tools must be reachable from the internet. Here the host, the tools and the data
+are one local process. MCP is left out for legibility, not only safety: the tool loop, budgets
+and binding are the lesson, and a protocol layer would hide them.
+
+*Noted, not acted on:* the Responses API stores response objects on the provider's side by
+default, and `call_model` does not switch that off. Nothing here relies on the stored copy, but
+turning storage off changes how reasoning items must be passed between round trips. Irrelevant
+for public-domain corpora; revisit before the Researcher (Phase 7).

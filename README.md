@@ -11,9 +11,9 @@ from where it shouldn't have.
 
 **Not a product.** The trace is the point; the final answer is a by-product.
 
-> **Status:** Phase 1 complete — the substrate runs: every event traced write-first and
-> streamed live, every model call through one async, traced wrapper.
-> Next: Phase 2, the keystone. See [Build status](#build-status).
+> **Status:** Phase 2 complete — the keystone. Marcus Aurelius searches his own notes through
+> hybrid retrieval, opens what he chooses, and answers with citations checked against what he
+> opened. **Phase 3, the Oracle, is in progress.** See [Build status](#build-status).
 
 ---
 
@@ -294,8 +294,8 @@ Built in thin vertical slices. "Done" means the trace shows it, not that the cod
 |---|---|---|
 | 0 | Bootstrap + live API spike | ✅ Done |
 | 1 | Substrate: event model, trace directory, per-role config, model-call wrapper, live relay | ✅ Done |
-| 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ⏭ Next |
-| 3 | Oracle loop | |
+| 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ✅ Done |
+| 3 | Oracle loop, on a shared tree of concept lineages | 🔧 In progress |
 | 4 | Host flow: triage, scoring, topology, cast | |
 | 5 | Hub-and-spoke + Editor | |
 | 6 | Token-ring | |
@@ -336,6 +336,29 @@ three-passage fake corpus. Small run, real lessons:
   interrupted, which is what keeps every raw file and the event that names it on the same
   sequence number when four figures write at once.
 
+### What Phase 2 showed
+
+Marcus Aurelius, in George Long's English translation: 504 chunks, keyword and meaning search
+merged, three live turns for about $0.0015 in all.
+
+- **Each search method catches what the other misses — in both directions.** Meaning search
+  found IX.15 for "governing one's own mind" with no shared words. Keyword search found I.1
+  ("the government of my temper"), which meaning search ranked 319th, possibly because a
+  14-word passage makes a weak point in meaning-space (one data point so far).
+- **A catch can be lost at every stage.** Retrieved, then merged, then shown as a preview, then
+  opened, then cited. IX.15 was surfaced twice and never opened. At 186 characters its preview
+  was the whole passage, and the figure recorded no reasoning, so the trace shows *where* it
+  dropped out, not *why*.
+- **The merge favours agreement.** With 8 slots and little overlap, each method gets about 4.
+  Looking deeper into each list before merging made things worse: catches found by only one
+  method fell from 2 to 0. So each list contributes its own top 8.
+- **The figure searches with knowledge it shouldn't use.** Marcus's queries were full of Stoic
+  vocabulary and even book numbers: memory steering retrieval before any claim is made.
+- **Rarity weighting only suppresses junk that is common.** The `s` left over from "one's"
+  appeared in 61 passages, rare enough to carry real weight. Found by the trace; fixed.
+- **Stable is not correct, again.** Two runs of the same question shared 7 of 8 results and
+  3 of 4 citations.
+
 ---
 
 ## Models
@@ -362,7 +385,8 @@ Frontend:     Vanilla HTML + JS, no framework, no build step
 Model API:    OpenAI Responses API, direct
 Concurrency:  asyncio
 Schemas:      Pydantic
-Retrieval:    BM25 + local embeddings + RRF, one physical index per figure
+Retrieval:    hand-written BM25 (Snowball stemming) + local embeddings (bge-small-en-v1.5
+              via sentence-transformers, on CPU, cached) + RRF; one index per figure
 Trace:        one directory per run: events, raw payloads, summary, leakage report
 ```
 
@@ -390,6 +414,20 @@ traced model call as the Editor, costing around $0.0001. Every run writes its tr
 python -m scripts.llm_smoke
 ```
 
+**Marcus's corpus** is rebuilt locally from its recipe, then his first turn can run:
+
+```bash
+python corpora/marcus_aurelius/acquire.py      # download the pinned text, strip Long's apparatus
+python corpora/marcus_aurelius/chunk.py        # one chunk per section → data/chunks.jsonl
+python -m scripts.vector_probe --download --lengths   # first time only: fetch the embedding model
+python -m scripts.figure_turn "How should a person govern their own mind?"   # live, ~$0.0005
+```
+
+The probes run offline and cost nothing: `bm25_probe`, `vector_probe` and `retrieval_probe`
+show each retrieval stage on its own. `bm25_probe` and `retrieval_probe` each have a `--selftest`
+with hand-computed answers; `vector_probe --selfcheck` checks that every chunk retrieves itself.
+`compile_horizon --selftest` proves the Epistemic Horizon compiler.
+
 Corpus texts, built indexes, run traces and `.env` are gitignored by design. The repo carries
 the *recipe* for a corpus, never the texts.
 
@@ -409,8 +447,22 @@ agent-choir-studio-2/
     config.py            # the one place for each role's model, effort and prices
     llm.py               # call_model(): async, traced tool-call loop on the Responses API
     runner.py            # run lifecycle as a task; relay to browser or terminal
+  retrieval/
+    bm25.py              # keyword search, every score broken down by term
+    vectors.py           # local embeddings: pinned model, length gate, cache, search
+    hybrid.py            # load one figure's index; RRF merge of the two lists
+    tools.py             # a figure's corpus tools, bound per turn, budgets enforced in code
+  choir/
+    contribution.py      # the structured, cited answer a figure returns
+    figure_turn.py       # one figure turn, plus the deterministic citation checks
+  prompts/
+    figure_standin.md    # stand-in figure prompt, until Persona Dossiers exist
+  corpora/
+    marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
+  epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
+  horizons/              # shared concept lineages, figure profiles, compiled Horizons
   demo/live_demo.py      # labelled fake corpus for the live demo run
-  scripts/llm_smoke.py   # the live demo run, from the command line
+  scripts/               # llm_smoke, figure_turn, the retrieval probes, compile_horizon
   frontend/index.html    # vanilla page: renders any event type, live
   spikes/                # Phase 0 evidence, frozen
     tool_loop.py         # Phase 0 spike: model → tool → model round trip

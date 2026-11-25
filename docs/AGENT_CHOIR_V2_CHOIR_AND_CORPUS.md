@@ -209,19 +209,51 @@ to search; the Host never pre-retrieves "the relevant passages."
 
 The orchestrator binds a figure to its corpus ID, so cross-figure retrieval is impossible
 through normal tool use. The cloud model requests a tool; local Python executes it against the
-bound index; the result returns as tool output; the model continues. Likely tools:
+bound index; the result returns as tool output; the model continues. The model never touches
+the index: it reads a menu of tools and writes requests, and our code decides whether to run
+each one (System §9 says exactly what leaves the machine).
 
-- `search_my_corpus(query, filters?)`
-- `open_passage(passage_id)`
-- `open_context(passage_id, bounded_window)`
-- `list_my_works()`
+**The tools, as built in Phase 2** (`retrieval/tools.py`), created fresh for each turn from one
+figure's index:
 
-Per figure **per turn**:
+| Tool | What the figure gets back | Per-turn limit |
+|---|---|---|
+| `search_my_corpus(query)` | The merged top 8: passage id, locator and a ~200-character preview. **No scores, no ranks** | 4 searches |
+| `open_passage(passage_id)` | The full text | 8 opens in all |
+| `open_context(passage_id, window)` | The passage and up to `window` neighbours each side, **within the same book** | `window` ≤ 2; each passage counts as an open |
+| `list_my_works()` | Works, translator, period, from the Manifest | none |
 
-- up to **4** corpus searches;
-- up to **8** candidate chunks per search;
-- bounded context opening allowed;
-- early stop encouraged; repeated searches should refine or broaden, not thrash.
+- **Previews, not full text,** so the figure has to choose what to read. That choice is what
+  makes "passages opened" an observable rather than a formality.
+- **No scores,** because a cosine of 0.71 invites the model to reason about the numbers instead of
+  the text. Scores stay in the trace.
+- **Budgets are enforced in code, not asked for in the prompt.** A fifth search, an unknown
+  passage id or an oversized window returns an error to the model and writes a loud refusal
+  event; it never raises, so the turn can still finish. The budget counters live in the turn's
+  binding and are discarded with it.
+- `filters` was left out: nothing has needed it yet.
+- Early stop is encouraged; repeated searches should refine or broaden, not thrash. In practice
+  the opposite showed up first: at low effort, Marcus searched once and opened four passages
+  every time (Build Plan, Phase 2 findings).
+
+**The merge.** Each search runs the keyword list (BM25) and the meaning list (vectors), takes the
+top **8** of each, and merges them by RRF on rank. Depth 8 was chosen by measurement: with 8
+merged slots, each method effectively gets about 4 unless a passage appears in both, and deeper
+lists add "both" passages that crowd out the single-method catches hybrid retrieval exists for
+(catches surviving: 2 at depth 8, 1 at 15, 0 at 30).
+
+**Where a catch can be lost.** A relevant passage has to survive five stages, and the trace
+records each one:
+
+```mermaid
+flowchart LR
+    R["Retrieved<br/>in one list's top 8"] --> M["Merged<br/>into the 8 shown"]
+    M --> P["Previewed<br/>looks worth reading"]
+    P --> O["Opened<br/>full text read"]
+    O --> C["Cited<br/>used as evidence"]
+    R -.->|"2e: I.1 and IX.15<br/>lost at the merge"| X1(["lost"])
+    P -.->|"2f: IX.15 shown twice,<br/>never opened"| X2(["lost"])
+```
 
 Oracle calls have a **separate** budget of up to **3 per figure per turn**.
 
@@ -229,6 +261,12 @@ Oracle calls have a **separate** budget of up to **3 per figure per turn**.
 section, letter, speech segment, scene, stanza, scientific proposition. Split further only
 when a natural unit is too large. Every chunk preserves work, date/period, genre,
 location/context pointer and provenance.
+
+*As built for Marcus:* one chunk per numbered section; a section over 380 words splits at a
+paragraph break, then a sentence, then a semicolon, nearest the middle. 504 chunks. Every chunk
+is checked against the embedding model's 512-token limit **before** embedding and is never
+truncated: the library would cut silently, so the check is the only guard. The word limit stays
+model-independent; the token check belongs to the embedding step.
 
 The trace exposes, per turn: original search query; lexical candidates; semantic candidates;
 merged/ranked results; passages opened; passages cited; whether fresh retrieval occurred.
@@ -276,6 +314,21 @@ Two distinct non-failure/failure states (mechanics in Topology & Steering §fail
 - **`cannot_access_corpus`** — the retrieval mechanism failed technically after retry. A
   **figure failure.** The figure must **not** substitute pretrained-memory claims for
   unavailable evidence.
+
+*Open:* `insufficient_corpus_basis` has no defined threshold yet. In Phase 2 the figure judged
+"not enough" for itself: asked how to invest savings, Marcus said his writings could not
+prescribe a strategy, extended into what they say about wealth, and marked the answer
+`grounded` (owner's judgement: fair). A status that the Editor and the degraded-run rules
+consume needs a checkable criterion, not a qualitative call. Decided in Phases 4–5.
+
+**Cite only what you opened** — checked, not trusted. After every turn, set arithmetic over the
+trace compares cited, opened and surfaced passages: *cited but never opened* (cited from a
+preview or from memory), *opened but never surfaced* (a passage opened that no search
+surfaced — expected for `open_context` neighbours; otherwise a possible guessed id), *cited ids
+not in this
+corpus at all*, and which search path surfaced each citation. No model judges anything here;
+whether a citation actually supports its claim is the owner's read now and the Detective's
+later.
 
 ---
 

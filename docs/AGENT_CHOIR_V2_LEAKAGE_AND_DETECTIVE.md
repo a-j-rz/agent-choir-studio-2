@@ -36,6 +36,14 @@ answer, because every sanctioned channel (corpus passage, supplied fact, Oracle 
 transcript line) is logged. Anything a figure used that no sanctioned channel accounts for is a
 candidate breach.
 
+**Memory used to search vs memory used to assert.** Phase 2 showed the model's prior knowledge at
+work *before* any claim: Marcus's queries were dense with Stoic vocabulary ("ruling faculty",
+"impressions", "assent") and once with book numbers where it believed wealth was discussed. That
+is not a breach: the figure chooses its own searches, and a real Marcus would know his own
+words. But it is the paradox in action, and the Detective must keep the two apart. Memory that
+**steers retrieval** is permitted and visible in the trace; memory that **becomes a claim**
+without a sanctioned source is the breach.
+
 ---
 
 ## 3. The Detective's boundary
@@ -119,6 +127,14 @@ flowchart LR
 > *extraction* that feeds it is the hard part, and its method should be recorded in every report.
 > The cheap end is the place to start — Horizon matching first, a model pass only if traces show
 > it missing things.
+
+**The first deterministic signals already exist.** Since Phase 2, every figure turn ends with a
+citation check computed by set arithmetic over the trace: a passage **cited but never opened**
+(cited from a 200-character preview, or from memory), **opened but never surfaced** (a passage
+opened that no search surfaced — expected for `open_context` neighbours; otherwise a possible
+guessed id), and **cited ids that are not in the figure's corpus**. They are signals, not
+verdicts: none of them says whether a citation supports its claim. They are cheap, exact, and
+the same shape of reconciliation the Oracle cross-check will use.
 
 ---
 

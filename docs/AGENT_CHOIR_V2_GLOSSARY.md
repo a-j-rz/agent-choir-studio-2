@@ -179,6 +179,32 @@ machinery. Named in Decisions A5; not built in V2.
 
 ---
 
+## Retrieval terms, as built
+
+**Surfaced → opened → cited.** The three things that can happen to a passage in a turn. A search
+*surfaces* it (in the 8 the figure is shown, as a preview); the figure *opens* it (reads the full
+text); the figure *cites* it (uses it as evidence). Each is logged, and a catch can be lost at any
+step.
+
+**Preview.** The first ~200 characters of a surfaced passage: all the figure sees until it opens
+one. Whether preview length changes which passages get opened is untested.
+
+**Source of a result.** Which search path put a passage in the merged 8: `lexical_only` (keyword
+search alone), `semantic_only` (meaning search alone), or `both`.
+
+**Semantic-only catch.** A relevant passage only meaning search found, which the figure then
+opened and cited: the Phase 0 failure, caught. First seen in Phase 2 (V.36).
+
+**Citation check.** The set arithmetic run after every figure turn: cited but never opened,
+opened but never surfaced, cited ids outside the corpus, and the source of each citation.
+Signals, not verdicts.
+
+**Bound tools.** A figure's corpus tools, created fresh each turn from its own index, with the
+per-turn budgets held inside the binding: there is no route to another figure's corpus, and
+nothing carries over between turns.
+
+---
+
 ## Discipline
 
 **Stateless run boundary.** Each run is a closed island; nothing from a prior run enters a later

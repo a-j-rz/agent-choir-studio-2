@@ -63,6 +63,22 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   embeddings API (sends the corpus to the cloud); per-figure embedding tuning (locked out for V2).
 - **B5 — 24 physically separate indexes, not one index with metadata filters.** Corpus
   boundaries enforced by construction, not by query hygiene.
+- **B6 — What a search shows the figure, and how deep the merge looks.** **RESOLVED
+  2026-11-21**, on Phase 2 evidence. Each list contributes its top **8** to the RRF merge
+  (k = 60); the figure sees the merged top 8 as passage id, locator and a ~200-character
+  preview — **no scores or ranks**, and full text only by opening. Budgets (4 searches, 8 opens,
+  context window ≤ 2 within one book) are enforced in code, and a refusal returns an error to the
+  model rather than raising. All values live in `core/config.py` and are snapshotted per run.
+  *Rejected:* depth 15 or 30 (measured: deeper lists add passages both methods agree on, which
+  crowd out the single-method catches — 2 survived at depth 8, 1 at 15, 0 at 30); full text in search
+  results (makes opening meaningless, so "passages opened" stops being observable); showing
+  scores (invites reasoning about numbers instead of text); prompt-only budgets.
+- **B7 — Chunk limits: model-independent words, model-specific token gate.** **RESOLVED
+  2026-11-21.** Chunking splits by words (380 for Marcus; paragraph, then sentence, then
+  semicolon), so the recipe never depends on an embedding model. Before embedding, every chunk
+  is measured in the model's own tokens and the build fails if any exceeds the limit; nothing is
+  ever truncated. *Rejected:* chunking by model tokens (re-chunk on every model change);
+  allowing truncation (the library cuts silently, so damage would be invisible).
 
 ## C. Utilities & orchestration
 
@@ -190,6 +206,13 @@ commit author metadata. V2 must expose no corporate identity of any kind.*
   calling on the current generation).
 - **H3 — Re-verify model names at each phase that first uses a new seat.** Names and pricing
   drift; the page for any model is checked before it enters config.
+- **H4 — Contributions arrive as structured outputs, parsed item by item.** **RESOLVED
+  2026-11-21.** A figure's final answer is constrained by a JSON schema (`text.format`). Each
+  output message item is parsed separately and exactly one must validate; anything else fails
+  loudly with the texts in the trace — never repaired, never guessed. (`gpt-6-luna` has been
+  reported to return an extra message item occasionally.) *Rejected:* a "submit contribution"
+  tool (an extra round trip every turn, and it blurs "wants a tool" with "is done"); free text
+  parsed afterwards (fragile).
 
 ## I. Documentation layout
 
