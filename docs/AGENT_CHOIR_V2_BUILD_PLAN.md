@@ -1,7 +1,7 @@
 # Agent Choir Studio V2 — Build Plan
 
 *The phased, vertical-slice build. Started greenfield; **Phases 0–1 completed 2026-11-12; Phase 2, the keystone, completed
-2026-11-21; Phase 3, the Oracle, completed 2026-11-25.** Build in
+2026-11-21; Phase 3, the Oracle, completed 2026-11-25; Phase 4, the Host, completed 2026-11-26.** Build in
 thin, observable slices — each proved by trace evidence before the next begins. This is guidance with
 teeth, not a rigid contract; resist building an architecture for imagined future complexity.*
 
@@ -25,8 +25,8 @@ flowchart TD
     P0["0 · Bootstrap + API spike"]:::done --> P1["1 · Substrate"]:::done
     P1 --> P2["2 · KEYSTONE<br/>one figure, one real corpus"]:::keydone
     P2 --> P3["3 · Oracle loop"]:::done
-    P3 --> P4["4 · Host flow — next"]:::next
-    P4 --> P5["5 · Hub-and-spoke + Editor<br/>+ Editor model test"]
+    P3 --> P4["4 · Host flow"]:::done
+    P4 --> P5["5 · Hub-and-spoke + Editor<br/>+ Editor model test — next"]:::next
     P5 --> P6["6 · Token-ring"]
     P6 --> P7["7 · Researcher + fact freezing"]
     P7 --> P8["8 · Failure hardening"]
@@ -231,9 +231,75 @@ rationale and near-miss structure.
 *Trace evidence:* a maths question triaged to `answer_directly`; a real question scored per
 dimension with a topology chosen from the locked threshold, and the decision record visible.
 
+✅ **Done 2026-11-26**, in three slices and a calibration. The Host is three structured-output calls
+with code between them: **the model judges; code enforces** (Decisions J1). Each call sees only its
+own inputs (J2).
+
+| Slice | What landed | Proven by |
+|---|---|---|
+| 4a | Call 1, triage and framing: four outcomes, each filling only its own fields (code-checked); canonical question and answer criterion (J3); factual posture and gaps, with research need derived in code; `ChoirInput` as the only type that will cross to the Choir; a tripwire on Host vocabulary in the canonical question (J4) | 4 live calls, $0.00087: 17 × 23 → `answer_directly` (391); "How should a person govern their own mind?" → `proceed`; "Should I take the offer?" → `clarify`; "What will the FTSE 100 close at next Friday?" → `reframe_or_reject`. 12 offline cases |
+| 4b | Call 2, on the canonical question only: decomposition (single / compound / nested, cycles rejected), one primary and up to two secondary archetypes, five dimensions per unit with the rationale before the score. Code sums, takes the highest unit, applies the threshold and writes the rule (`governing total 6 ≥ 5 → token_ring`); the model has no field for any of it | Boundary 4 → hub-and-spoke, 5 → token-ring, offline; a stability probe of 3 runs per question; one end-to-end run in the browser |
+| 4b calibration | Rubric anchors drafted, then calibrated against two blind readers (owner and Claude, Claude's scores sealed before the owner scored); `host_score.md` v2 (J8) | v1: three of the owner's questions scored 5 / 5 / 2 by the owner and 9 / 9 / 7 by the model, every run. v2 on fresh questions: beauty matched the owner exactly on 2 of 3 runs; cross-domain inflation fell from 2 almost everywhere to mostly 0 or 1 |
+| 4c | Call 3, on the canonical question, the archetypes and the roster only: every figure assessed before selection (archetype relevance, question fit, corpus suitability), exactly four selected, the panel described. Code records `would_reject`, `gate_unassessable` and `gate_not_applied` (J6) | 6 live calls, $0.0028: Marcus's corpus `strong` for self-governance and `weak` for aesthetic form → `would_reject: ["marcus_aurelius"]`; Darwin `weak` on relevance and fit for self-governance. 43 offline cases; call 3's real request is inspected on every run that makes it, and separate in-memory runs showed the inspection catches three injected leaks |
+
+Phase 4 live calls in all: 53, about $0.024.
+
+*Owner judgements and contributions recorded:*
+
+- **The gate as a prediction, not a shrink.** The owner challenged "four, come what may": if the
+  corpus doesn't fit, isn't that telling us something? Kept at exactly four (locked), but the gate's
+  verdict is now recorded as `would_reject` and tested against retrieval in Phase 5 (J6).
+- **Value conflict means the broad middle.** On the scope of government: "the man in the street with
+  another man in the street finds common ground." Tradition-level clash goes to challenge value,
+  which stops the same disagreement scoring twice (J8).
+- **A domain is a field, not a topic.** The owner read "mental health" as one domain; Claude read
+  fact and value as two. Neither reading discriminates; the anchor now counts fields of knowledge.
+- **The author doesn't see their own ambiguity.** "Natural law" meant the laws of physics to its
+  author; call 1 asked whether it meant moral law. Scoring is the Host's, on the canonical question.
+- **Not the arbiter.** "I'm not a supremely qualified ultimate arbiter of this": calibration targets
+  convergence between independent readers, and the real test of a routing is topology value in
+  Phases 5–6 (A3).
+- **Owner verdicts:** all four 4a outcomes right; the 4a answer criterion follows from its canonical
+  question with no framing in plain words; 4c's `weak` ratings warranted.
+
+*Findings carried forward:*
+
+| Finding | What it means | Where it lands |
+|---|---|---|
+| Stable but miscalibrated: v1 scores were identical across runs and consistently above the owner's | Stability is not correctness, again (Phase 0) — now in the Host's own routing | Calibration (J8); the question-bank sweep, parked |
+| A model satisfies a naming rule with something that isn't the answer: the cross-domain "name the reversal" test was met with a "mistaken intuition" and with a hypothetical | Rules a model can satisfy by naming are weak constraints | Watch in the sweep |
+| Decomposition is not deterministic: "Are pornography and sex work immoral?" came out compound, single, compound | Totals and topology held; unit counts did not | Watch; unit wording is also unchecked ("Are pornography immoral?") |
+| On moral questions the model reads "immoral" as ambiguous and challenge value as high; the owner does not | A genuine difference in reading, which two human readers also show; more wording won't settle it | Recorded, not tuned |
+| Call 1 widened a question: the entropy question gained "why did the universe begin in a low-entropy state?" | Breaks "resolve wording, not substance", and in one of three scoring runs the added clause became the governing unit (topology unaffected): a triage drift can become a routing drift | Phase 5, with the clarify design |
+| Clarify asked for the user's values ("what matters most to you"), and asked two things at once (twice) | A leak path: in Phase 5 a clarification shapes the canonical question, the one thing the Choir sees | Phase 5 clarify design: facts of the situation only; never the user's view |
+| Triage deflects the modest questions: the chicken and the commodity question were both answered directly | The low end of the scoring rubric matters less than expected; the case that matters is the modest but deliberable question | Calibration scope |
+| The hard triage reasoned more (476 reasoning tokens on the FTSE question against 19–51) | Effort is a ceiling, seen from the other side | Phase 4 evidence for H1 |
+| Prompt caching appears only when the stable prefix is long enough: call 2 (~1,400 tokens) cached; call 1 (~830) never; call 3's stable prefix is short because the question precedes the roster | Cacheability depends on prefix length and order | Parked: put the roster before the question in call 3 |
+| Archetype relevance can ride a broad label: Douglass `strong` for aesthetic form through Social / Cultural | A broad archetype carries a figure the question doesn't | Phase 9, when cast steering is real |
+| No archetype for aesthetics: beauty was classified Scientific / Epistemic every time | A gap in the eight | Note for Phase 9 |
+| The Host's model calls take 19–24 s before any deliberation (24 s on a two-call run whose call 2 took 17 s on a four-unit question; 19–21 s on the three-call 4c runs) | The slowest single step built so far | H1 evidence |
+
+*Parked for later phases:* the in-run pause (built once in Phase 5 for the correction boundary, then
+reused for clarify and "what do you think?", J7); call 3 caching order; `gate_not_applied` must
+depend on whether an unselected figure was available (Phase 9); a `conceptual` value for factual
+posture (metaphysics is forced into `normative`; Phase 7); first-person canonical questions ("Should
+I…") for the Phase 5 canonical review; `GET /stream/live` still spends money on a GET; an offline
+**question-bank sweep** — a naive generator ("if you could put any questions to a panel of historical
+figures…"), the Host run over the bank, reporting topology distribution, stability and decomposition,
+**never** used as a calibration reference and never fed back; the **deliberation view** (a chat-like
+layout of our own design that never shows a figure seeing what it doesn't: hub-and-spoke as four
+private rooms, token-ring round 1 sealed, the Oracle as a private thread, the Host in its own pane;
+real cited passages as each figure's voice; no invented quotations; portraits or line drawings, open);
+and a **full run report**, rendered by code from one trace with no model call, downloadable as one
+self-contained HTML file — replacing the parked "human-readable Detective report".
+
 **Phase 5 — Hub-and-spoke + Editor.**
 Wire the four figures in parallel (each independent, private Oracle, no cross-talk), persist the
 four as the independent baseline, then the Editor's audit + synthesis.
+*Prerequisites, from Phase 4:* corpora, Manifests and compiled Horizons for Plato, Frederick
+Douglass and Charles Darwin — only Marcus's exist. *Moved in from Phase 4:* the in-run pause, built
+once, first for the user correction boundary (Topology & Steering §2), then reused for the clarify
+loop and "Before we go on, what do you think?" (Decisions J7). Phase 5 may need to split.
 *Trace evidence:* a full hub-and-spoke run; four independent contributions; an Editor synthesis
 with disposition label, attribution, distinguished modern/historical citations, and "What would
 change the answer?"; a genuine (unstaged) satellite failure handled per the degraded-run rule if

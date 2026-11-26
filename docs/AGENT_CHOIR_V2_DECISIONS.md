@@ -244,6 +244,75 @@ commit author metadata. V2 must expose no corporate identity of any kind.*
 
 ---
 
+## J. The Host
+
+- **J1 — Three structured calls, model judges, code enforces.** **RESOLVED 2026-11-25.** Call 1
+  triage and framing; call 2 classification and scoring; call 3 cast. No tools, one round trip each.
+  The model makes every judgement; code does every rule: totals, the highest unit, the threshold,
+  topology and its rule string, and the checks on outcomes, archetypes, units and the cast. The model
+  has no field for a total or a topology, so "no Host override" holds by construction. *Rejected:* one
+  call (no cheap exit after triage; scoring would see the raw wording); one call per step (archetypes
+  and cast are coupled); an agentic Host with tools (System §3: a governed specification, not an
+  improvising agent).
+- **J2 — Each call sees only its own inputs.** **RESOLVED 2026-11-25.** Call 1: the original
+  question. Call 2: the canonical question only. Call 3: the canonical question, the archetypes and
+  the roster, never the scores or the original wording. Interpretive ambiguity is therefore scored on
+  what remains after triage. *Rejected:* every call sees everything (contamination invisible in the
+  trace); scoring sees both wordings (double-counts ambiguity triage has already resolved).
+- **J3 — The answer criterion.** **RESOLVED 2026-11-25.** Call 1 writes, with the canonical
+  question, one sentence saying what a response must address. It stays in the decision record; the
+  Choir never sees it. The Editor uses it in Phase 5. *Rejected:* sending it to the Choir (breaks the
+  locked boundary); a third figure status (self-assessed relevance); no criterion (the standard would
+  live in the Editor's private reading).
+- **J4 — The Choir boundary, in three layers.** **RESOLVED 2026-11-25.** `ChoirInput` (canonical
+  question and fact pack, frozen, `extra="forbid"`) is the only type a figure will receive. The
+  canonical question is written before classification exists, by a prompt with no archetype or rubric
+  vocabulary. A tripwire fails the run if the canonical question introduces Host phrases absent from
+  the original (exact phrases; hyphen, underscore and space equivalent). Plain-word framing is not
+  caught; that stays with a reader. *Rejected:* one object with a do-not-forward convention; a
+  word-level label guard (false failures on "economic"); a model check of the restatement (a
+  cross-checking pass, out of scope).
+- **J5 — Triage outcomes in Phase 4.** **RESOLVED 2026-11-25.** Every outcome completes the run;
+  the outcome is a separate field from run status. `clarify` is terminal until Phase 5.
+  `reframe_or_reject` with a suggested question records `reframed`, without one `rejected`.
+  *Rejected:* a separate call for direct answers; deflections recorded as failures.
+- **J6 — The degenerate cast: assess first, record the gate as a prediction.** **RESOLVED
+  2026-11-25.** Every roster figure is assessed (reason, then rating) before selection; corpus
+  suitability is judged only from the supplied manifest and is `unassessable` exactly when no corpus
+  is built. The cast stays exactly four (locked). Where the gate would reject, code records
+  `would_reject`; Phase 5 tests it against retrieval. A "no viable panel" stop is parked for Phase 9.
+  *Rejected:* a variable cast of 2–4 (re-specifies the ring, the stop rule and the failure rule; adds
+  a third steered variable; and lets a coarse metadata judgement pre-empt the figure's finer one at
+  retrieval).
+- **J7 — Clarify and correction need an in-run pause; it is built once, in Phase 5.** **RESOLVED
+  2026-11-25.** Resubmitting as a new run cannot serve the correction boundary: the new run's Host
+  could choose a different cast from the one the user reviewed. *Rejected:* building the pause in
+  Phase 4 before its necessary user; two mechanisms.
+- **J8 — Rubric anchors, calibrated by blind readers.** **RESOLVED 2026-11-26.** The anchors live
+  in `prompts/host_score.md` and are versioned by its hash (v2: `76b8a055…`). Value conflict counts
+  foundational beliefs as well as competing goods, judged by the broad middle of informed opinion;
+  ambiguity is scored as a reader who did not write the question, and readings that lead to the same
+  deliberation don't count; a domain is a field of knowledge, and 2 needs the answer to turn on a
+  named interaction; challenge value 2 needs premises an exchange could test. Every dimension starts
+  at 0, and each rationale ends with why the score is not one lower (or, for a 0, not one higher). Calibrated against two
+  independent blind readers on fresh questions; questions seen while writing a prompt are regression
+  checks only. *Rejected:* unanchored scoring (unstable by construction); calibrating toward a
+  wanted topology (a quiet threshold override); tuning until one reader's numbers match (the target
+  is convergence).
+- **J9 — Prompt hygiene.** **RESOLVED 2026-11-25.** One stable prompt per call, hashed into every
+  trace; variable content only in input items; no worked examples; test questions chosen after the
+  prompt is frozen and never in it; each prompt asserted at load free of vocabulary its call must not
+  see. *Rejected:* few-shot examples (imprinting); templated instructions (no meaningful hash, no
+  cache).
+- **J10 — `insufficient_corpus_basis`: OPEN, hypothesis stated.** For Phase 5 to build against and
+  confirm or revise. Figure side, checkable in code: no declaration without at least one search, and
+  the declaration states what was searched for and what was missing. Editor side, against the answer
+  criterion: answered / answered a neighbour / declined on evidence / over-declared / under-declared.
+  The Host's `would_reject` is the third view. Whether the status needs a partial form is a Phase 5
+  question.
+
+---
+
 ## Locked product behaviour (do not reopen during implementation)
 
 Carried from the source design as settled: exactly four figures per run; roster of twenty-four;

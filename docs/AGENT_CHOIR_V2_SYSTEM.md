@@ -48,6 +48,9 @@ enters it (see §8).
 15. Editor synthesis;
 16. Detective leakage audit over the frozen trace.
 
+*As built (Phase 4):* topology is computed by code from the final score before the cast call, and
+the cast call never sees it, so the order of steps 11 and 12 carries no information between them.
+
 The same sequence, grouped by who owns each step. Note the early exits: most of the cost saving
 in the whole system lives in steps 2–3.
 
@@ -106,6 +109,11 @@ Before the Choir begins, the user may correct the Host's interpretation, factual
 omitted context. The user may **not** override the selected cast or topology. A valid
 correction causes framing, research decision, scoring, cast and topology to be recomputed,
 and the decision delta is logged. (Full mechanics in Topology & Steering.)
+
+*As built (Phase 4, Decisions J1–J9):* three structured-output calls — triage and framing,
+classification and scoring, cast — each seeing only its own inputs, with code doing every count,
+threshold and validity check. The decision record (schema 3) carries all three; `ChoirInput` carries
+only the canonical question and, from Phase 7, the fact pack.
 
 ---
 

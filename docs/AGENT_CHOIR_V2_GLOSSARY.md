@@ -178,6 +178,20 @@ argument would move the conclusion.
 also pick *which model* a question or seat gets — a third mapping from one score, needing no new
 machinery. Named in Decisions A5; not built in V2.
 
+**Canonical question.** The Host's precise restatement of the user's question: the asker's meaning,
+wording resolved, nothing added. The one thing about the question the Choir ever sees.
+
+**Answer criterion.** One sentence saying what a response must address to answer the canonical
+question. Kept in the decision record; the Editor checks contributions against it; the Choir never
+sees it.
+
+**Governing unit.** For a compound or nested question, the subquestion with the highest total. Its
+total decides the topology for the whole run.
+
+**Would reject.** The cast gate's recorded prediction that a selected figure's corpus is weak for
+the question. On a roster of four the gate cannot act, so it predicts; retrieval tests the
+prediction.
+
 ---
 
 ## Horizon and Oracle terms, as built

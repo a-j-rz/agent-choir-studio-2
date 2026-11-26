@@ -108,7 +108,7 @@ sequenceDiagram
     UI->>UI: run_complete → close the stream explicitly
 ```
 
-### Events built so far (Phases 1–2)
+### Events built so far (Phases 1–4)
 
 | Event | Emitted by | Carries |
 |---|---|---|
@@ -126,6 +126,14 @@ sequenceDiagram
 | `oracle_request` | Oracle tool | concept, the figure's own words, whether truncated, the Horizon lookup (beyond / unreached / his / unmapped, senses, distance), identity flag and redaction, repeat, budget used, and the raw file holding the exact composed input |
 | `oracle_bridge` · `oracle_failed` · `oracle_request_refused` | Oracle tool | the parsed answer (status, explanation, anchors, left out) and cost; or the error, the turn continuing; or the budget refusal |
 | `horizon_reconciliation` | figure turn | breach hits in the figure's text with their sanctioning channels, unbridged uses, uptake per bridge, unused bridges, Horizon gaps, and the method statement |
+| `host_bound` · `host_score_bound` · `host_cast_bound` | Host calls 1–3 | prompt file, SHA-256, role config, round-trip cap; call 3 also the exact roster input |
+| `host_triage` · `host_triage_invalid` | Host call 1 | the validated output and the consistency verdict; or the rule broken, the run then failing |
+| `host_guard_tripped` | Host call 1 | the Host phrases the canonical question introduced; the run then fails |
+| `host_classification` · `host_score_invalid` | Host call 2 | decomposition, archetypes, every unit's five scores with rationales; or the rule broken |
+| `host_scoring` | code | unit totals, governing unit and total, topology, the rule string, score status |
+| `host_cast` · `host_cast_invalid` | Host call 3 | every assessment, the selection, the panel fields, `would_reject`, `gate_unassessable`, `gate_not_applied`, the near-miss note; or the rule broken |
+| `choir_input` | Host | the exact object that will cross to the Choir: canonical question and fact pack, nothing else |
+| `host_decision_record` | Host | everything the Host decided and why (schema 3), emitted once at the end |
 
 Two layers are kept deliberately apart: `tool_result` records **what the model saw**;
 `corpus_search` and its raw file record **how retrieval chose it**. Raw files are named
@@ -135,7 +143,7 @@ nothing that awaits may run between writing the file and emitting its event.
 `summary.json` is at schema **4**: its config snapshot nests `roles`, `embedding`, `retrieval` and
 `oracle`, so every run records the model, effort, embedding model and revision, and every
 retrieval and Oracle setting it ran with; `annotations` records run inputs such as the 3c prompt
-condition. The Oracle's own model calls appear as `round_trip` events labelled `oracle`, nested
+condition, and the Host's outcome, topology and each prompt's hash. The Oracle's own model calls appear as `round_trip` events labelled `oracle`, nested
 inside the figure's turn.
 
 ---

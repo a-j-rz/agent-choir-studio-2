@@ -117,7 +117,7 @@ flowchart TD
 
 ## Status
 
-*As of 2026-11-25, end of Phase 3.* V2 started greenfield. **Phase 0 is complete:** the repository
+*As of 2026-11-26, end of Phase 4.* V2 started greenfield. **Phase 0 is complete:** the repository
 stands up with identity hygiene verified before commit one, a FastAPI skeleton streams
 events to a vanilla page, and a live spike has proven the model → tool → model loop on
 `gpt-6-luna` through the Responses API. Its findings are recorded in the Build Plan.
@@ -129,8 +129,11 @@ the trace. **Phase 3, the Oracle, is complete (2026-11-25):** each figure's Epis
 compiled from a shared tree of concept lineages (Decisions E1); Marcus asks a private Oracle about
 concepts beyond his time, which explains them from what his world already knew (Decisions C5);
 and every turn ends with a deterministic reconciliation of the modern vocabulary he used against
-the channels that sanctioned it. **Next is Phase 4, the Host.** The Build Plan carries the live
-status; this section is a pointer, not a second source of truth.
+the channels that sanctioned it. **Phase 4, the Host, is complete (2026-11-26):** three structured calls triage the question, score it
+and choose the cast, with code doing every count, threshold and check (Decisions J1–J10); the rubric's
+anchors were calibrated against two blind readers. **Next is Phase 5, hub-and-spoke and the Editor**,
+which first needs corpora for the other three machine-proving figures.
+The Build Plan carries the live status; this section is a pointer, not a second source of truth.
 
 Every role currently runs on one model, with reasoning effort as the per-role dial and
 promotion only on trace evidence (Decisions H1).

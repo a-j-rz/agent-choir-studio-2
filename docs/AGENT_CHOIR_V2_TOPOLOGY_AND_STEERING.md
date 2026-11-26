@@ -33,6 +33,11 @@ before proceeding.
 The trace preserves separately: original question verbatim; clarified user context; the
 user's initial position if requested; the canonical interpreted question.
 
+*As built (Phase 4, Decisions J1–J5):* call 1 sees the original question only and returns one
+outcome with only that outcome's fields filled, checked in code. On `proceed` it writes the canonical
+question, an answer criterion, the factual posture and the gaps; whether research is needed is derived
+in code. `clarify` ends the run until the in-run pause exists (Phase 5, J7).
+
 ---
 
 ## 2. User correction boundary
@@ -136,6 +141,12 @@ flowchart LR
 Every dimension's score and rationale is persisted, so a poor routing can be traced to the
 dimension that caused it.
 
+*As built (Decisions J1, J8):* the anchors for 0, 1 and 2 on each dimension live in
+`prompts/host_score.md` and are versioned by its hash; the scoring call never learns that scores are
+summed or what they decide. Code computes each unit's total, takes the highest, and writes the rule
+it applied. A compound or nested question is scored per unit; archetypes are assigned to the whole
+question, because the cast is chosen for the whole run.
+
 ---
 
 ## 7. Cast steering
@@ -163,6 +174,11 @@ twenty-four full corpora to choose the cast. All cast rationale is visible to us
 choice; on the machine-proving four it is degenerate (four from four). The selection machinery
 is still built and logged early — it just has nothing to reject until roster scaling. See the
 Build Plan's activation checkpoint.
+
+*As built (Decisions J6):* call 3 assesses every roster figure, reason before rating, before it
+selects; corpus suitability is judged only from the supplied manifest summary. On the machine-proving
+four, code records where the gate would have rejected (`would_reject`), where it could not assess
+(`gate_unassessable`), and that it could not act (`gate_not_applied: roster exhausted`).
 
 ---
 

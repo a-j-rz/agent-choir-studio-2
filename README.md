@@ -11,10 +11,9 @@ from where it shouldn't have.
 
 **Not a product.** The trace is the point; the final answer is a by-product.
 
-> **Status:** Phase 3 complete — the Oracle. Marcus Aurelius searches his own notes, asks a
-> private Oracle about anything from after his time, and every turn ends with a check of the
-> modern vocabulary he used against what was legitimately given to him. **Next: Phase 4, the
-> Host.** See [Build status](#build-status).
+> **Status:** Phase 4 complete — the Host. It triages each question, scores it on five dimensions
+> and picks the cast, writing down why at every step; code, not the model, applies the threshold.
+> **Next: Phase 5, hub-and-spoke and the Editor.** See [Build status](#build-status).
 
 ---
 
@@ -104,6 +103,11 @@ routes badly, that's evidence for a future governed change, not a licence to imp
 
 The Choir receives **only** the canonical question and the frozen fact pack — never the user's
 wording, their own view, or the Host's reasoning about the cast.
+
+*As built:* three model calls, each seeing only what it needs. The model judges (outcomes,
+restatements, scores with reasons, assessments of each figure); code enforces (totals, the
+threshold, the topology, every validity check). The scoring call never learns that its scores are
+added up, or what they decide.
 
 ---
 
@@ -297,8 +301,8 @@ Built in thin vertical slices. "Done" means the trace shows it, not that the cod
 | 1 | Substrate: event model, trace directory, per-role config, model-call wrapper, live relay | ✅ Done |
 | 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ✅ Done |
 | 3 | Oracle loop, on a shared tree of concept lineages | ✅ Done |
-| 4 | Host flow: triage, scoring, topology, cast | ⏭ Next |
-| 5 | Hub-and-spoke + Editor | |
+| 4 | Host flow: triage, scoring, topology, cast | ✅ Done |
+| 5 | Hub-and-spoke + Editor | ⏭ Next |
 | 6 | Token-ring | |
 | 7 | Researcher + frozen fact pack | |
 | 8 | Failure and degraded-run hardening | |
@@ -380,6 +384,25 @@ what his world already had. 65 live calls in all, about $0.018.
   illness, the lookup took "anxiety" for Marcus's own word, and his answer scored zero unbridged
   terms. Whether it carried modern ideas in plain words, term matching cannot tell.
 
+### What Phase 4 showed
+
+The Host is three calls with code between them: triage, scoring, cast. 53 live calls in all, about
+$0.024.
+
+- **Stable is not correct, a third time.** The first scoring prompt gave identical scores run after
+  run, and consistently higher ones than the owner's blind scores. One question the owner sent to
+  hub-and-spoke scored 7 out of 10, every time.
+- **Calibration needs independent readers.** The owner and Claude scored blind, Claude's scores
+  sealed first. Their first disagreements were about meaning, not numbers ("domain" as topic or as
+  field). The fixes went into the wording; the target is convergence, not one reader's numbers.
+- **Authors can't see their own ambiguity.** "Natural law" meant physics to the person who wrote it;
+  the Host asked whether it meant moral law.
+- **A model can satisfy a naming rule without meeting it.** Asked to name the interaction that would
+  reverse an answer, it sometimes named a hypothetical.
+- **The cast gate became a prediction.** With four figures and four seats, the gate can't reject,
+  so it records whom it would have rejected: Marcus, on a question about aesthetic form. Phase 5
+  checks that against what his corpus actually yields.
+
 ---
 
 ## Models
@@ -444,6 +467,13 @@ python -m scripts.vector_probe --download --lengths   # first time only: fetch t
 python -m scripts.figure_turn "How should a person govern their own mind?" --condition A   # live, ~$0.001
 ```
 
+**The Host** runs from the page (type a question, one button, three live calls) or the command line:
+
+```bash
+python -m scripts.host_probe "Is beauty subjective or objective?"   # live, ~$0.0015
+python -m scripts.host_probe --offline                                # 43 canned cases, no calls
+```
+
 The probes run offline and cost nothing: `bm25_probe`, `vector_probe` and `retrieval_probe`
 show each retrieval stage on its own. `bm25_probe` and `retrieval_probe` each have a `--selftest`
 with hand-computed answers; `vector_probe --selfcheck` checks that every chunk retrieves itself.
@@ -461,7 +491,7 @@ agent-choir-studio-2/
   README.md
   AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md   # the plumbing, in plain words, with pictures
   CLAUDE.md              # standing rules for Claude Code
-  app.py                 # FastAPI: /, /health, /stream (free test run), /stream/live
+  app.py                 # FastAPI: /, /health, /stream (free test run), /stream/live, POST /run/host
   core/
     events.py            # the Event: trace record and SSE message in one object
     trace.py             # RunTrace: traces/<run_id>/, write-first, live queue, summary
@@ -478,16 +508,26 @@ agent-choir-studio-2/
     figure_turn.py       # one figure turn: corpus tools + Oracle, citation checks, reconciliation
     oracle.py            # the Oracle: Horizon lookup, composed input, redaction, budget
     reconcile.py         # deterministic leakage reconciliation after every turn
+  host/
+    records.py           # the Host's typed outputs; ChoirInput, the only thing a figure receives
+    triage.py            # call 1: triage and framing; the canonical-question tripwire
+    score.py             # call 2: decomposition, archetypes, scores; threshold applied in code
+    cast.py              # call 3: assess every figure, then select; the gate as a prediction
+    run.py               # the Host run: call 1, then calls 2 and 3 on proceed
+    roster.json          # the machine-proving four
   prompts/
     figure_standin.md    # stand-in figure prompt, until Persona Dossiers exist
     oracle.md            # the Oracle's instructions
+    host_triage.md       # the Host's three prompts, frozen and hashed
+    host_score.md
+    host_cast.md
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
   epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
   horizons/              # shared concept lineages, figure profiles, compiled Horizons
   demo/live_demo.py      # labelled fake corpus for the live demo run
   scripts/               # llm_smoke, figure_turn, retrieval probes, compile_horizon,
-                         # horizon_coverage_probe, oracle_probe
+                         # horizon_coverage_probe, oracle_probe, host_probe, score_stability
   frontend/index.html    # vanilla page: renders any event type, live
   spikes/                # Phase 0 evidence, frozen
     tool_loop.py         # Phase 0 spike: model → tool → model round trip
