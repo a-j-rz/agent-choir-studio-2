@@ -4,7 +4,9 @@ The model sees the original question, verbatim, and nothing else. It judges; cod
 
     load prompt (tripwire on the prompt itself) → call → parse (H4: exactly one item validates)
     → consistency (exactly the fields for the outcome) → on proceed, tripwire on the canonical
-    question → derive research_needed → ChoirInput (proceed only) → HostDecisionRecord
+    question → derive research_needed
+
+The run bodies that use it (host.run) emit ChoirInput and the HostDecisionRecord, once, at the end.
 
 Every outcome completes the run; a deflection is not a failure. Malformed or inconsistent
 output, or a tripped guard, emits an event naming the rule and fails the run. Never repaired.
@@ -13,14 +15,14 @@ output, or a tripped guard, emits an event naming the rule and fails the run. Ne
 from pathlib import Path
 import hashlib
 import re
-from typing import Any
+from typing import NamedTuple
 
 from pydantic import ValidationError
 
 from core.config import role_config
 from core.llm import call_model
 from core.trace import RunTrace
-from host.records import TEXT_FORMAT, ChoirInput, HostDecisionRecord, TriageOutput
+from host.records import TEXT_FORMAT, TriageOutput
 
 ROOT = Path(__file__).resolve().parent.parent
 PROMPT = ROOT / "prompts" / "host_triage.md"
@@ -54,6 +56,12 @@ class HostTriageInvalid(Exception):
 
 class HostGuardTripped(Exception):
     """A tripwire phrase appeared in text where it must not."""
+
+
+class Triaged(NamedTuple):
+    output: TriageOutput
+    prompt_sha256: str
+    research_needed: bool | None  # derived in code on proceed; None otherwise
 
 
 def normalise(text: str) -> str:
@@ -136,8 +144,8 @@ def host_outcome(out: TriageOutput) -> str:
             "proceed": "framed"}[out.outcome]
 
 
-async def triage(trace: RunTrace, question: str) -> dict[str, Any]:
-    """The run body for call 1. Returns the outcome and, for answer_directly, the answer."""
+async def run_triage(trace: RunTrace, question: str) -> Triaged:
+    """Call 1. Raises (run failed) on invalid output or a tripped guard."""
     prompt, sha = load_prompt()
     trace.annotate("host_prompt_sha256", {"triage": sha})
     trace.emit("host_bound", "host", {
@@ -172,7 +180,6 @@ async def triage(trace: RunTrace, question: str) -> dict[str, Any]:
         "triage": out.model_dump(), "consistency": {"consistent": True, "broken": []},
         "extra_message_items": extra_items, "stop_reason": result.stop_reason})
 
-    choir_input = None
     if out.outcome == "proceed":
         hits = tripwire_hits(out.canonical_question, original=question)
         if hits:
@@ -180,22 +187,7 @@ async def triage(trace: RunTrace, question: str) -> dict[str, Any]:
                 "guard": "canonical_question", "phrases": hits,
                 "canonical_question": out.canonical_question})
             raise HostGuardTripped(f"canonical question introduces Host vocabulary: {hits}")
-        choir_input = ChoirInput(canonical_question=out.canonical_question)
 
     research_needed = (any(g.kind == "needs_research" for g in out.factual_gaps)
                        if out.outcome == "proceed" else None)
-    record = HostDecisionRecord(
-        original_question=question, prompt_sha256={"triage": sha}, triage=out,
-        research_needed=research_needed,
-        researcher_status="not_built" if research_needed else None)
-
-    if choir_input is not None:
-        trace.emit("choir_input", "host", choir_input.model_dump())
-    trace.emit("host_decision_record", "host", record.model_dump())
-
-    outcome = host_outcome(out)
-    trace.annotate("host_outcome", outcome)
-    returned = {"host_outcome": outcome}
-    if out.outcome == "answer_directly":
-        returned["answer"] = out.direct_answer
-    return returned
+    return Triaged(out, sha, research_needed)

@@ -14,6 +14,8 @@
   #record:empty { display: none; }
   #record dt { font-weight: 600; margin-top: 0.5rem; }
   #record dd { margin: 0.15rem 0 0 0; white-space: pre-wrap; }
+  #record table { margin-top: 0.4rem; font-family: system-ui, sans-serif; }
+  #record caption { text-align: left; font-weight: 600; padding: 0.5rem 0 0.2rem; }
 </style>
 </head>
 <body>
@@ -22,7 +24,7 @@
 <button id="liveBtn">Live run (~$0.0001)</button>
 <h2>Host: triage and framing</h2>
 <textarea id="question" rows="3" placeholder="Your question"></textarea><br>
-<button id="hostBtn">Ask the Host (1 live call)</button>
+<button id="hostBtn">Ask the Host (1–2 live calls)</button>
 <div id="record"></div>
 <div id="statusLine">idle</div>
 <table>
@@ -75,6 +77,50 @@
     });
     record.textContent = '';
     record.appendChild(dl);
+    if (p.classification) showScoring(p.classification, p.scoring);
+  }
+
+  const DIMENSIONS = [['value_conflict', 'Value conflict'], ['interpretive_ambiguity', 'Interpretive ambiguity'],
+    ['cross_domain_interaction', 'Cross-domain interaction'], ['challenge_value', 'Challenge value'],
+    ['consequence_stakes', 'Consequence / stakes']];
+
+  function cells(tr, values, tag = 'td') {
+    values.forEach((v) => { const c = document.createElement(tag); c.textContent = v; tr.appendChild(c); });
+    return tr;
+  }
+
+  // Call 2: classification by the model; totals, governing unit and topology computed by code.
+  function showScoring(c, s) {
+    const dl = document.createElement('dl');
+    const secondaries = c.secondary_archetypes.length ? c.secondary_archetypes.join('; ') : '(none)';
+    [['Decomposition', c.decomposition],
+     ['Archetypes', `primary: ${c.primary_archetype}\nsecondary: ${secondaries}`]].forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.append(dt, dd);
+    });
+    record.appendChild(dl);
+    c.units.forEach((u, i) => {
+      const table = document.createElement('table');
+      const caption = document.createElement('caption');
+      caption.textContent = `Unit ${i}${u.depends_on === null ? '' : ` (depends on unit ${u.depends_on})`}: ${u.text}`;
+      table.appendChild(caption);
+      table.appendChild(cells(document.createElement('tr'), ['Dimension', 'Score', 'Rationale'], 'th'));
+      DIMENSIONS.forEach(([key, label]) => {
+        table.appendChild(cells(document.createElement('tr'), [label, u[key].score, u[key].rationale]));
+      });
+      table.appendChild(cells(document.createElement('tr'), ['Unit total', s.unit_totals[i], ''], 'th'));
+      record.appendChild(table);
+    });
+    const out = document.createElement('dl');
+    [['Governing unit', `unit ${s.governing_unit} (total ${s.governing_total})`],
+     ['Topology', `${s.topology} · rule: ${s.rule}`],
+     ['Score status', s.score_status]].forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      out.append(dt, dd);
+    });
+    record.appendChild(out);
   }
 
   function addRow(d) {

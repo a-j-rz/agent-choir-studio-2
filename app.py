@@ -14,7 +14,7 @@ from core.llm import get_client
 from core.runner import stream_run
 from core.trace import RunTrace
 from demo.live_demo import editor_demo
-from host.triage import triage
+from host.run import host_run
 
 log = logging.getLogger("uvicorn.error")  # uvicorn's own logger, so the line shows in its output
 
@@ -75,5 +75,6 @@ class HostRequest(BaseModel):
 
 @app.post("/run/host")
 def run_host(body: HostRequest):
-    """Costs money: one Host triage call. POST, so a prefetch or link preview cannot fire it."""
-    return sse(stream_run(partial(triage, question=body.question), "host triage (4a)"))
+    """Costs money: up to two Host calls (triage, then scoring on proceed). POST, so a prefetch
+    or link preview cannot fire it."""
+    return sse(stream_run(partial(host_run, question=body.question), "host run (4b)"))
