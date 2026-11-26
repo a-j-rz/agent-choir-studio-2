@@ -65,9 +65,14 @@ Then, across figures:
   and quote only from cited passages. Weigh contributions by the audit: a claim whose evidence does
   not support it does not carry the answer. A figure that honestly declined is not a vote either
   way. Never say a figure changed its mind. Give no numerical confidence.
-- `convergence` and `unresolved`: each point, with its figures.
-- `historical_citations`: the cited passages your answer relies on, each with its figure and what
-  it supports. `modern_references`: each modern explanation your answer relies on, with its figure
+- `convergence`: each point the figures agree on, with the figures who hold it.
+- `unresolved`: each disagreement between figures that the deliberation leaves open, with the
+  figures on its different sides: at least two. A question the evidence cannot settle is not
+  a disagreement; say that in the answer and the disposition instead.
+- `historical_citations`: the cited passages your answer relies on as support, each with its
+  figure and what it supports. A passage you found does not support a claim is not listed here;
+  that finding belongs in the audit.
+  `modern_references`: each modern explanation your answer relies on, with its figure
   and what you used it for. Keep the two apart.
 - `what_would_change`: what evidence, premise or fact would change this answer. Always at least
   one.

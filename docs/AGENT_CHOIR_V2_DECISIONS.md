@@ -491,6 +491,22 @@ been. Each item is updated with evidence as its slice lands.
   input (paraphrased ids); one prompt for both topologies, or a templated one (J9); delivering a
   synthesis that failed a check, with flags (a fabricated attribution presented as the answer);
   repairing or re-calling (H4, §14); a staged "real" deliberation from one corpus under four names.
+  *Landed in 5c (`947c286`):* offline 37/37 on two machines, every check and the
+  send-the-written-bytes rule each shown able to fail. *Mechanics check* (2 live Editor calls on a
+  synthetic deliberation, $0.0033): the strict schema was accepted; both outputs parsed and passed
+  all ten checks; reasoning tokens (1,271 and 1,530) are priced inside output tokens, confirmed by
+  hand — the Phase 1 open item, closed. On filler content the Editor marked every citation
+  unsupported, flagged counterfeit consensus and returned `insufficient_basis`; synthetic, so
+  observed behaviour, not quality evidence. Identical passages were judged `does_not_support` in
+  one run and `partly` in the other: the middle of the verdict scale is soft (recorded). Two fields
+  were used outside their meaning — `unresolved` listed all four figures where none disagreed, and
+  `historical_citations` listed passages just judged not to support anything — both gaps in the
+  prompt's wording against System §5. *Revised before any real run:* `editor_hub.md` v2
+  (`e75fdf7d…`, was `7713a4be…`) defines `unresolved` as a disagreement between figures that the
+  deliberation leaves open, at least two figures, and `historical_citations` as passages relied on
+  as support, with an unsupporting passage left to the audit. *Rejected:* waiting for real runs
+  (the gap is known; the first expensive runs would only rediscover it); a code check on what the
+  fields mean (a form check is what was just met without its substance).
 
 ---
 
