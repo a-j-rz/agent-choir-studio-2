@@ -76,6 +76,13 @@ from day one. Rights are clean for all four in public-domain English.
 | Frederick Douglass | Speeches, letters, autobiography | One speech segment or letter | Rhetorical, occasion-bound, first-person testimony |
 | Charles Darwin | Scientific prose | One proposition or section | Sustained empirical argument; the heaviest Oracle load |
 
+*Works chosen for Phase 5 (Decisions K3–K5, 2026-11-26; not yet built):* Darwin — *The Origin of
+Species*, 6th edition (1872), and *The Descent of Man*, 2nd edition (1874); horizon year 1882.
+Plato — eight dialogues in Jowett's 3rd-edition translation: *Republic*, *Apology*, *Crito*,
+*Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Douglass — *My Bondage and My Freedom*
+(1855) with its appendix of speech extracts, *Three Addresses* (1880s) and *Collected Articles*;
+horizon year 1895. Marcus is built: George Long's translation of the *Meditations*.
+
 **Darwin was kept over Descartes** (the strongest reserve pick) deliberately: Descartes'
 corpus shape (structured treatise/meditation) overlaps Plato's, whereas Darwin's scientific
 prose is a text structure none of the other three exercise, and Darwin stress-tests the Oracle
@@ -370,6 +377,13 @@ evidence unless a Manifest explicitly defines a different experimental rule).
 biographical personal philosophy with false certainty. Reason from recurring patterns,
 conflicts, language and dramatic structures in the approved plays/poems, and be explicit when
 an inference is interpretive rather than a direct authorial proposition.
+
+**Plato.** Every word Plato wrote is corpus, every speaker included: he argues through the whole
+drama, and the positions he refutes are part of the argument. A character's line is therefore
+**not** automatically Plato's view. Reason from where a dialogue's argument comes to rest, and say
+when a reading is interpretive. Socrates is not simply Plato's mouthpiece (the *Apology* least of
+all). This rule reaches the figure through the stand-in prompt's reading-rule slot (Decisions K2,
+K4).
 
 **Carl Jung.** Intentionally in the local roster despite rights complications. Use only
 **United States public-domain editions** for the local experiment. This does **not** establish

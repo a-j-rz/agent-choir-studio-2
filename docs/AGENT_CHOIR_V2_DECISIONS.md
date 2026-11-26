@@ -139,7 +139,8 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   2026-11-25, in Phase 3:* terms are matched by stem through BM25's own `analyse()`; terms
   containing digits are rejected; the compiled file is at schema 2. **OPEN, on Phase 3
   evidence:** whether a figure's prompt includes its own era's senses — the 3c A/B ran one turn
-  per cell; two of condition B's three Oracle requests quoted the block back.
+  per cell; two of condition B's three Oracle requests quoted the block back. Phase 5 runs on
+  condition A and on the stand-in prompt (K2); both questions stay OPEN.
 - **E3 — No figure prompt may contain a breach term.** **RESOLVED 2026-11-25.** The filled prompt
   is checked with `find_breaches` before every turn and the turn raises on any hit. *Rejected:*
   listing the figure's breach terms in its prompt (hands it the modern vocabulary); trusting
@@ -309,7 +310,114 @@ commit author metadata. V2 must expose no corporate identity of any kind.*
   the declaration states what was searched for and what was missing. Editor side, against the answer
   criterion: answered / answered a neighbour / declined on evidence / over-declared / under-declared.
   The Host's `would_reject` is the third view. Whether the status needs a partial form is a Phase 5
-  question.
+  question. *Phase 5 design (K1, K7):* the figure-side fields arrive with `Contribution` schema 2;
+  the Editor's five classes are its per-figure audit entry.
+
+---
+
+## K. Phase 5 — hub-and-spoke and the Editor
+
+Agreed 2026-11-26 as design, before any Phase 5 code: these record what will be built, not what has
+been. Each item is updated with evidence as its slice lands.
+
+- **K1 — Two tracks that meet at the first four-figure run.** **RESOLVED 2026-11-26.** *Content:*
+  corpora, Manifests and compiled Horizons, one figure at a time — Darwin, then Plato, then
+  Douglass — through Marcus's pipeline (design here; a recipe-only offload; verification; the token
+  gate on the owner's machine; profile, lineages, compile and coverage probe). *Machinery:* 5a the
+  four-figure substrate (per-figure event labels; figure and embedding loads off the event loop;
+  `figure_turn` takes `ChoirInput`; `Contribution` schema 2 with the J10 figure-side fields; four
+  turns concurrent and isolated, one logged retry, the degraded / hard-fail rule; the independent
+  baseline persisted); 5b the call-1 revision (K6); 5c the Editor (K7); 5d the Editor model test;
+  5e the pause (K8). Machinery is tested offline until all four corpora pass the token gate. Two
+  consequences of locked rules: a question the Host routes to token-ring stops after the Host with
+  `topology_not_built`, never a silent hub-and-spoke (no threshold override, and token-ring is
+  Phase 6); and the Editor model test is an offline script over a frozen Editor input, because
+  previous-run traces never enter runtime. Darwin first because he adds one new variable (corpus
+  shape) to a pipeline proven on one figure. *Rejected:* Plato first (shape and voice at once);
+  serial content-then-machinery (the machinery waits on the slowest work for no reason).
+- **K2 — Figure prompts in Phase 5.** **RESOLVED 2026-11-26.** All four figures run on the stand-in
+  (`prompts/figure_standin.md`); dossiers stay with Phase 9 and their generation prompt stays OPEN
+  (E1). No own-era Horizon block in the prompt (the 3c condition A); E1's question stays OPEN, and
+  the compiled Horizon still serves the Oracle and reconciliation. The stand-in changes once, as a
+  recorded change with a new hash: "in {translator}'s English translation" becomes an edition phrase
+  from the Manifest (Darwin and Douglass wrote in English), and it gains one reading-rule slot from
+  the Manifest, empty except for Plato (K4). *Rejected:* dossiers first (four content builds on an
+  undesigned prompt, adding a per-figure variable); a short handwritten persona per figure (an
+  unreviewed dossier by another name); repeating the Horizon A/B inside Phase 5.
+- **K3 — Darwin's corpus.** **RESOLVED 2026-11-26.** *The Origin of Species*, 6th edition (1872;
+  Gutenberg #2009), and *The Descent of Man*, 2nd edition (1874; Gutenberg #2300). Horizon year
+  1882, knowledge at death, as for Marcus. The 6th edition is his final text, answers later critics,
+  and is the first to use "evolution"; *Descent* gives him the moral sense, without which normative
+  questions would leave him nearly always declining. Editorial apparatus not by Darwin is stripped.
+  *Descent*'s Victorian views on race are primary and stay. *Rejected:* the 1859 1st edition (not
+  his final view; inconsistent with a horizon at death); *Origin* alone; *Beagle*, *Expression* and
+  the letters (Phase 9, on trace evidence).
+- **K4 — Plato's corpus.** **RESOLVED 2026-11-26.** Jowett's translation, 3rd edition; the
+  *Republic* from Gutenberg #55201 (Stephanus numbering throughout). Eight dialogues: *Republic*,
+  *Apology*, *Crito*, *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Jowett's introductions,
+  analyses and notes are stripped. Locators are Stephanus numbers where the source prints them and a
+  plain sequence where it does not — never inferred by alignment. Every word Plato wrote is corpus,
+  every speaker included; chunks are consecutive paragraphs within the word limit, cut at Stephanus
+  sections where they exist, never mid-speech where avoidable, each recording the speakers labelled
+  in it. Half the set is narrated rather than scripted (*Republic*, *Phaedo*, *Symposium*), so
+  speaker-turn chunking cannot apply throughout. A reading rule (Choir & Corpus §8) reaches the
+  figure through the stand-in's slot. *Rejected:* complete works (the *Laws* without Socrates;
+  dialogues of doubtful authorship); the *Republic* alone; Socrates' lines only (loses the
+  dialectic; presumes Socrates is Plato); a later translation (UK rights).
+- **K5 — Douglass's corpus.** **RESOLVED 2026-11-26.** *My Bondage and My Freedom* (1855;
+  Gutenberg #202), with its appendix of speech extracts he chose; *Three Addresses on the Relations
+  Subsisting Between the White and Colored People of the United States* (Gutenberg #67919);
+  *Collected Articles* (Gutenberg #99). Prefaces and introductions by others are stripped. Horizon
+  year 1895, knowledge at death. Chunks are consecutive paragraphs within a chapter or speech, each
+  recording work, title, and date and occasion. One telling of his life, so near-duplicate passages
+  don't crowd RRF's merged slots. *Rejected:* all three autobiographies (three tellings; the pre-
+  and post-1851 Douglass mixed); the *Narrative* instead of *Bondage* (the earlier view, no
+  speeches); *Life and Times* (a third telling, and Gutenberg's text is the 1881 edition, not the
+  1892 revision; the first Phase 9 addition if traces show postwar gaps); third-party anthologies.
+- **K6 — The canonical question and clarify.** **RESOLVED 2026-11-26.** One call-1 prompt change,
+  one new hash. First-person questions are restated in the third person with the material facts of
+  the situation as facts ("Should a person who …"), since a figure may read "I" as itself and never
+  sees the clarification exchange. No sub-questions, causes or scope the asker did not raise.
+  Clarify asks for one fact only the asker can supply, never what they want, value, feel or think.
+  Code checks that `canonical_question` and `clarifying_question` each contain exactly one question
+  mark. Proven by the 4a regression questions (seen, so regression only) and a fresh question chosen
+  after the prompt is frozen. *Rejected:* first person kept as written; "Should you …" (addresses
+  the figure); a model-declared list of changes (a naming rule); a second model checking the
+  restatement (cross-checking, out of scope); banned-phrase lists for clarify.
+- **K7 — The Editor's input and output.** **RESOLVED 2026-11-26.** *In:* the decision record
+  (answer criterion, `would_reject`, cast assessments); the original wording and any clarification
+  record, read-only; the four contributions; each cited passage in full with one neighbour each
+  side; each figure's search query strings; each figure's Oracle bridges, labelled modern. *Out:*
+  passages opened but not cited; code's reconciliation and leakage flags (the Detective's, C4);
+  candidate lists, figure prompts, anything from another run. *Output:* one schema, `audit` before
+  `synthesis`, splittable (C3). The audit carries per figure the J10 class against the answer
+  criterion, a check of any `would_reject` prediction against retrieval, evidence-fidelity notes,
+  the kind of disagreement, and counterfeit consensus. The synthesis carries the disposition and
+  its one-sentence rationale, the attributed answer, convergence, unresolved disagreements naming
+  figures, historical citations (figure and passage) apart from modern references (bridges), "What
+  would change the answer?", and the missing perspective on a degraded run. *Code checks:* one audit
+  entry per figure; attributed figures in the cast; each historical citation a passage that figure
+  cited; each modern reference a bridge in the run; the disposition in the locked enum; "what would
+  change" non-empty; missing perspective present exactly when degraded. Failures are recorded, never
+  repaired (H4). Until the Researcher exists (Phase 7) the only modern material is Oracle bridges,
+  so the modern / historical split is built in Phase 5 but properly exercised in Phase 7.
+  *Rejected:* the whole trace (audits what it should never weigh); contributions without passages
+  (no citation could be checked).
+- **K8 — The in-run pause.** **RESOLVED 2026-11-26.** The run task emits `awaiting_user` and waits
+  in memory under its run id; `POST /run/{id}/respond` resumes it, with the stream held open. A tab
+  closed while paused aborts the run, as now; a configurable timeout (15 minutes by default) aborts
+  it with the reason recorded. The slot is removed at finish: state within one run, never across
+  runs. *Flow:* call 1 may clarify once; after the answer it runs again, and a second clarify ends
+  the run `clarification_unresolved`. After calls 2–3 the correction boundary always pauses, and
+  also serves as the confirmation of the canonical interpretation (Topology & Steering §1). One
+  correction is accepted; calls 1–3 re-run and code records the decision delta (canonical question,
+  scores, topology, cast); no second boundary. CLI and probes pass an explicit flag recorded as
+  `correction: auto_accepted`. *"Before we go on, what do you think?"* is asked in the same pause
+  when call 1's factual posture is `normative` or `mixed` (a code rule), may be skipped, is asked
+  after framing is fixed, and is read by no seat in Phase 5 — recorded in the trace only, for later
+  analysis of whether a synthesis drifts toward the asker. *Rejected:* persisting a paused run across
+  restarts (production hardening); unlimited corrections (cast override by attrition); passing the
+  user's view to call 1 (the Phase 4 leak path) or to the Editor (invites pandering).
 
 ---
 

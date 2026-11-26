@@ -309,6 +309,36 @@ decision recorded either way. Also confirm, on the first Editor call that report
 `reasoning_tokens > 0`, that its estimated cost counts reasoning inside output tokens and not on
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
+*Plan, agreed 2026-11-26 (Decisions K1–K8). Nothing below is built yet.* Two tracks meet at the
+first four-figure run; the machinery is tested offline until all four corpora pass the token gate.
+
+```mermaid
+flowchart LR
+    subgraph Content["Content track — one figure at a time"]
+        C1["C1 · Darwin"] --> C2["C2 · Plato"] --> C3["C3 · Douglass"]
+    end
+    subgraph Machinery["Machinery track"]
+        A["5a · four-figure substrate"] --> B["5b · call-1 revision"] --> E["5c · Editor"]
+    end
+    C3 --> RUN(["First live<br/>four-figure run"])
+    E --> RUN
+    RUN --> T["5d · Editor model test<br/>offline script"]
+    RUN --> P["5e · the pause"]
+```
+
+| Slice | What it adds | Decisions |
+|---|---|---|
+| C1–C3 | Darwin, Plato, Douglass: corpus recipe offloaded, verified, token-gated; profile, lineages, compiled Horizon, coverage probe; roster flips to `built` | K3–K5 |
+| 5a | Per-figure event labels; loads off the event loop; `figure_turn` takes `ChoirInput`; `Contribution` schema 2; four concurrent, isolated turns with one logged retry and the degraded / hard-fail rule; the independent baseline persisted; `topology_not_built` for token-ring routings | K1, J10 |
+| 5b | One call-1 prompt change: third-person canonical question with situation facts, no widening, one-fact clarify; single-`?` checks in code | K6 |
+| 5c | The Editor: composed input, `audit` before `synthesis`, code checks; the first live hub-and-spoke runs | K7, C3 |
+| 5d | The Editor model test (H1, H3): the same frozen Editor input on a stronger tier, scored blind side by side, the promotion decision recorded either way | H1 |
+| 5e | The in-run pause: correction boundary, then clarify, then "what do you think?" | K8, J7 |
+
+The figures run on the revised stand-in prompt with no own-era Horizon block (K2). The 5e pause
+comes last only in order of building: nothing upstream depends on it, and it changes the run
+lifecycle once that lifecycle holds four figures.
+
 **Phase 6 — Token-ring.**
 R1 blind baseline → later rounds seeing the transcript → direct-question/challenge objects →
 deterministic seat rotation → deterministic stop logic **with the failed-figure guard** (a failed
