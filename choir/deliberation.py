@@ -3,15 +3,17 @@
     host_decide → not proceed: the Host's outcome, as host_run returns it
                 → token_ring: topology_not_built, run complete (Phase 6; never a silent
                   hub-and-spoke — there is no threshold override)
-                → hub_and_spoke: four lanes over the cast, then the independent baseline
-
-No Editor yet (5c): annotated `editor: not_built` on the hub path. No endpoint in this slice.
+                → hub_and_spoke: four lanes over the cast, then the independent baseline,
+                  then the Editor (K10): it runs on a complete or degraded Choir, never after
+                  a Choir hard fail (which has already raised) or an unbuilt topology
 """
 
 from typing import Any
 
+from choir.editor import run_editor
 from choir.hub_and_spoke import hub_and_spoke
 from core.trace import RunTrace
+from host.cast import load_roster
 from host.run import host_decide
 
 
@@ -25,7 +27,9 @@ async def deliberation_run(trace: RunTrace, question: str, condition: str = "A")
                                                     "rule": scoring.rule})
         trace.annotate("outcome", "topology_not_built")
         return {**decision.returned, "outcome": "topology_not_built"}
-    trace.annotate("editor", "not_built")
     choir = await hub_and_spoke(trace, decision.choir_input,
                                 list(decision.cast.record.output.selected), condition)
-    return {**decision.returned, "choir": choir}
+    names = {f.figure_id: f.name for f in load_roster()}
+    editor = await run_editor(trace, decision.choir_input, decision.record, choir, names,
+                              degraded=choir.summary["run_outcome"] == "degraded")
+    return {**decision.returned, "choir": choir.summary, "editor": editor}

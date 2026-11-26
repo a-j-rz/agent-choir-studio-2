@@ -15,7 +15,7 @@ cancelled, a `finally` cancels any lane still pending — or an aborted run keep
 
 import asyncio
 import json
-from typing import Any
+from typing import Any, NamedTuple
 
 from choir.contribution import ContributionInvalid
 from choir.figure_turn import RoundTripCapReached, figure_turn
@@ -25,6 +25,12 @@ from host.records import ChoirInput
 from retrieval import vectors
 
 BASELINE_SCHEMA_VERSION = 1
+
+
+class ChoirResult(NamedTuple):
+    summary: dict[str, Any]  # what the run returns
+    baseline: dict[str, Any]  # exactly what baseline.json holds
+    editor_passages: dict[str, list[dict[str, Any]]]  # per contributing figure; in memory only
 
 
 class ChoirHardFail(Exception):
@@ -109,7 +115,7 @@ def _baseline(trace: RunTrace, choir_input: ChoirInput, cast: list[str],
 
 
 async def hub_and_spoke(trace: RunTrace, choir_input: ChoirInput, cast: list[str],
-                        condition: str = "A") -> dict[str, Any]:
+                        condition: str = "A") -> ChoirResult:
     trace.annotate("condition", condition)
     model = await vectors.on_model(vectors.get_model)
     tasks = {asyncio.create_task(_lane(trace, fid, choir_input, condition, model),
@@ -143,7 +149,8 @@ async def hub_and_spoke(trace: RunTrace, choir_input: ChoirInput, cast: list[str
 
     failed = [fid for fid in cast if lanes[fid]["outcome"] == "failed"]
     run_outcome = "complete" if not failed else "degraded" if len(failed) == 1 else "hard_fail"
-    name, sha = trace.write_baseline(_baseline(trace, choir_input, cast, lanes, run_outcome))
+    baseline = _baseline(trace, choir_input, cast, lanes, run_outcome)
+    name, sha = trace.write_baseline(baseline)
     trace.emit("independent_baseline", "system", {
         "file": name, "sha256": sha,
         "figures": {fid: lanes[fid]["outcome"] for fid in cast}, "run_outcome": run_outcome})
@@ -153,5 +160,8 @@ async def hub_and_spoke(trace: RunTrace, choir_input: ChoirInput, cast: list[str
             f"{fid} ({lanes[fid]['failure_class']})" for fid in failed))
     if failed:
         trace.annotate("degraded", failed)
-    return {"topology": "hub_and_spoke", "run_outcome": run_outcome,
-            "figures": {fid: lanes[fid]["outcome"] for fid in cast}, "baseline_sha256": sha}
+    summary = {"topology": "hub_and_spoke", "run_outcome": run_outcome,
+               "figures": {fid: lanes[fid]["outcome"] for fid in cast}, "baseline_sha256": sha}
+    passages = {fid: lanes[fid]["result"]["editor_passages"] for fid in cast
+                if lanes[fid]["outcome"] == "contributed"}
+    return ChoirResult(summary, baseline, passages)

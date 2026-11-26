@@ -339,6 +339,22 @@ The figures run on the revised stand-in prompt with no own-era Horizon block (K2
 comes last only in order of building: nothing upstream depends on it, and it changes the run
 lifecycle once that lifecycle holds four figures.
 
+*Recorded during 5c design (2026-11-26), not yet scheduled:*
+
+- **The Detective has no phase.** Its design is in Leakage & Detective; no phase of this plan builds
+  it. It depends on the Editor and runs last in every run (C4), so its natural place is a slice
+  straight after 5c/5d. To be settled at the Phase 5 checkpoint.
+- **The full run report opens with the question and a scorecard** (owner's requirement): one tile
+  per observable, each coloured red / amber / green by a rule in code from a fact in the trace —
+  run status, cost and speed against a budget, retrieval discipline (citations never opened,
+  declarations without a search), the Editor's evidence verdicts, the Detective's findings by
+  grade, gate predictions and steering checks, counterfeit consensus — **with the rule that
+  coloured it shown on the tile**. Qualitative observables show their signals coloured and
+  labelled *signal, not verdict*; quality itself is shown uncoloured, as "read the synthesis",
+  linked to the audit. **No overall run colour and no quality colour** (A3, Topology & Steering
+  §13: a scalar quality score is counterfeit certainty one level up). Thresholds are decisions,
+  recorded and versioned like rubric anchors.
+
 **Phase 6 — Token-ring.**
 R1 blind baseline → later rounds seeing the transcript → direct-question/challenge objects →
 deterministic seat rotation → deterministic stop logic **with the failed-figure guard** (a failed

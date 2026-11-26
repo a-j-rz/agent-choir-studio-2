@@ -470,6 +470,27 @@ been. Each item is updated with evidence as its slice lands.
   blocks. This supersedes "query embedding stays on the loop". *Rejected:* a lock (taken on the
   loop thread it freezes the loop, and every caller must remember it); loading all figures before
   the lanes (doesn't cover two runs at once on the server); undoing the threaded loads.
+- **K10 — The hub-and-spoke Editor (slice 5c).** **RESOLVED 2026-11-26**, as design before code.
+  *Frozen input:* after the baseline, code compiles `editor_input.json` deterministically from the
+  decision record, the baseline and the cited passages (each with one same-book neighbour per side,
+  marked context), writes it once, names it by SHA-256 in an `editor_input` event, and sends
+  exactly that text — the point where probabilistic contributions become a fixed document, so the
+  Editor model test (5d) re-runs the same bytes offline. One JSON document after a stable prompt;
+  figures in cast order (a fixed order, a possible bias, recorded). *Output:* `audit` before
+  `synthesis`, reason before verdict within each judgement; a sixth audit class, `not_contributed`,
+  so a failed figure still gets its one entry; code checks the structured lists (cast, cited
+  passages, received bridges, `would_reject`, degraded state), never the prose. *Prompt:*
+  `prompts/editor_hub.md` (`7713a4be…`), hub-and-spoke only — token-ring gets its own in Phase 6,
+  sharing the schema core; each disposition defined, the synthesis told to weigh contributions by
+  the audit; no examples (J9); effort `high`. *Failure:* a transient error after its retry, an
+  unparseable output, or any failed check is an Editor failure and fails the run (§14), with every
+  check reported and the baseline, the input and the raw output kept. *Testing:* offline in full;
+  then two live calls on a synthetic deliberation as a mechanics check only — schema acceptance,
+  output length, cost, reasoning tokens — with quality judged on the first real four-figure runs.
+  *Rejected:* building the input inside the call (5d would rebuild it from the trace); prose
+  input (paraphrased ids); one prompt for both topologies, or a templated one (J9); delivering a
+  synthesis that failed a check, with flags (a fabricated attribution presented as the answer);
+  repairing or re-calling (H4, §14); a staged "real" deliberation from one corpus under four names.
 
 ---
 

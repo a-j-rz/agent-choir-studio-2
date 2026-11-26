@@ -20,6 +20,8 @@ TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
 
 RunStatus = Literal["complete", "failed", "aborted"]
 BASELINE_FILE = "baseline.json"
+EDITOR_INPUT_FILE = "editor_input.json"
+EDITOR_OUTPUT_FILE = "editor_output.json"
 
 # summary.json's own shape version, separate from the event schema (core.events).
 # 5: config gains calls (5a: timeout and retry waits).
@@ -48,7 +50,7 @@ class RunTrace:
         self._last_type: str | None = None
         self._finished = False
         self._annotations: dict[str, Any] = {}  # run-level facts a body records for summary.json
-        self._baseline_written = False
+        self._written_once: set[str] = set()  # files a run writes exactly once (baseline, Editor)
         # Unbounded, so put_nowait can never raise QueueFull: emit() must never block or await,
         # because it runs inside `finally` blocks. Nobody reading it (a CLI run) is harmless.
         self.live: asyncio.Queue[Event | None] = asyncio.Queue()
@@ -103,16 +105,29 @@ class RunTrace:
         """The only trace a figure turn receives: stamps `figure` on every event and raw file."""
         return LaneTrace(self, figure_id)
 
+    def _write_once(self, name: str, data: bytes) -> tuple[str, str]:
+        """Write a run-level file exactly once; return (file name, SHA-256). A second write raises."""
+        if self._finished:
+            raise RuntimeError(f"run {self.run_id} is finished; cannot write {name}")
+        if name in self._written_once:
+            raise RuntimeError(f"run {self.run_id} already has {name}; it is written once")
+        (self.dir / name).write_bytes(data)
+        self._written_once.add(name)
+        return name, hashlib.sha256(data).hexdigest()
+
     def write_baseline(self, obj: Any) -> tuple[str, str]:
         """Write baseline.json once; return (file name, SHA-256). A second call raises."""
-        if self._finished:
-            raise RuntimeError(f"run {self.run_id} is finished; cannot write the baseline")
-        if self._baseline_written:
-            raise RuntimeError(f"run {self.run_id} already has a baseline; it is written once")
         data = (json.dumps(obj, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
-        (self.dir / BASELINE_FILE).write_bytes(data)
-        self._baseline_written = True
-        return BASELINE_FILE, hashlib.sha256(data).hexdigest()
+        return self._write_once(BASELINE_FILE, data)
+
+    def write_editor_input(self, text: str) -> tuple[str, str]:
+        """Write the frozen Editor input, exactly this text, once (Decisions K10)."""
+        return self._write_once(EDITOR_INPUT_FILE, text.encode("utf-8"))
+
+    def write_editor_output(self, obj: Any) -> tuple[str, str]:
+        """Write what the Editor returned (raw texts, and the parsed output if any), once."""
+        data = (json.dumps(obj, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+        return self._write_once(EDITOR_OUTPUT_FILE, data)
 
     def annotate(self, key: str, value: Any) -> None:
         """Record a run-level fact (e.g. an experimental condition) for summary.json.

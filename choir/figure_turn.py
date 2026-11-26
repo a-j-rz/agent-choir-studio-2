@@ -108,6 +108,27 @@ def citation_check(contribution, state, figure, extra_items: int) -> dict[str, A
     }
 
 
+def editor_passages(contribution, figure) -> list[dict[str, Any]]:
+    """Each cited passage, in citation order, in full, with one neighbour each side from the same
+    book (open_context's rule at window 1), marked by side. For the Editor input only (K10):
+    never written to baseline.json, which stays text-free. An unknown id keeps its place, empty."""
+    chunks, position = figure["chunks"], figure["position"]
+    out = []
+    for pid in dict.fromkeys(c.passage_id for c in contribution.citations):
+        if pid not in position:
+            out.append({"passage_id": pid, "locator": None, "text": None, "neighbours": []})
+            continue
+        i = position[pid]
+        chunk = chunks[i]
+        neighbours = [{"passage_id": chunks[j]["chunk_id"], "locator": chunks[j]["locator"],
+                       "text": chunks[j]["text"], "side": side}
+                      for j, side in ((i - 1, "before"), (i + 1, "after"))
+                      if 0 <= j < len(chunks) and chunks[j]["book"] == chunk["book"]]
+        out.append({"passage_id": pid, "locator": chunk["locator"], "text": chunk["text"],
+                    "neighbours": neighbours})
+    return out
+
+
 class RoundTripCapReached(Exception):
     """The turn hit its round-trip cap before answering. Checked before parsing."""
 
@@ -193,4 +214,6 @@ async def figure_turn(
         "cited": check["cited"],
         "oracle_bridges": [{"number": r["number"], "concept": r["concept"],
                             "returned": r["returned"]} for r in requests],
+        # For the Editor input only, never the baseline (K10): cited passages in full.
+        "editor_passages": editor_passages(contribution, figure),
     }

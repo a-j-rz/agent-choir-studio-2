@@ -13,6 +13,7 @@ figure turns make real search, open and ask_oracle tool calls, so tools, budgets
 
 import argparse
 import asyncio
+import copy
 from functools import partial
 import hashlib
 import json
@@ -26,6 +27,7 @@ import httpx2
 import numpy as np
 import openai
 
+import choir.editor as editor
 import choir.oracle as oracle
 import core.llm as llm
 from choir.deliberation import deliberation_run
@@ -112,7 +114,9 @@ def fake_load_figure(figure_id, model, allow_build=True):
     started = time.perf_counter()
     if STATE["load_delay"]:
         time.sleep(STATE["load_delay"])  # blocks its thread, as a real index load does
-    chunks = [{"chunk_id": f"{PREFIX[figure_id]}-{i:03d}", "locator": f"{i}", "book": 1,
+    # Two books (1–3, 4–6), so the Editor's same-book neighbour rule is actually exercised.
+    chunks = [{"chunk_id": f"{PREFIX[figure_id]}-{i:03d}", "locator": f"{i}",
+               "book": 1 if i <= 3 else 2,
                "text": passage_text(figure_id, i), "figure_id": figure_id} for i in range(1, 7)]
     lexical = bm25.build_from_analysed([{**c, "tokens": bm25.analyse(c["text"])} for c in chunks])
     vecs = vectors.embed_passages(model, chunks)  # length check + encode, with the given model
@@ -196,7 +200,11 @@ def assess(fid):
                                    if fid == "marcus_aurelius" else "unassessable"}}
 
 
-CAST_OUT = {"candidate_assessments": [assess(f) for f in CAST], "selected": CAST,
+def cast_out(marcus_weak=False):
+    assessments = [assess(f) for f in CAST]
+    if marcus_weak:  # the gate would reject Marcus: code records would_reject (J6)
+        assessments[0]["corpus_suitability"]["rating"] = "weak"
+    return {"candidate_assessments": assessments, "selected": CAST,
             "panel_diversity": "probe", "panel_redundancy": "probe", "panel_tension": "probe",
             "near_misses": []}
 ORACLE_ANSWER = {"status": "bridged", "explanation": "A thing a traveller carries.",
@@ -207,7 +215,10 @@ class Scenario:
     """What the fake client does. figure: per-figure script name; errors: (fid, trip) -> list
     of exceptions, one per attempt; delay: per-figure seconds before each response."""
 
-    def __init__(self, figure=None, errors=None, delay=None, scores=(1, 0, 1, 0, 1)):
+    def __init__(self, figure=None, errors=None, delay=None, scores=(1, 0, 1, 0, 1),
+                 editor=(), marcus_weak=False):
+        self.editor = list(editor)  # named violations applied to the valid canned Editor output
+        self.marcus_weak = marcus_weak
         self.figure = figure or {}
         self.errors = errors or {}
         self.delay = delay or {}
@@ -249,6 +260,13 @@ def figure_script(name, fid, trip):
         return [call("search_my_corpus", 1, query=f"mind and duty {PREFIX[fid]}marker")]
     if name == "grounded_no_citations" and trip == 2:
         return [message(contribution("grounded", cited=[]))]
+    if name == "open_two_cite_edge" and trip == 2:  # opens 003 and 005, will cite 003 only
+        return [call("open_passage", 2, passage_id=f"{PREFIX[fid]}-003"),
+                call("open_passage", 3, passage_id=f"{PREFIX[fid]}-005"),
+                call("ask_oracle", 4, concept="smartphone",
+                     where_encountered="a traveller mentioned it")]
+    if name == "open_two_cite_edge":
+        return [message(contribution("grounded", cited=[f"{PREFIX[fid]}-003"]))]
     if trip == 2:
         return [call("open_passage", 2, passage_id=first),
                 call("ask_oracle", 3, concept="smartphone",
@@ -263,6 +281,72 @@ def figure_script(name, fid, trip):
     return [message(contribution("grounded", cited=[first]))]
 
 
+def editor_output(editor_input_text, violations=()):
+    """A valid Editor output built from the input the Editor actually received, then any named
+    violations applied (c1–c9: one per code check; 'unparseable')."""
+    if "unparseable" in violations:
+        return "this is not an editor output"
+    inp = json.loads(editor_input_text)
+    figs = inp["figures"]
+    would_reject = {h["figure_id"] for h in inp["host"]["figures"] if h["would_reject"]}
+    contributed = [f for f in figs if f["outcome"] == "contributed"]
+    c_ids = [f["figure_id"] for f in contributed]
+    degraded = len(contributed) < len(figs)
+    out = {
+        "audit": {
+            "figures": [{
+                "figure_id": f["figure_id"], "reason": "probe",
+                "answer_class": "answered" if f["outcome"] == "contributed" else "not_contributed",
+                "evidence": [{"passage_id": p["passage_id"], "note": "probe", "verdict": "supports"}
+                             for p in f.get("cited_passages", [])],
+                "gate_check": ({"reason": "probe", "borne_out": False}
+                               if f["figure_id"] in would_reject else None),
+                "modern_knowledge": []} for f in figs],
+            "disagreements": [{"about": "probe", "figures": c_ids[:2], "kind": "normative"}],
+            "consensus": {"note": "probe", "counterfeit": False}},
+        "synthesis": {
+            "rationale": "probe", "disposition": "balanced_split", "answer": "probe answer",
+            "convergence": [{"point": "probe", "figures": c_ids[:1]}],
+            "unresolved": [{"point": "probe", "figures": c_ids[:2], "kind": "normative"}],
+            "historical_citations": [{"figure_id": f["figure_id"],
+                                      "passage_id": f["cited_passages"][0]["passage_id"],
+                                      "supports": "probe"}
+                                     for f in contributed if f["cited_passages"]],
+            "modern_references": [{"figure_id": f["figure_id"], "bridge_number": e["number"],
+                                   "used_for": "probe"}
+                                  for f in contributed for e in f["modern_explanations"]
+                                  if not e.get("unanswered")],
+            "what_would_change": ["a probe fact"],
+            "missing_perspective": "probe: one figure did not contribute" if degraded else None}}
+    a, syn = out["audit"], out["synthesis"]
+    first_c = next(f for f in a["figures"] if f["answer_class"] != "not_contributed")
+    if "c1" in violations:
+        a["figures"][0], a["figures"][1] = a["figures"][1], a["figures"][0]
+    if "c2" in violations:
+        first_c["answer_class"] = "not_contributed"
+    if "c3" in violations:
+        first_c["evidence"] = []
+    if "c4" in violations:
+        target = next(f for f in a["figures"] if f["figure_id"] not in would_reject)
+        target["gate_check"] = {"reason": "probe", "borne_out": True}
+    if "c5" in violations:
+        a["disagreements"][0]["figures"] = c_ids[:1]
+    if "c6" in violations:
+        syn["historical_citations"].append({"figure_id": c_ids[0], "passage_id": "zzz-999",
+                                            "supports": "probe"})
+    if "c7" in violations:
+        syn["modern_references"].append({"figure_id": c_ids[0], "bridge_number": 99,
+                                         "used_for": "probe"})
+    if "c8" in violations:
+        syn["what_would_change"] = []
+    if "c9" in violations:
+        syn["missing_perspective"] = None if degraded else "probe: nobody was missing"
+    return out
+
+
+EDITOR_LIVE = None  # editor_smoke --live: the real client's create, for the Editor call only
+
+
 class FakeResponses:
     async def _create(self, **request):
         fmt = request["text"]["format"]["name"]
@@ -272,6 +356,10 @@ class FakeResponses:
             fid = next(f for f, n in NAMES.items() if n == author)
         elif fmt == "oracle_answer":
             fid = "oracle"
+        elif fmt == "editor_output":
+            fid = "editor"
+            if EDITOR_LIVE is not None:
+                return await EDITOR_LIVE(**request)
         trip = 1 + sum(1 for i in request["input"] if i.get("type") == "function_call_output")
         key = (fid, trip)
         attempt = SCENARIO.attempts[key] = SCENARIO.attempts.get(key, 0) + 1
@@ -284,9 +372,11 @@ class FakeResponses:
         elif fmt == "host_classification":
             output = [message(score(SCENARIO.scores))]
         elif fmt == "host_cast":
-            output = [message(CAST_OUT)]
+            output = [message(cast_out(SCENARIO.marcus_weak))]
         elif fmt == "oracle_answer":
             output = [message(ORACLE_ANSWER)]
+        elif fmt == "editor_output":
+            output = [message(editor_output(request["input"][0]["content"], SCENARIO.editor))]
         else:
             output = figure_script(SCENARIO.figure.get(fid, "clean"), fid, trip)
         return FakeRaw({"output": output}, request)
@@ -402,7 +492,8 @@ async def case_1():
             check(re.match(rf"^\d{{4}}-{lane}-(figure|oracle)-", name) is not None,
                   f"raw name {name}", misses)
         else:
-            check(re.match(r"^\d{4}-host-", name) is not None, f"raw name {name}", misses)
+            check(re.match(r"^\d{4}-(host|editor)-", name) is not None, f"raw name {name}",
+                  misses)
     labels = [e.figure for e in events if e.figure]
     switches = sum(1 for a, b in zip(labels, labels[1:]) if a != b)
     check(switches > len(CAST), f"lanes did not interleave ({switches} switches)", misses)
@@ -649,6 +740,215 @@ async def case_14():
     return run_dir, misses
 
 
+# ---------------------------------------------------------------- Editor cases (5c, K10)
+
+EDITOR_FILES = ("baseline.json", "editor_input.json", "editor_output.json")
+FORBIDDEN_KEYS = {"horizon_reconciliation", "reconciliation", "unbridged", "hits", "merged",
+                  "lexical_rank", "semantic_rank", "rrf_score", "instructions", "opened",
+                  "candidates", "raw_file"}
+
+
+def editor_events(events):
+    return [e for e in events if e.role == "editor"]
+
+
+def all_keys(obj):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield k
+            yield from all_keys(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            yield from all_keys(v)
+
+
+def editor_failed(events, summary, run_dir, check_label, misses, error=None):
+    """The shared expectation for an Editor failure."""
+    inv = [e.payload for e in events if e.type == "editor_invalid"]
+    text = json.dumps(inv, ensure_ascii=False)
+    check(len(inv) == 1 and check_label in text, f"editor_invalid naming {check_label!r}: {text[:300]}",
+          misses)
+    check(summary["status"] == "failed", f"status {summary['status']}", misses)
+    out = [e.payload for e in events if e.type == "editor_output"]
+    check(len(out) == 1 and out[0]["valid"] is False, f"editor_output {out}", misses)
+    for name in EDITOR_FILES:
+        check((run_dir / name).exists(), f"{name} missing", misses)
+    check(not [e for e in events if e.type in ("editor_audit", "editor_synthesis")],
+          "audit/synthesis emitted on an invalid output", misses)
+
+
+async def case_e1():
+    events, error, run_dir, summary = await run_case(Scenario())
+    misses = []
+    ed = editor_events(events)
+    check(ed and ed[0].type == "editor_input", f"first Editor event {ed[0].type if ed else None}",
+          misses)
+    text = (run_dir / "editor_input.json").read_text(encoding="utf-8")
+    sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    check(ed and ed[0].payload["sha256"] == sha, "editor_input hash differs from the file", misses)
+    bound = next((e for e in ed if e.type == "editor_bound"), None)
+    check(bound and bound.payload["input_sha256"] == sha, "editor_bound input hash", misses)
+    trip = next((e for e in ed if e.type == "round_trip"), None)
+    sent = json.loads((run_dir / "raw" / trip.payload["raw_file"]).read_text())["request"] if trip else None
+    check(sent and sent["input"][0]["content"] == text, "the request did not carry the file's exact text",
+          misses)
+    check(sent and len(sent["input"]) == 1, "the Editor request has more than one input item", misses)
+    order = [e.type for e in ed]
+    check(order[:3] == ["editor_input", "editor_bound", "round_trip"], f"order {order}", misses)
+    return run_dir, misses
+
+
+CAPTURED = {}
+
+
+async def case_e2():
+    real = editor.compile_editor_input
+
+    def capture(*args):
+        CAPTURED["args"] = copy.deepcopy(args)
+        return real(*args)
+    editor.compile_editor_input = capture
+    try:
+        events, error, run_dir, summary = await run_case(Scenario())
+    finally:
+        editor.compile_editor_input = real
+    misses = []
+    first = editor.serialise(real(*copy.deepcopy(CAPTURED["args"])))
+    second = editor.serialise(real(*copy.deepcopy(CAPTURED["args"])))
+    check(first == second, "two compiles of the same inputs differ", misses)
+    check(first.encode("utf-8") == (run_dir / "editor_input.json").read_bytes(),
+          "a recompile differs from the written file", misses)
+    return run_dir, misses
+
+
+async def case_e3():
+    sc = Scenario(figure={"plato": "open_two_cite_edge", "charles_darwin": "invalid"})
+    events, error, run_dir, summary = await run_case(sc)
+    misses = []
+    text = (run_dir / "editor_input.json").read_text(encoding="utf-8")
+    inp = json.loads(text)
+    blocks = {f["figure_id"]: f for f in inp["figures"]}
+    plato = blocks.get("plato", {})
+    cited = plato.get("cited_passages", [])
+    check([p["passage_id"] for p in cited] == ["pla-003"], f"plato cited {cited}", misses)
+    neighbours = [(n["side"], n["passage_id"]) for p in cited for n in p["context_neighbours"]]
+    check(neighbours == [("before", "pla-002")], f"neighbours {neighbours} (pla-004 is book 2)",
+          misses)
+    check("pla-005" not in text, "an opened-but-uncited passage reached the Editor input", misses)
+    check(set(blocks.get("charles_darwin", {})) == {"figure_id", "name", "outcome", "failure_class"},
+          f"failed block keys {sorted(blocks.get('charles_darwin', {}))}", misses)
+    check(blocks.get("charles_darwin", {}).get("failure_class") == "contribution_invalid",
+          "failure class", misses)
+    leaked = sorted(set(all_keys(inp)) & FORBIDDEN_KEYS)
+    check(not leaked, f"forbidden keys in the Editor input: {leaked}", misses)
+    check([f["figure_id"] for f in inp["figures"]] == CAST, "figures not in cast order", misses)
+    check(summary["status"] == "complete", f"status {summary['status']} {error}", misses)
+    return run_dir, misses
+
+
+async def case_e4():
+    events, error, run_dir, summary = await run_case(Scenario())
+    misses = []
+    types = [e.type for e in editor_events(events)]
+    check(types[-3:] == ["editor_output", "editor_audit", "editor_synthesis"], f"{types}", misses)
+    out = next((e.payload for e in events if e.type == "editor_output"), {})
+    check(out.get("valid") is True, f"editor_output {out}", misses)
+    check(summary["status"] == "complete", f"status {summary['status']} {error}", misses)
+    check(summary["annotations"].get("disposition") == "balanced_split", "disposition annotation",
+          misses)
+    check("editor" not in summary["annotations"], "editor: not_built still annotated", misses)
+    return run_dir, misses
+
+
+def editor_check_case(n, violation, **scenario):
+    async def run():
+        events, error, run_dir, summary = await run_case(Scenario(editor=[violation], **scenario))
+        misses = []
+        editor_failed(events, summary, run_dir, f"check {n}:", misses)
+        return run_dir, misses
+    return run
+
+
+async def case_e8_positive():
+    """would_reject names Marcus: a gate_check for him (and only him) passes check 4."""
+    events, error, run_dir, summary = await run_case(Scenario(marcus_weak=True))
+    misses = []
+    check(summary["status"] == "complete", f"status {summary['status']} {error}", misses)
+    audit = next((e.payload for e in events if e.type == "editor_audit"), {})
+    gates = {f["figure_id"]: f["gate_check"] is not None for f in audit.get("figures", [])}
+    check(gates == {"marcus_aurelius": True, "plato": False, "frederick_douglass": False,
+                    "charles_darwin": False}, f"gate checks {gates}", misses)
+    return run_dir, misses
+
+
+async def case_e14():
+    events, error, run_dir, summary = await run_case(Scenario(editor=["c5", "c8", "c9"]))
+    misses = []
+    editor_failed(events, summary, run_dir, "check 5:", misses)
+    inv = json.dumps([e.payload for e in events if e.type == "editor_invalid"])
+    for label in ("check 5:", "check 8:", "check 9:"):
+        check(label in inv, f"{label} not reported", misses)
+    return run_dir, misses
+
+
+async def case_e15():
+    events, error, run_dir, summary = await run_case(Scenario(editor=["unparseable"]))
+    misses = []
+    editor_failed(events, summary, run_dir, "H4:", misses)
+    check(not [e for e in events if e.type == "round_trip_retry"], "retried an unparseable output",
+          misses)
+    check(len([e for e in events if e.type == "round_trip" and e.role == "editor"]) == 1,
+          "more than one Editor call", misses)
+    return run_dir, misses
+
+
+async def case_e16():
+    events, error, run_dir, summary = await run_case(Scenario(errors={("editor", 1): [err_5xx("0")]}))
+    misses = []
+    retries = [e for e in events if e.type == "round_trip_retry"]
+    check(len(retries) == 1 and retries[0].role == "editor", f"retries {retries}", misses)
+    out = next((e.payload for e in events if e.type == "editor_output"), {})
+    check(out.get("valid") is True and summary["status"] == "complete",
+          f"editor_output {out} status {summary['status']}", misses)
+    return run_dir, misses
+
+
+async def case_e17():
+    misses, dirs = [], []
+    events, error, run_dir, summary = await run_case(Scenario(figure={"plato": "invalid"}))
+    dirs.append(run_dir.name)
+    synth = next((e.payload for e in events if e.type == "editor_synthesis"), {})
+    check(summary["status"] == "complete" and summary["annotations"].get("degraded") == ["plato"],
+          f"degraded run status {summary['status']} {error}", misses)
+    check(bool(synth.get("missing_perspective")), "no missing_perspective on a degraded run", misses)
+    audit = next((e.payload for e in events if e.type == "editor_audit"), {})
+    plato = next((f for f in audit.get("figures", []) if f["figure_id"] == "plato"), {})
+    check(plato.get("answer_class") == "not_contributed" and plato.get("evidence") == [],
+          f"plato audit {plato}", misses)
+    events, error, run_dir, summary = await run_case(Scenario(figure={"plato": "invalid"},
+                                                              editor=["c9"]))
+    dirs.append(run_dir.name)
+    editor_failed(events, summary, run_dir, "check 9:", misses)
+    return " · ".join(dirs), misses
+
+
+async def case_e18():
+    misses, dirs = [], []
+    events, error, run_dir, summary = await run_case(
+        Scenario(figure={"plato": "invalid", "charles_darwin": "invalid"},
+                 delay={"marcus_aurelius": 0.4, "frederick_douglass": 0.4}))
+    dirs.append(run_dir.name)
+    check(summary["status"] == "failed" and not editor_events(events),
+          f"hard fail: status {summary['status']}, Editor events {len(editor_events(events))}",
+          misses)
+    check(not (run_dir / "editor_input.json").exists(), "editor_input.json on a hard fail", misses)
+    events, error, run_dir, summary = await run_case(Scenario(scores=(2, 2, 1, 0, 0)))
+    dirs.append(run_dir.name)
+    check(summary["status"] == "complete" and not editor_events(events),
+          f"token-ring: Editor events {len(editor_events(events))}", misses)
+    return " · ".join(dirs), misses
+
+
 WORDS = ["governing", "government", "governs", "consciousness", "conscious", "happily",
          "happiness", "relational", "relations", "duties", "dutiful", "running", "generously",
          "generalization", "national", "nationalism", "hopefulness", "hoped", "philosophical",
@@ -726,13 +1026,23 @@ async def case_1_repeated(n=20):
     return f"{passed} of {n} passed", ([] if passed == n else failures)
 
 
-async def offline() -> int:
+def install_fakes():
+    """Patch in the fake client, figures, Oracle context and model. Returns a restore function."""
     patches = [(llm, "_client", FAKE_CLIENT), (hybrid, "load_figure", fake_load_figure),
                (oracle, "load_context", fake_load_context),
                (vectors, "get_model", lambda: MODEL)]
     saved = [(obj, name, getattr(obj, name)) for obj, name, _ in patches]
     for obj, name, value in patches:
         setattr(obj, name, value)
+
+    def restore():
+        for obj, name, value in saved:
+            setattr(obj, name, value)
+    return restore
+
+
+async def offline() -> int:
+    restore = install_fakes()
     rows = []
 
     async def run(label, coro):
@@ -763,9 +1073,27 @@ async def offline() -> int:
         await run("15 stemmer under threads", case_15())
         await run("16 one model owner", case_16())
         await run("1×20 case 1 repeated", case_1_repeated())
+        await run("E1 input written, hashed, sent verbatim", case_e1())
+        await run("E2 compile twice → identical bytes", case_e2())
+        await run("E3 input: neighbours, no uncited, no flags", case_e3())
+        await run("E4 valid output → audit, synthesis", case_e4())
+        await run("E5 check 1: audit ids are the cast", editor_check_case(1, "c1")())
+        await run("E6 check 2: not_contributed ⇔ failed", editor_check_case(2, "c2")())
+        await run("E7 check 3: evidence = cited", editor_check_case(3, "c3")())
+        await run("E8 check 4: gate_check ⇔ would_reject", editor_check_case(4, "c4")())
+        await run("E8+ would_reject: gate_check passes", case_e8_positive())
+        await run("E9 check 5: ≥2 figures, in cast", editor_check_case(5, "c5")())
+        await run("E10 check 6: citations were cited", editor_check_case(6, "c6")())
+        await run("E11 check 7: references were bridged", editor_check_case(7, "c7")())
+        await run("E12 check 8: what_would_change", editor_check_case(8, "c8")())
+        await run("E13 check 9: missing_perspective", editor_check_case(9, "c9")())
+        await run("E14 three violations, all reported", case_e14())
+        await run("E15 unparseable → invalid, no retry", case_e15())
+        await run("E16 one transient error, recovered", case_e16())
+        await run("E17 degraded: Editor runs, perspective", case_e17())
+        await run("E18 hard fail, token-ring: no Editor", case_e18())
     finally:
-        for obj, name, value in saved:
-            setattr(obj, name, value)
+        restore()
 
     print("\n######## CHOIR PROBE (offline: 0 live calls, no embedding model)")
     for label, where, misses in rows:
