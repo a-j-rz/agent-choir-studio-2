@@ -75,6 +75,6 @@ class HostRequest(BaseModel):
 
 @app.post("/run/host")
 def run_host(body: HostRequest):
-    """Costs money: up to two Host calls (triage, then scoring on proceed). POST, so a prefetch
-    or link preview cannot fire it."""
-    return sse(stream_run(partial(host_run, question=body.question), "host run (4b)"))
+    """Costs money: up to three Host calls (triage; then scoring and cast on proceed). POST, so
+    a prefetch or link preview cannot fire it."""
+    return sse(stream_run(partial(host_run, question=body.question), "host run (4c)"))

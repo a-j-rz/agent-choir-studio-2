@@ -24,7 +24,7 @@
 <button id="liveBtn">Live run (~$0.0001)</button>
 <h2>Host: triage and framing</h2>
 <textarea id="question" rows="3" placeholder="Your question"></textarea><br>
-<button id="hostBtn">Ask the Host (1–2 live calls)</button>
+<button id="hostBtn">Ask the Host (1–3 live calls)</button>
 <div id="record"></div>
 <div id="statusLine">idle</div>
 <table>
@@ -78,6 +78,40 @@
     record.textContent = '';
     record.appendChild(dl);
     if (p.classification) showScoring(p.classification, p.scoring);
+    if (p.cast) showCast(p.cast);
+  }
+
+  function addPairs(pairs) {
+    const dl = document.createElement('dl');
+    pairs.forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.append(dt, dd);
+    });
+    record.appendChild(dl);
+  }
+
+  // Call 3: every candidate assessed, then four selected; the gate fields are computed by code.
+  function showCast(c) {
+    const o = c.output;
+    const h = document.createElement('h3'); h.textContent = 'Cast'; record.appendChild(h);
+    const table = document.createElement('table');
+    table.appendChild(cells(document.createElement('tr'),
+      ['Figure', 'Archetype relevance', 'Question fit', 'Corpus suitability'], 'th'));
+    o.candidate_assessments.forEach((a) => {
+      table.appendChild(cells(document.createElement('tr'), [a.figure_id,
+        ...['archetype_relevance', 'question_fit', 'corpus_suitability'].map(
+          (k) => `${a[k].rating}: ${a[k].reason}`)]));
+    });
+    record.appendChild(table);
+    const pairs = [['Selected', o.selected.join(', ')], ['Panel diversity', o.panel_diversity],
+      ['Panel redundancy', o.panel_redundancy], ['Panel tension', o.panel_tension]];
+    if (o.near_misses.length) pairs.push(['Near misses', o.near_misses.map((m) => `${m.figure_id}: ${m.reason}`).join('\n')]);
+    if (c.would_reject.length) pairs.push(['Would reject (corpus weak)', c.would_reject.join(', ')]);
+    if (c.gate_unassessable.length) pairs.push(['Gate could not assess', c.gate_unassessable.join(', ')]);
+    if (c.gate_not_applied) pairs.push(['Gate not applied', c.gate_not_applied]);
+    if (c.near_miss_note) pairs.push(['Near-miss note', c.near_miss_note]);
+    addPairs(pairs);
   }
 
   const DIMENSIONS = [['value_conflict', 'Value conflict'], ['interpretive_ambiguity', 'Interpretive ambiguity'],

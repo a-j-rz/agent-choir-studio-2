@@ -65,13 +65,14 @@ class Triaged(NamedTuple):
 
 
 def normalise(text: str) -> str:
-    """Lower case, whitespace collapsed, spaces around '/' removed, a hyphen read as a space.
+    """Lower case, whitespace collapsed, spaces around '/' removed, a hyphen or underscore read
+    as a space.
 
-    So "Moral / Ethical" == "moral/ethical", and "token-ring" == "token - ring" == "token ring".
+    So "Moral / Ethical" == "moral/ethical", and "token-ring" == "token_ring" == "token ring".
     """
     text = re.sub(r"\s+", " ", text.lower())
     text = re.sub(r" ?/ ?", "/", text)
-    return re.sub(r" ?- ?", " ", text)
+    return re.sub(r" ?[-_] ?", " ", text)
 
 
 def tripwire_hits(text: str, original: str = "") -> list[str]:

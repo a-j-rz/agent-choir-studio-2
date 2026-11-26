@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "figures": [
+    {
+      "figure_id": "marcus_aurelius",
+      "name": "Marcus Aurelius",
+      "handle": "Agency",
+      "primary_contribution": "Controllables, duty, self-command",
+      "corpus": "built"
+    },
+    {
+      "figure_id": "plato",
+      "name": "Plato",
+      "handle": "Ideals",
+      "primary_contribution": "First principles, justice, ideal forms",
+      "corpus": "not_built"
+    },
+    {
+      "figure_id": "frederick_douglass",
+      "name": "Frederick Douglass",
+      "handle": "Consequences",
+      "primary_contribution": "Lived domination, hypocrisy, consequences",
+      "corpus": "not_built"
+    },
+    {
+      "figure_id": "charles_darwin",
+      "name": "Charles Darwin",
+      "handle": "Adaptation",
+      "primary_contribution": "Variation, selection, adaptation, emergence",
+      "corpus": "not_built"
+    }
+  ]
+}
