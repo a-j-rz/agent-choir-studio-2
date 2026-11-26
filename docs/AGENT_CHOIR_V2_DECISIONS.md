@@ -383,7 +383,23 @@ been. Each item is updated with evidence as its slice lands.
   mark. Proven by the 4a regression questions (seen, so regression only) and a fresh question chosen
   after the prompt is frozen. *Rejected:* first person kept as written; "Should you …" (addresses
   the figure); a model-declared list of changes (a naming rule); a second model checking the
-  restatement (cross-checking, out of scope); banned-phrase lists for clarify.
+  restatement (cross-checking, out of scope); banned-phrase lists for clarify. *Refined
+  2026-11-26, drafting the prompt:* what the asker says matters to them is a fact of the
+  situation and is carried; any view they give on what the answer should be is left out (K8 keeps
+  the asker's leaning from every seat). *Rejected:* dropping all stated preferences (a personal
+  question collapses into a generic one); carrying leanings (the asker's conclusion would reach
+  four figures inside the question). No example questions in the prompt (J9). *Landed in 5b:*
+  `host_triage.md` `d0195313…` (was `5db7f527…`); the single-`?` checks in code. *5b evidence*
+  (21 live calls, read blind by owner and Claude): no clarify asked for values (Phase 4: twice);
+  first-person questions restated in the third person with the leaning dropped in all four
+  samples; but "one thing only" was met by form and not substance — one `?`, two asks joined by
+  "and" (1 of 3 on the offer question, 3 of 3 on blackjack; both readers agree). Blackjack needs
+  both facts, and K8 allows one clarify per run, so the rule as written can leave a question
+  unanswerable. **OPEN, for 5e:** clarify becomes one question asking only for facts — all the
+  facts the answer needs, never values — tested with the answer loop. Readers split on the
+  entropy question, now answered directly 3 of 3 (owner: should proceed; Claude: settled physics;
+  possibly an effect of "no causes the asker did not raise"), and on whether one of four job
+  restatements dropped the stated need to progress. Recorded, not tuned.
 - **K7 — The Editor's input and output.** **RESOLVED 2026-11-26.** *In:* the decision record
   (answer criterion, `would_reject`, cast assessments); the original wording and any clarification
   record, read-only; the four contributions; each cited passage in full with one neighbour each

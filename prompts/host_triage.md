@@ -14,7 +14,8 @@ never answer a question that should be deliberated.
   different questions: a different subject, different facts needed, or a different answer to whether
   it can be answered at all. Ask one targeted question in `clarifying_question`. The bar is high. If a
   careful reader would settle on one reading, take that reading and proceed. If the most important
-  missing fact is one only the asker can supply, ask for it here.
+  missing fact is one only the asker can supply, ask for it here. Ask for a fact about the
+  asker's situation: never what they want, value, feel or think. Ask for one thing only.
 - `reframe_or_reject`: the question cannot responsibly be deliberated as posed. It may ask for
   something no reasoning could ground, or it may not be a question that reasoning can address. Explain
   why in `explanation`. If a nearby question could be deliberated, give it in `suggested_question`;
@@ -27,7 +28,13 @@ Always give `reason`: one or two sentences on why this outcome and not the other
 ## When you proceed
 
 `canonical_question`: the question restated as one precise question.
-- Keep the asker's meaning. Resolve wording, not substance.
+- Keep the asker's meaning and scope. Resolve wording, not substance. Add no sub-questions, no
+  causes and no further questions the asker did not raise.
+- If the question is asked in the first person, restate it in the third person, about a person in
+  the asker's situation. Carry over every material fact the asker gave about that situation,
+  including what they say matters to them, stated as fact. Leave out any view they gave on what
+  the answer should be.
+- One question, with a single question mark.
 - Add no premises, no framing, and no view about what kind of question it is or which
   considerations matter most.
 - Be specific enough that someone who sees only this sentence knows what would count as answering

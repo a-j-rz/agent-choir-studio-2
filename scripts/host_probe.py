@@ -246,6 +246,21 @@ CASES_4B = [
 ]
 
 C = DEFAULT_SCORE  # call 2 output for the call-3 cases
+CASES_5B = [
+    case("canonical with two '?'", CITY,
+         [canned(**{**PROCEED, "canonical_question":
+                    "Should a city ban private cars from its centre? And if so, when?"})],
+         "failed", None, invalid="proceed: canonical_question must contain exactly one '?', found 2"),
+    case("canonical with no '?'", CITY,
+         [canned(**{**PROCEED, "canonical_question":
+                    "Whether a city should ban private cars from its centre."})],
+         "failed", None, invalid="proceed: canonical_question must contain exactly one '?', found 0"),
+    case("clarifying question with two '?'", "Should I take it?",
+         [canned(outcome="clarify",
+                 clarifying_question="What is the 'it'? And when must you decide?")],
+         "failed", None, invalid="clarify: clarifying_question must contain exactly one '?', found 2"),
+]
+
 CASES_4C = [
     case("valid cast: Marcus adequate, three unassessable", CITY, P, "complete", "framed", C,
          cast={"would_reject": [], "gate_unassessable": ROSTER_IDS[1:],
@@ -432,7 +447,7 @@ async def offline() -> int:
     ok = check_prompt(host_score, "forbidden-term", host_score.HostScoreInvalid) and ok
     ok = check_prompt(host_cast, "forbidden-term", host_cast.HostCastInvalid, term="score") and ok
     rows = []
-    for group, cases in (("4a", CASES_4A), ("4b", CASES_4B), ("4c", CASES_4C)):
+    for group, cases in (("4a", CASES_4A), ("4b", CASES_4B), ("4c", CASES_4C), ("5b", CASES_5B)):
         for c in cases:
             print(f"\n######## [{group}] {c['name']}  question={c['question']!r}")
             calls = {"triage": [], "score": [], "cast": []}

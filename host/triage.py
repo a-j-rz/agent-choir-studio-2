@@ -135,6 +135,13 @@ def check_consistency(out: TriageOutput) -> list[str]:
             broken.append(f"{out.outcome}: factual_posture must be null")
         if out.factual_gaps:
             broken.append(f"{out.outcome}: factual_gaps must be empty")
+    # K6: one question, so exactly one "?" (the character only). Checked when the field is
+    # filled; an empty field already breaks its own rule above.
+    for outcome, field in (("proceed", "canonical_question"), ("clarify", "clarifying_question")):
+        value = getattr(out, field)
+        if out.outcome == outcome and _filled(value) and value.count("?") != 1:
+            broken.append(f"{outcome}: {field} must contain exactly one '?', "
+                          f"found {value.count('?')}")
     return broken
 
 
