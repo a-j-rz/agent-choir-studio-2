@@ -111,7 +111,7 @@ def _baseline(trace: RunTrace, choir_input: ChoirInput, cast: list[str],
 async def hub_and_spoke(trace: RunTrace, choir_input: ChoirInput, cast: list[str],
                         condition: str = "A") -> dict[str, Any]:
     trace.annotate("condition", condition)
-    model = await asyncio.to_thread(vectors.get_model)
+    model = await vectors.on_model(vectors.get_model)
     tasks = {asyncio.create_task(_lane(trace, fid, choir_input, condition, model),
                                  name=f"lane:{fid}"): fid for fid in cast}
     lanes: dict[str, dict[str, Any]] = {}

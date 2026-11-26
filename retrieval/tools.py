@@ -3,8 +3,9 @@
 `bind_corpus_tools` closes over one loaded figure and one set of budget counters. The model
 sees passage ids and text, never a path or a figure id, so it has no route to another corpus.
 
-Handlers are synchronous on purpose: with no `await` inside, nothing can run between a
-`write_raw` and the `emit` that names its file, so the two keep the same seq.
+Handlers are synchronous, except search: it awaits the model's owner thread (vectors.on_model;
+Decisions K9), and does so before writing anything. After the await nothing else is awaited, so
+nothing can run between a `write_raw` and the `emit` that names its file: the two keep the same seq.
 
 Refusals (over budget, unknown id, bad window) never raise: the model gets a plain
 {"error": ...} and the trace gets a loud *_refused event. Code errors still raise.
@@ -13,7 +14,7 @@ Refusals (over budget, unknown id, bad window) never raise: the model gets a pla
 import copy
 
 from core.config import RETRIEVAL
-from retrieval import hybrid
+from retrieval import hybrid, vectors
 
 
 TOOL_SCHEMAS = [
@@ -118,7 +119,7 @@ def bind_corpus_tools(figure, model, lane):
         return {"passage_id": chunk["chunk_id"], "locator": chunk["locator"],
                 "text": chunk["text"]}
 
-    def search_my_corpus(query):
+    async def search_my_corpus(query):
         used, limit = state["searches_used"], RETRIEVAL.searches_per_turn
         reason = None
         if used >= limit:
@@ -131,9 +132,10 @@ def bind_corpus_tools(figure, model, lane):
                 "searches_max": limit})
             return {"error": reason}
 
-        detail = hybrid.search(figure, model, query)
+        # The slot is taken before the await, so the budget holds even if searches overlapped.
         state["searches_used"] += 1
         number = state["searches_used"]
+        detail = await vectors.on_model(hybrid.search, figure, model, query)
         for m in detail["merged"]:
             state["surfaced"].setdefault(m["passage_id"], set()).add(m["source"])
         state["searches"].append({"search_number": number, "query": query, "merged": [

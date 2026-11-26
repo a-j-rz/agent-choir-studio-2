@@ -9,6 +9,7 @@
 """
 
 import argparse
+import inspect
 import asyncio
 import json
 import sys
@@ -115,6 +116,8 @@ def make_trace_body(figure, model):
         for number, (name, args) in enumerate(calls, 1):
             started = time.monotonic()
             result = handlers[name](**args)
+            if inspect.isawaitable(result):  # search awaits the model's owner thread (K9)
+                result = await result
             # Same payload shape as core.llm.call_model's tool_result event.
             lane.emit("tool_result", "figure", {
                 "name": name, "call_id": f"probe-{number}", "arguments": args,

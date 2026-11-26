@@ -444,6 +444,16 @@ been. Each item is updated with evidence as its slice lands.
   labels; `contextvars`; a trace per figure; the SDK's retries; retrying a whole turn;
   `TaskGroup` (cancels siblings on one failure); failing a figure for declaring without a search;
   caching indexes across runs; status `failed` for an unbuilt topology.
+  *Amended 2026-11-26, on 5a evidence:* threaded loads shared two process-wide tools across
+  threads. The one Snowball stemmer crashed or returned wrong stems under concurrent use (the
+  offline probe's clean case failed on a second machine when a lane's Horizon check got corrupted
+  stems; a BM25 index built under the same race would have no check), and the embedding model's
+  tokenizer is shared the same way. Fix, as design: the stemmer becomes one instance per thread;
+  the embedding model gets one owner, a single-worker executor through which everything that
+  touches it runs — model load, figure loads, query embedding — awaited by lanes so the loop never
+  blocks. This supersedes "query embedding stays on the loop". *Rejected:* a lock (taken on the
+  loop thread it freezes the loop, and every caller must remember it); loading all figures before
+  the lanes (doesn't cover two runs at once on the server); undoing the threaded loads.
 
 ---
 

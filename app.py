@@ -15,7 +15,7 @@ from core.runner import stream_run
 from core.trace import RunTrace
 from demo.live_demo import editor_demo
 from host.run import host_run
-from retrieval.vectors import get_model
+from retrieval.vectors import get_model, on_model
 
 log = logging.getLogger("uvicorn.error")  # uvicorn's own logger, so the line shows in its output
 
@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     log.info("OpenAI client created at startup in %.0f ms", (time.monotonic() - t0) * 1000)
     # The embedding model once, at startup (Decisions K9): a run then only fetches it.
     t0 = time.monotonic()
-    get_model()
+    await on_model(get_model)
     log.info("embedding model loaded at startup in %.0f ms", (time.monotonic() - t0) * 1000)
     yield
 

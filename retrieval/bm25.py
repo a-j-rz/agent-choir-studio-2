@@ -13,6 +13,8 @@ import math
 from pathlib import Path
 import re
 
+import threading
+
 import snowballstemmer
 
 
@@ -20,7 +22,19 @@ K1 = 1.2
 B = 0.75
 STEMMER_NAME = "snowball-english"
 
-_STEMMER = snowballstemmer.stemmer("english")
+# One Snowball stemmer per thread. A single shared instance crashes (IndexError in find_among_b)
+# or silently returns wrong stems when two threads use it at once, and threaded figure loads do
+# (Decisions K9, amended 2026-11-26). Same algorithm, same stems; only the instance is per thread.
+_local = threading.local()
+
+
+def _stemmer():
+    """This thread's English stemmer, created on first use."""
+    stemmer = getattr(_local, "stemmer", None)
+    if stemmer is None:
+        stemmer = _local.stemmer = snowballstemmer.stemmer("english")
+    return stemmer
+
 # A run of Unicode letters, with internal apostrophes allowed: "one's", "o'er", "doesn't".
 # Leading/trailing apostrophes can't match, so "'tis" -> "tis" and "gods'" -> "gods".
 # Everything else (hyphens included) splits: "self-control" -> "self", "control".
@@ -36,7 +50,7 @@ def tokenise(text):
 def analyse(text):
     """[(surface, stem), ...] — the same path for chunks and queries."""
     surfaces = tokenise(text)
-    return list(zip(surfaces, _STEMMER.stemWords(surfaces)))
+    return list(zip(surfaces, _stemmer().stemWords(surfaces)))
 
 
 def load_chunks(path):

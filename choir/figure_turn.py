@@ -24,7 +24,7 @@ from core.llm import call_model
 from core.trace import LaneTrace
 from host.records import ChoirInput
 from epistemic.horizon import find_breaches
-from retrieval import hybrid
+from retrieval import hybrid, vectors
 from retrieval.tools import bind_corpus_tools
 
 PROMPT = Path(__file__).resolve().parent.parent / "prompts" / "figure_standin.md"
@@ -121,10 +121,12 @@ async def figure_turn(
 ) -> dict[str, Any]:
     figure_id = lane.figure_id
     question = choir_input.canonical_question  # the only thing from the Host that reaches here
-    # Synchronous loads in a worker thread, so four lanes don't stall the event loop (K9).
+    # Loads off the event loop, so four lanes don't stall it (K9).
     started = time.perf_counter()
-    figure = await asyncio.to_thread(hybrid.load_figure, figure_id, model, allow_build=False)
-    ctx = await asyncio.to_thread(oracle.load_context, figure_id)
+    # The figure load touches the embedding model (length check, cache read): its one owner.
+    figure = await vectors.on_model(hybrid.load_figure, figure_id, model, allow_build=False)
+    ctx = await asyncio.to_thread(oracle.load_context, figure_id)  # no model; stemmer per thread
+    # Includes queueing for the model owner: it measures the lane's wait, not disk time.
     load_ms = round((time.perf_counter() - started) * 1000, 1)
     instructions = fill_prompt(figure["manifest"], ctx, condition)  # guard runs here
     corpus_schemas, corpus_handlers, turn_state = bind_corpus_tools(figure, model, lane)

@@ -4,8 +4,18 @@ Every model setting comes from core.config.EMBEDDING and is asserted against the
 model, because each one fails silently if wrong: the wrong pooling or a missing normalise
 step still returns 384 numbers. Vectors are cached beside the figure's chunks.jsonl and
 used only if they provably came from the same chunks file and the same model settings.
+
+One owner (Decisions K9, amended 2026-11-26): the model and its tokenizer are not safe to use
+from two threads at once. **In a run, everything that touches the embedding model runs through
+`on_model`** — loading the model, loading a figure (its length check and any cache read), and
+embedding a query — on one dedicated thread, awaited so the event loop never blocks. Scripts
+that run outside a run (probes, offline builds) may keep calling directly from their own single
+thread.
 """
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+import functools
 import hashlib
 import json
 from pathlib import Path
@@ -26,6 +36,13 @@ class CorpusUnavailable(FileNotFoundError):
 
 
 _model = None
+_MODEL_OWNER = ThreadPoolExecutor(max_workers=1, thread_name_prefix="model")
+
+
+async def on_model(fn, *args, **kwargs):
+    """Run fn(*args, **kwargs) on the model's one owner thread and return its result."""
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(_MODEL_OWNER, functools.partial(fn, *args, **kwargs))
 
 
 def get_model():

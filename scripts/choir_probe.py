@@ -5,8 +5,9 @@
 Each case is its own traced run through choir.deliberation.deliberation_run (Host, then lanes).
 The OpenAI client is faked at the create() level, so the real call_model, its retry and its
 labelling are under test; the Host's three calls get canned answers the same way. The four
-roster figures are in-memory fakes (BM25 built in memory, a deterministic stand-in encoder);
-the Oracle context reuses Marcus's compiled Horizon with each fake figure's own name. Canned
+roster figures are in-memory fakes (BM25 built in memory; passages embedded and length-checked
+with the model the loader is given). The model is an OwnedEncoder: deterministic vectors, and it
+raises if two threads are ever inside it at once (Decisions K9, amended). The Oracle context reuses Marcus's compiled Horizon with each fake figure's own name. Canned
 figure turns make real search, open and ask_oracle tool calls, so tools, budgets and flags run.
 """
 
@@ -17,6 +18,7 @@ import hashlib
 import json
 import re
 import sys
+import threading
 import time
 from types import SimpleNamespace
 
@@ -62,7 +64,41 @@ class StandInEncoder:
         return np.asarray(out, dtype=np.float32)
 
 
-ENCODER = StandInEncoder()
+class OwnedEncoder(StandInEncoder):
+    """The stand-in model, with a misuse detector: every entry records its thread, holds a
+    non-blocking guard while it works, and raises if another call is already inside — as a
+    shared Hugging Face tokenizer does ("Already borrowed")."""
+
+    def __init__(self):
+        self._guard = threading.Lock()
+        self.calls: list[tuple[str, str]] = []  # (what, thread name)
+        self.overlaps: list[tuple[str, str]] = []
+        self.hold_s = 0.003
+
+    def _enter(self, what):
+        name = threading.current_thread().name
+        self.calls.append((what, name))
+        if not self._guard.acquire(blocking=False):
+            self.overlaps.append((what, name))
+            raise RuntimeError(f"Already borrowed: {what} entered from {name} while in use")
+        time.sleep(self.hold_s)
+
+    def encode(self, texts, **kwargs):
+        self._enter("encode")
+        try:
+            return super().encode(texts, **kwargs)
+        finally:
+            self._guard.release()
+
+    def tokenizer(self, texts, add_special_tokens=True, truncation=False, verbose=False):
+        self._enter("tokenizer")
+        try:
+            return {"input_ids": [[0] * (len(t.split()) + 2) for t in texts]}
+        finally:
+            self._guard.release()
+
+
+MODEL = OwnedEncoder()
 LOADS: list[tuple[float, float]] = []  # (start, end) of each fake figure load, for case 12
 STATE = {"load_delay": 0.0, "unbuilt": set()}
 _real_load_figure = hybrid.load_figure
@@ -79,7 +115,7 @@ def fake_load_figure(figure_id, model, allow_build=True):
     chunks = [{"chunk_id": f"{PREFIX[figure_id]}-{i:03d}", "locator": f"{i}", "book": 1,
                "text": passage_text(figure_id, i), "figure_id": figure_id} for i in range(1, 7)]
     lexical = bm25.build_from_analysed([{**c, "tokens": bm25.analyse(c["text"])} for c in chunks])
-    vecs = ENCODER.encode([c["text"] for c in chunks])
+    vecs = vectors.embed_passages(model, chunks)  # length check + encode, with the given model
     LOADS.append((started, time.perf_counter()))
     manifest = {"figure_id": figure_id, "author": NAMES[figure_id],
                 "included_works": [f"The Collected Notes of {NAMES[figure_id]}"],
@@ -613,10 +649,87 @@ async def case_14():
     return run_dir, misses
 
 
+WORDS = ["governing", "government", "governs", "consciousness", "conscious", "happily",
+         "happiness", "relational", "relations", "duties", "dutiful", "running", "generously",
+         "generalization", "national", "nationalism", "hopefulness", "hoped", "philosophical",
+         "philosophies", "reasonable", "reasoning", "adaptation", "adaptive", "selection",
+         "selective", "justified", "justice", "dominating", "domination", "consequences",
+         "consequential", "ideals", "idealistic", "agency", "agencies", "meaningfulness",
+         "controlling", "controllables", "emergence", "emerging", "variations", "harmonious"]
+
+
+async def case_15():
+    """The stemmer under threads: every result equals the single-threaded one."""
+    import random
+    rng = random.Random(5)
+    texts = [" ".join(rng.choice(WORDS) for _ in range(rng.randint(3, 12))) for _ in range(200)]
+    expected = [bm25.analyse(t) for t in texts]
+    mismatches, errors = [0], []
+    interval = sys.getswitchinterval()
+    sys.setswitchinterval(1e-6)  # switch threads as often as possible: provoke any race
+
+    def worker(barrier, order):
+        barrier.wait()
+        for i in order:
+            try:
+                if bm25.analyse(texts[i]) != expected[i]:
+                    mismatches[0] += 1
+            except Exception as error:
+                errors.append(repr(error))
+    try:
+        for trial in range(20):
+            barrier = threading.Barrier(8)
+            threads = [threading.Thread(target=worker, args=(barrier, rng.sample(range(200), 200)))
+                       for _ in range(8)]
+            for t in threads:
+                t.start()
+            for t in threads:
+                t.join()
+    finally:
+        sys.setswitchinterval(interval)
+    misses = []
+    check(mismatches[0] == 0, f"{mismatches[0]} stem mismatches", misses)
+    check(not errors, f"{len(errors)} exceptions, e.g. {errors[:2]}", misses)
+    return "8 threads × 200 texts × 20 trials", misses
+
+
+async def case_16():
+    """One model owner: loads and searches overlap in time, yet every model call runs on the
+    owner thread and no call ever enters while another is inside."""
+    STATE["load_delay"] = 0.15
+    MODEL.calls, MODEL.overlaps, MODEL.hold_s = [], [], 0.02
+    try:
+        events, error, run_dir, summary = await run_case(Scenario())
+    finally:
+        STATE["load_delay"], MODEL.hold_s = 0.0, 0.003
+    misses = []
+    threads = {name for _, name in MODEL.calls}
+    check(MODEL.calls and all(name.startswith("model_") for name in threads),
+          f"model calls on threads {sorted(threads)}", misses)
+    check(not MODEL.overlaps, f"{len(MODEL.overlaps)} overlapping entries {MODEL.overlaps[:3]}",
+          misses)
+    check(outcomes(run_dir) == {f: "contributed" for f in CAST}, f"outcomes {outcomes(run_dir)}",
+          misses)
+    kinds = {what for what, _ in MODEL.calls}
+    check(kinds == {"encode", "tokenizer"}, f"model calls seen {kinds}", misses)
+    return run_dir, misses
+
+
+async def case_1_repeated(n=20):
+    passed, failures = 0, []
+    for _ in range(n):
+        run_dir, misses = await case_1()
+        if misses:
+            failures.append(f"{run_dir.name}: {misses[:2]}")
+        else:
+            passed += 1
+    return f"{passed} of {n} passed", ([] if passed == n else failures)
+
+
 async def offline() -> int:
     patches = [(llm, "_client", FAKE_CLIENT), (hybrid, "load_figure", fake_load_figure),
                (oracle, "load_context", fake_load_context),
-               (vectors, "get_model", lambda: ENCODER)]
+               (vectors, "get_model", lambda: MODEL)]
     saved = [(obj, name, getattr(obj, name)) for obj, name, _ in patches]
     for obj, name, value in patches:
         setattr(obj, name, value)
@@ -647,6 +760,9 @@ async def offline() -> int:
         await run("12 loads off the loop", case_12())
         await run("13 token-ring → topology_not_built", case_13())
         await run("14 unbuilt corpus → cannot_access_corpus", case_14())
+        await run("15 stemmer under threads", case_15())
+        await run("16 one model owner", case_16())
+        await run("1×20 case 1 repeated", case_1_repeated())
     finally:
         for obj, name, value in saved:
             setattr(obj, name, value)
