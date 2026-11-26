@@ -5,6 +5,7 @@ relaying the run to a browser. `finish()` puts `None` there to say the run is ov
 """
 
 import asyncio
+import hashlib
 import json
 import secrets
 import time
@@ -18,11 +19,13 @@ from core.events import Event, utc_iso
 TRACES_DIR = Path(__file__).resolve().parent.parent / "traces"
 
 RunStatus = Literal["complete", "failed", "aborted"]
+BASELINE_FILE = "baseline.json"
 
 # summary.json's own shape version, separate from the event schema (core.events).
+# 5: config gains calls (5a: timeout and retry waits).
 # 4: annotations (3c). 3: config gains oracle (3b). 2: config nested as {roles, embedding, retrieval} (2e).
 # 1: config was {role: ...} flat.
-SUMMARY_SCHEMA_VERSION = "4"
+SUMMARY_SCHEMA_VERSION = "5"
 
 
 def new_run_id(now: datetime) -> str:
@@ -45,6 +48,7 @@ class RunTrace:
         self._last_type: str | None = None
         self._finished = False
         self._annotations: dict[str, Any] = {}  # run-level facts a body records for summary.json
+        self._baseline_written = False
         # Unbounded, so put_nowait can never raise QueueFull: emit() must never block or await,
         # because it runs inside `finally` blocks. Nobody reading it (a CLI run) is harmless.
         self.live: asyncio.Queue[Event | None] = asyncio.Queue()
@@ -55,6 +59,7 @@ class RunTrace:
         role: str,
         payload: dict[str, Any] | None = None,
         round: int | None = None,
+        figure: str | None = None,
     ) -> Event:
         """Record an event durably, then hand it back for the caller to send.
 
@@ -70,6 +75,7 @@ class RunTrace:
             ts=utc_iso(),
             type=type,
             role=role,
+            figure=figure,
             round=round,
             payload=payload or {},
         )
@@ -79,8 +85,9 @@ class RunTrace:
         self.live.put_nowait(event)  # after the write: the live view never leads the trace
         return event
 
-    def write_raw(self, stem: str, data: Any) -> str:
-        """Write a raw payload to raw/<seq>-<stem>.json and return the file name.
+    def write_raw(self, stem: str, data: Any, figure: str | None = None) -> str:
+        """Write a raw payload to raw/<seq>-<stem>.json (or <seq>-<figure>-<stem>.json in a
+        figure's lane) and return the file name.
 
         <seq> is the seq the *next* emitted event will get: write the evidence, then emit the
         event that names it. Do not `await` between the two, or another coroutine could take
@@ -88,9 +95,24 @@ class RunTrace:
         """
         if self._finished:
             raise RuntimeError(f"run {self.run_id} is finished; cannot write raw {stem!r}")
-        name = f"{self._seq + 1:04d}-{stem}.json"
+        name = f"{self._seq + 1:04d}-{figure + '-' if figure else ''}{stem}.json"
         (self.dir / "raw" / name).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         return name
+
+    def for_figure(self, figure_id: str) -> "LaneTrace":
+        """The only trace a figure turn receives: stamps `figure` on every event and raw file."""
+        return LaneTrace(self, figure_id)
+
+    def write_baseline(self, obj: Any) -> tuple[str, str]:
+        """Write baseline.json once; return (file name, SHA-256). A second call raises."""
+        if self._finished:
+            raise RuntimeError(f"run {self.run_id} is finished; cannot write the baseline")
+        if self._baseline_written:
+            raise RuntimeError(f"run {self.run_id} already has a baseline; it is written once")
+        data = (json.dumps(obj, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+        (self.dir / BASELINE_FILE).write_bytes(data)
+        self._baseline_written = True
+        return BASELINE_FILE, hashlib.sha256(data).hexdigest()
 
     def annotate(self, key: str, value: Any) -> None:
         """Record a run-level fact (e.g. an experimental condition) for summary.json.
@@ -126,3 +148,32 @@ class RunTrace:
         }
         (self.dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
         self.live.put_nowait(None)  # end of stream: the relay stops after the summary exists
+
+
+class LaneTrace:
+    """One figure's view of a RunTrace (Decisions K9): the same seq, the same events.jsonl.
+
+    It exposes only emit and write_raw, each stamping this figure. annotate, finish, live and
+    write_baseline are deliberately absent: a lane cannot record run-level facts.
+    """
+
+    __slots__ = ("_trace", "_figure_id")
+
+    def __init__(self, trace: RunTrace, figure_id: str):
+        self._trace = trace
+        self._figure_id = figure_id
+
+    @property
+    def figure_id(self) -> str:
+        return self._figure_id
+
+    @property
+    def run_id(self) -> str:
+        return self._trace.run_id
+
+    def emit(self, type: str, role: str, payload: dict[str, Any] | None = None,
+             round: int | None = None) -> Event:
+        return self._trace.emit(type, role, payload, round=round, figure=self._figure_id)
+
+    def write_raw(self, stem: str, data: Any) -> str:
+        return self._trace.write_raw(stem, data, figure=self._figure_id)

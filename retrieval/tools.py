@@ -84,8 +84,11 @@ TOOL_SCHEMAS = [
 ]
 
 
-def bind_corpus_tools(figure, model, trace, role):
-    """(tool_schemas, handlers, turn_state) for one figure's turn.
+ROLE = "figure"  # the seat; which figure is the lane's to say (Decisions K9)
+
+
+def bind_corpus_tools(figure, model, lane):
+    """(tool_schemas, handlers, turn_state) for one figure's turn, recorded in its lane.
 
     Budgets live only in this binding. turn_state() returns a copy of what this turn did,
     for the citation check: changing the copy changes nothing here.
@@ -97,7 +100,7 @@ def bind_corpus_tools(figure, model, trace, role):
     state = {"searches_used": 0, "opens_used": 0, "surfaced": {}, "searches": [], "opens": []}
 
     def refuse_open(via, reason, **detail):
-        trace.emit("passage_open_refused", role, {
+        lane.emit("passage_open_refused", ROLE, {
             "via": via, **detail, "reason": reason,
             "opens_used": state["opens_used"], "opens_max": RETRIEVAL.opens_per_turn})
         return {"error": reason}
@@ -107,7 +110,7 @@ def bind_corpus_tools(figure, model, trace, role):
         surfaced = chunk["chunk_id"] in state["surfaced"]
         state["opens"].append({"passage_id": chunk["chunk_id"], "via": via,
                                "surfaced_by_search": surfaced})
-        trace.emit("passage_opened", role, {
+        lane.emit("passage_opened", ROLE, {
             "passage_id": chunk["chunk_id"], "locator": chunk["locator"], "via": via,
             "surfaced_by_search": surfaced,
             "opens_used": state["opens_used"],
@@ -123,7 +126,7 @@ def bind_corpus_tools(figure, model, trace, role):
         elif not query.strip():
             reason = "empty query"
         if reason:
-            trace.emit("corpus_search_refused", role, {
+            lane.emit("corpus_search_refused", ROLE, {
                 "query": query, "reason": reason, "searches_used": used,
                 "searches_max": limit})
             return {"error": reason}
@@ -136,12 +139,13 @@ def bind_corpus_tools(figure, model, trace, role):
         state["searches"].append({"search_number": number, "query": query, "merged": [
             {"passage_id": m["passage_id"], "source": m["source"]} for m in detail["merged"]]})
         # Evidence first, then the event that names it. No `await` between these two.
-        raw_file = trace.write_raw(f"{role}-search{number}", detail)
-        trace.emit("corpus_search", role, {
+        raw_file = lane.write_raw(f"{ROLE}-search{number}", detail)
+        lane.emit("corpus_search", ROLE, {
             "search_number": number, "query": query,
             "embedded_text": detail["query"]["embedded_text"],
             "depth": detail["params"]["depth"],
             "lexical_matched_total": detail["lexical_matched_total"],
+            "query_embed_ms": detail["query_embed_ms"],
             "merged": [{k: m[k] for k in ("passage_id", "locator", "lexical_rank",
                                           "semantic_rank", "source", "rrf_score")}
                        for m in detail["merged"]],

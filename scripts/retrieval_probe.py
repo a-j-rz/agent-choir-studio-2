@@ -98,7 +98,8 @@ def depth_table(figure, model):
 
 def make_trace_body(figure, model):
     async def body(trace):
-        _, handlers, _ = bind_corpus_tools(figure, model, trace, role=FIGURE)
+        lane = trace.for_figure(FIGURE)
+        _, handlers, _ = bind_corpus_tools(figure, model, lane)
         calls = [
             ("list_my_works", {}),
             ("search_my_corpus", {"query": "governing one's own mind"}),
@@ -115,7 +116,7 @@ def make_trace_body(figure, model):
             started = time.monotonic()
             result = handlers[name](**args)
             # Same payload shape as core.llm.call_model's tool_result event.
-            trace.emit("tool_result", FIGURE, {
+            lane.emit("tool_result", "figure", {
                 "name": name, "call_id": f"probe-{number}", "arguments": args,
                 "result": result, "duration_s": round(time.monotonic() - started, 3)})
         return {"tool_calls": len(calls), "figure_id": figure["figure_id"]}

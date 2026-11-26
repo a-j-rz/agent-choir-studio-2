@@ -127,6 +127,18 @@ class OracleConfig(BaseModel):
 ORACLE = OracleConfig(requests_per_turn=3, where_encountered_max_chars=300)
 
 
+class CallsConfig(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    timeout_s: float  # per request, passed to the client explicitly
+    retry_wait_s: float  # before the one retry, when the error gives no Retry-After
+    max_retry_wait_s: float  # a Retry-After longer than this is capped
+
+
+# One logged retry per failed request, for every role (Topology & Steering §14; Decisions K9).
+CALLS = CallsConfig(timeout_s=180, retry_wait_s=2, max_retry_wait_s=30)
+
+
 def role_config(role: str) -> RoleConfig:
     """The config for one role. An unknown role raises; there is no silent default."""
     try:
@@ -161,4 +173,5 @@ def config_snapshot() -> dict[str, dict[str, Any]]:
         "embedding": EMBEDDING.model_dump(),
         "retrieval": RETRIEVAL.model_dump(),
         "oracle": ORACLE.model_dump(),
+        "calls": CALLS.model_dump(),
     }

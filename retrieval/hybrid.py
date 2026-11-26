@@ -14,20 +14,27 @@ import re
 from core.config import RETRIEVAL
 from retrieval import bm25, vectors
 from retrieval.bm25 import load_chunks
+from retrieval.vectors import CorpusUnavailable
 
 
 CORPORA_DIR = Path(__file__).resolve().parent.parent / "corpora"
 _FIGURE_ID = re.compile(r"^[a-z][a-z_]*$")  # no "..", no "/": one directory, by construction
 
 
-def load_figure(figure_id, model):
-    """One figure's chunks, manifest, BM25 index and vector index. Nothing else."""
+def load_figure(figure_id, model, allow_build=True):
+    """One figure's chunks, manifest, BM25 index and vector index. Nothing else.
+
+    Missing files raise CorpusUnavailable. allow_build=False (runs) passes through to the
+    vector index: a missing or stale cache is unavailable, not rebuilt.
+    """
     if not isinstance(figure_id, str) or not _FIGURE_ID.match(figure_id):
         raise ValueError(f"invalid figure_id {figure_id!r}")
     root = CORPORA_DIR / figure_id
     manifest_path, chunks_path = root / "manifest.json", root / "data" / "chunks.jsonl"
     if not manifest_path.is_file():
-        raise FileNotFoundError(f"no manifest for figure {figure_id!r}")
+        raise CorpusUnavailable(f"no manifest for figure {figure_id!r}")
+    if not chunks_path.is_file():
+        raise CorpusUnavailable(f"no chunks for figure {figure_id!r}: the corpus is not built")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("figure_id") != figure_id:
         raise ValueError(f"manifest figure_id {manifest.get('figure_id')!r} != {figure_id!r}")
@@ -37,7 +44,7 @@ def load_figure(figure_id, model):
     if strays:
         raise ValueError(f"{len(strays)} chunk(s) not from {figure_id!r}: {strays[:5]}")
     lexical = bm25.build(chunks_path)
-    semantic = vectors.build(chunks_path, model)
+    semantic = vectors.build(chunks_path, model, allow_build=allow_build)
     ids = [c["chunk_id"] for c in chunks]
     if [d["chunk_id"] for d in lexical["docs"]] != ids:
         raise ValueError("BM25 index chunk order differs from chunks.jsonl")
@@ -95,4 +102,5 @@ def search(figure, model, query, depth=None):
                        "depth": depth, "results_per_search": RETRIEVAL.results_per_search},
             "query": {"text": query, "embedded_text": semantic["query"]["embedded_text"]},
             "lexical_matched_total": len(everything["hits"]),
+            "query_embed_ms": semantic["query_embed_ms"],
             "lexical": lexical, "semantic": semantic, "merged": merged}

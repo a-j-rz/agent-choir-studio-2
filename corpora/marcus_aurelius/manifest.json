@@ -8,6 +8,8 @@
   "genre": "Personal philosophical notes; Book I is a catalogue of debts.",
   "audience_context": "Personal reflections and exercises addressed largely to himself, not a systematic public treatise.",
   "authorship_status": "Attributed to Marcus Aurelius; the English wording is a translation. Quotations embedded in his notes remain included, not independent works in this corpus.",
+  "prompt_edition": "in George Long's English translation",
+  "reading_rule": null,
   "translation_edition": {
     "translator": "George Long",
     "language": "English",

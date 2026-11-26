@@ -5,7 +5,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-SCHEMA_VERSION = "1"
+# 2: figure (5a, Decisions K9). 1: role only.
+SCHEMA_VERSION = "2"
 
 
 def utc_iso(dt: datetime | None = None) -> str:
@@ -20,7 +21,8 @@ class Event(BaseModel):
     seq: int  # 1, 2, 3 ... per run, no gaps
     ts: str  # utc_iso()
     type: str  # also the SSE event name
-    role: str  # who acted: "system", "host", a figure, ...
+    role: str  # the seat that acted: "system", "host", "figure", "oracle", "editor"
+    figure: str | None = None  # whose lane the event belongs to; None for Host, Editor, system
     round: int | None = None  # token-ring round; None elsewhere
     payload: dict[str, Any] = Field(default_factory=dict)  # full content, not a UI summary
 

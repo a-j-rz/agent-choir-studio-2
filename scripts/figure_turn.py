@@ -2,9 +2,10 @@
 
     python -m scripts.figure_turn "How should a person govern their own mind?" --condition A
 
-Runs choir.figure_turn through the shared runner (core/runner.py) and prints each event as it
-happens, then the contribution, the citation check, the Horizon reconciliation and the per-trip
-costs (figure and Oracle). Exits non-zero if the run did not complete.
+Runs choir.figure_turn in Marcus's lane through the shared runner (core/runner.py), with the
+question as a ChoirInput, and prints each event as it happens (role and lane), then the
+contribution, the citation check, the Horizon reconciliation and the per-trip costs (figure and
+Oracle). Exits non-zero if the run did not complete.
 """
 
 import argparse
@@ -17,6 +18,8 @@ from choir.figure_turn import figure_turn
 from core.events import Event
 from core.runner import relay
 from core.trace import TRACES_DIR
+from host.records import ChoirInput
+from retrieval import vectors
 
 FIGURE = "marcus_aurelius"
 TAG = {"both": "B", "lexical_only": "L", "semantic_only": "S"}
@@ -58,11 +61,20 @@ def line(event: Event) -> str:
         detail = "(below)" if event.type != "run_complete" else json.dumps(p)
     else:
         detail = json.dumps(p, ensure_ascii=False)
-    return f"#{event.seq:<3} {event.type:<22} {event.role:<16} {detail}"
+    lane = f"{event.role}:{event.figure}" if event.figure else event.role
+    return f"#{event.seq:<3} {event.type:<22} {lane:<24} {detail}"
+
+
+async def turn(trace, question: str, condition: str):
+    """One turn in Marcus's lane. The condition is a run-level fact, so it is recorded here."""
+    trace.annotate("condition", condition)
+    model = await asyncio.to_thread(vectors.get_model)
+    return await figure_turn(trace.for_figure(FIGURE), ChoirInput(canonical_question=question),
+                             condition, model)
 
 
 async def main(question: str, condition: str) -> int:
-    body = partial(figure_turn, figure_id=FIGURE, question=question, condition=condition)
+    body = partial(turn, question=question, condition=condition)
     events: list[Event] = []
     try:
         async for event in relay(body, f"figure turn: {FIGURE} (condition {condition})",

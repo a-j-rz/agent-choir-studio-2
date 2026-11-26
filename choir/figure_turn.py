@@ -1,14 +1,19 @@
 """One figure turn: the figure searches its own corpus, may ask the Oracle, then returns a cited
 contribution.
 
-A run body (see core.runner): the work only, no lifecycle events. The citation check and the
-Horizon reconciliation after the turn are set arithmetic over what was recorded — no model
-judges anything here. `condition` is the 3c prompt experiment: A without, B with, a block
-listing what the figure's own world understood where it touches on later things.
+The turn receives a lane (`trace.for_figure(id)`) and a ChoirInput: the canonical question, and
+nothing else from the Host (Decisions J4, K9). Every event it emits carries role "figure" and
+the lane's figure id. Whoever starts the turn records run-level facts such as the condition.
+
+The citation check and the Horizon reconciliation after the turn are set arithmetic over what was
+recorded — no model judges anything here. `condition` is the 3c prompt experiment: A without, B
+with, a block listing what the figure's own world understood where it touches on later things.
 """
 
+import asyncio
 from pathlib import Path
 import re
+import time
 from typing import Any, Literal
 
 from choir import oracle
@@ -16,13 +21,15 @@ from choir.contribution import TEXT_FORMAT, ContributionInvalid, parse_contribut
 from choir.reconcile import reconcile
 from core.config import ORACLE, RETRIEVAL
 from core.llm import call_model
-from core.trace import RunTrace
+from core.trace import LaneTrace
+from host.records import ChoirInput
 from epistemic.horizon import find_breaches
-from retrieval import hybrid, vectors
+from retrieval import hybrid
 from retrieval.tools import bind_corpus_tools
 
 PROMPT = Path(__file__).resolve().parent.parent / "prompts" / "figure_standin.md"
 MAX_ROUND_TRIPS = 10
+ROLE = "figure"  # the seat; the lane says which figure
 Condition = Literal["A", "B"]
 
 
@@ -51,7 +58,8 @@ def fill_prompt(manifest: dict[str, Any], ctx, condition: Condition) -> str:
     text = PROMPT.read_text(encoding="utf-8").format(
         author=manifest["author"],
         works=", ".join(manifest["included_works"]),
-        translator=manifest["translation_edition"]["translator"],
+        edition=manifest["prompt_edition"],
+        reading_rule=f"{manifest['reading_rule']}\n" if manifest["reading_rule"] else "",
         searches=RETRIEVAL.searches_per_turn,
         opens=RETRIEVAL.opens_per_turn,
         born=year_label(lived.born),
@@ -68,7 +76,11 @@ def fill_prompt(manifest: dict[str, Any], ctx, condition: Condition) -> str:
 
 
 def citation_check(contribution, state, figure, extra_items: int) -> dict[str, Any]:
-    """What was cited vs opened vs surfaced. Lists in corpus order; unknown ids last."""
+    """What was cited vs opened vs surfaced. Lists in corpus order; unknown ids last.
+
+    Two flags for the Editor, recorded, never raised (J10, K9): an insufficiency declared with no
+    search this turn, and a grounded answer that cites nothing.
+    """
     position = figure["position"]
     cited = list(dict.fromkeys(c.passage_id for c in contribution.citations))
     opened = list(dict.fromkeys(o["passage_id"] for o in state["opens"]))
@@ -89,34 +101,40 @@ def citation_check(contribution, state, figure, extra_items: int) -> dict[str, A
         # Only the vector path ever surfaced it this turn: lexical search never did.
         "cited_semantic_only": ordered(i for i in cited if sources.get(i) == ["semantic_only"]),
         "extra_message_items": extra_items,
+        "declared_without_search": (contribution.status == "insufficient_corpus_basis"
+                                    and not state["searches"]),
+        "grounded_without_citations": (contribution.status == "grounded"
+                                       and not contribution.citations),
     }
 
 
+class RoundTripCapReached(Exception):
+    """The turn hit its round-trip cap before answering. Checked before parsing."""
+
+
 async def figure_turn(
-    trace: RunTrace,
-    figure_id: str,
-    question: str,
+    lane: LaneTrace,
+    choir_input: ChoirInput,
     condition: Condition,
-    model=None,
+    model,
     max_round_trips: int = MAX_ROUND_TRIPS,
 ) -> dict[str, Any]:
-    # Synchronous loads (about half a second). Fine for the CLI; the server will want them
-    # off the event loop when it runs figures.
-    if model is None:
-        model, _ = vectors.load_model()  # offline: the pinned model must already be cached
-    figure = hybrid.load_figure(figure_id, model)
-    ctx = oracle.load_context(figure_id)
+    figure_id = lane.figure_id
+    question = choir_input.canonical_question  # the only thing from the Host that reaches here
+    # Synchronous loads in a worker thread, so four lanes don't stall the event loop (K9).
+    started = time.perf_counter()
+    figure = await asyncio.to_thread(hybrid.load_figure, figure_id, model, allow_build=False)
+    ctx = await asyncio.to_thread(oracle.load_context, figure_id)
+    load_ms = round((time.perf_counter() - started) * 1000, 1)
     instructions = fill_prompt(figure["manifest"], ctx, condition)  # guard runs here
-    corpus_schemas, corpus_handlers, turn_state = bind_corpus_tools(
-        figure, model, trace, role=figure_id)
-    oracle_schema, ask_oracle, oracle_state = oracle.bind_oracle(figure_id, trace, figure_id)
+    corpus_schemas, corpus_handlers, turn_state = bind_corpus_tools(figure, model, lane)
+    oracle_schema, ask_oracle, oracle_state = oracle.bind_oracle(figure_id, lane, ctx=ctx)
     schemas = [*corpus_schemas, oracle_schema]
     handlers = {**corpus_handlers, "ask_oracle": ask_oracle}  # budgets stay independent
-    trace.annotate("condition", condition)
-    trace.emit("figure_bound", figure_id, {
+    lane.emit("figure_bound", ROLE, {
         "figure_id": figure_id, "condition": condition, "chunks": len(figure["chunks"]),
         "chunks_sha256": figure["vectors"]["meta"]["chunks_sha256"],
-        "vector_cache": figure["cache"]["status"],
+        "vector_cache": figure["cache"]["status"], "load_ms": load_ms,
         "horizon_sha256": ctx["compiled"]["sources_sha256"],
         "tools": [s["name"] for s in schemas],
         "budgets": {"searches": RETRIEVAL.searches_per_turn, "opens": RETRIEVAL.opens_per_turn,
@@ -128,33 +146,35 @@ async def figure_turn(
         input_items=[{"role": "user", "content": question}],
         tools=schemas,
         handlers=handlers,
-        trace=trace,
+        trace=lane,
         max_round_trips=max_round_trips,
         text_format=TEXT_FORMAT,
     )
+    if result.stop_reason == "round_trip_cap_reached":
+        raise RoundTripCapReached(f"{figure_id}: no answer within {max_round_trips} round trips")
 
     try:
         contribution, extra_items = parse_contribution(result.message_texts)
     except ContributionInvalid as error:
-        trace.emit("contribution_invalid", figure_id, {
+        lane.emit("contribution_invalid", ROLE, {
             "reason": error.reason, "stop_reason": result.stop_reason,
             "message_texts": result.message_texts, "errors": error.errors})
         raise
 
     check = citation_check(contribution, turn_state(), figure, extra_items)
-    trace.emit("contribution", figure_id, {
+    lane.emit("contribution", ROLE, {
         "contribution": contribution.model_dump(), "stop_reason": result.stop_reason})
-    trace.emit("citation_check", figure_id, check)
+    lane.emit("citation_check", ROLE, check)
 
     state, requests = turn_state(), oracle_state()
     chunks = {c["chunk_id"]: c["text"] for c in figure["chunks"]}
     opened = [(pid, chunks[pid]) for pid in dict.fromkeys(o["passage_id"] for o in state["opens"])]
     reconciliation = reconcile(contribution, question, requests, opened, ctx["compiled"])
-    trace.emit("horizon_reconciliation", figure_id, {"condition": condition, **reconciliation})
+    lane.emit("horizon_reconciliation", ROLE, {"condition": condition, **reconciliation})
 
     oracle_cost = round(sum(r.get("cost_usd", 0.0) for r in requests), 8)
     return {
-        "figure_id": figure_id, "question": question, "condition": condition,
+        "figure_id": figure_id, "canonical_question": question, "condition": condition,
         "status": contribution.status, "stop_reason": result.stop_reason,
         "round_trips": result.round_trips, "input_tokens": result.input_tokens,
         "output_tokens": result.output_tokens, "reasoning_tokens": result.reasoning_tokens,
@@ -162,4 +182,13 @@ async def figure_turn(
         "oracle_requests_used": sum(r["outcome"] != "refused" for r in requests),
         "figure_cost_usd": result.cost_usd, "oracle_cost_usd": oracle_cost,
         "cost_usd": round(result.cost_usd + oracle_cost, 8),
+        # For the independent baseline (K9): ids and query strings only, never passage text.
+        "contribution": contribution.model_dump(),
+        "check_flags": {k: check[k] for k in ("declared_without_search",
+                                              "grounded_without_citations")},
+        "search_queries": [s["query"] for s in state["searches"]],
+        "opened": list(dict.fromkeys(o["passage_id"] for o in state["opens"])),
+        "cited": check["cited"],
+        "oracle_bridges": [{"number": r["number"], "concept": r["concept"],
+                            "returned": r["returned"]} for r in requests],
     }

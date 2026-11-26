@@ -12,7 +12,9 @@ identity flag on the figure's own words (concept, where_encountered), whose name
 replaced with "[name]" in what is sent; the trace keeps the original → identity guarantee on the
 whole composed input after redaction (raises if broken) → write the composed input, emit
 oracle_request → call → parse (H4).
-A technical failure returns an error to the figure and never raises (Topology §14); no retry.
+A technical failure returns an error to the figure and never fails the figure (Topology §14).
+The request gets the same one logged retry as every role (core.llm; Decisions K9): the former
+"no retry" was in fact two silent SDK retries.
 """
 
 import copy
@@ -234,9 +236,18 @@ def parse_answer(message_texts):
     return valid[0], len(message_texts) - 1
 
 
-def bind_oracle(figure_id, trace, role_label):
-    """(tool_schema, async handler, state) for one figure's turn. Budget lives here only."""
-    ctx = load_context(figure_id)
+ROLE = "oracle"  # the seat; the lane says which figure asked (Decisions K9)
+
+
+def bind_oracle(figure_id, lane, ctx=None):
+    """(tool_schema, async handler, state) for one figure's turn, recorded in its lane.
+
+    Budget lives here only. ctx: an already-loaded load_context(figure_id) (a run loads it in a
+    worker thread); loaded here when not given. Each request record keeps `returned`, exactly
+    what the figure received.
+    """
+    if ctx is None:
+        ctx = load_context(figure_id)
     requests = []
 
     async def ask_oracle(concept, where_encountered):
@@ -245,11 +256,12 @@ def bind_oracle(figure_id, trace, role_label):
         limit = ORACLE.requests_per_turn
         if used >= limit:
             reason = f"oracle budget exhausted ({used}/{limit})"
-            trace.emit("oracle_request_refused", role_label, {
+            lane.emit("oracle_request_refused", ROLE, {
                 "number": number, "concept": concept, "reason": reason, "requests_used": used})
+            returned = {"error": reason}
             requests.append({"number": number, "concept": concept, "outcome": "refused",
-                             "reason": reason})
-            return {"error": reason}
+                             "reason": reason, "returned": returned})
+            return returned
 
         prep = prepare(concept, where_encountered, ctx)
         composed, look = prep["composed"], prep["lookup"]
@@ -262,8 +274,8 @@ def bind_oracle(figure_id, trace, role_label):
                   "identity_terms_in_request": prep["identity_terms_in_request"],
                   "redacted": prep["redacted"], "repeat_of": repeat_of}
         # Evidence first, then the event that names it. No `await` between these two.
-        input_file = trace.write_raw(f"{role_label}-oracle{number}-input", composed)
-        trace.emit("oracle_request", role_label, {
+        input_file = lane.write_raw(f"{ROLE}-request{number}-input", composed)
+        lane.emit("oracle_request", ROLE, {
             **{k: record[k] for k in ("number", "concept", "where_encountered", "truncated",
                                       "lookup", "identity_terms_in_request", "redacted",
                                       "repeat_of")},
@@ -274,24 +286,27 @@ def bind_oracle(figure_id, trace, role_label):
         try:
             result = await call_model(role="oracle", instructions=composed["instructions"],
                                       input_items=composed["input"], tools=[], handlers={},
-                                      trace=trace, max_round_trips=MAX_ROUND_TRIPS,
+                                      trace=lane, max_round_trips=MAX_ROUND_TRIPS,
                                       text_format=TEXT_FORMAT)
             answer, extra = parse_answer(result.message_texts)
         except Exception as error:  # the figure continues; it must record the unresolved concept
-            trace.emit("oracle_failed", role_label, {
+            lane.emit("oracle_failed", ROLE, {
                 "number": number, "concept": concept, "error": repr(error),
                 "message_texts": result.message_texts if result else None})
-            requests.append({**record, "outcome": "failed", "error": repr(error)})
-            return {"error": "the Oracle is unavailable"}
+            returned = {"error": "the Oracle is unavailable"}
+            requests.append({**record, "outcome": "failed", "error": repr(error),
+                             "returned": returned})
+            return returned
 
-        trace.emit("oracle_bridge", role_label, {
+        lane.emit("oracle_bridge", ROLE, {
             "number": number, "answer": answer.model_dump(), "extra_message_items": extra,
             "cost_usd": result.cost_usd})
+        returned = {"status": answer.status, "explanation": answer.explanation,
+                    "anchors": list(answer.anchors), "left_out": list(answer.left_out),
+                    "requests_left": limit - (used + 1)}
         requests.append({**record, "outcome": answer.status, "answer": answer.model_dump(),
-                         "cost_usd": result.cost_usd})
-        return {"status": answer.status, "explanation": answer.explanation,
-                "anchors": list(answer.anchors), "left_out": list(answer.left_out),
-                "requests_left": limit - (used + 1)}
+                         "cost_usd": result.cost_usd, "returned": returned})
+        return returned
 
     def state():
         return copy.deepcopy(requests)

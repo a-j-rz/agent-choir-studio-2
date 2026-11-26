@@ -4,18 +4,25 @@ Every model call in the system goes through `call_model`. Per round trip it writ
 request/response to raw/, then emits a `round_trip` event naming that file; per tool execution it
 emits a `tool_result` event. It never stops silently: the loop ends either `answered` or with a
 `round_trip_cap_reached` event.
+
+Retry (Topology & Steering §14; Decisions K9): a request that fails with a transient error is
+retried once, logged as `round_trip_retry`; a second failure, or any final error, is logged as
+`round_trip_failed` and raised. The retry wraps only the request: once a response has arrived,
+nothing is retried.
 """
 
+import asyncio
 import inspect
 import json
 import time
 from typing import Any, Callable, Literal, Mapping
 
 from dotenv import load_dotenv
+import openai
 from openai import AsyncOpenAI
 from pydantic import BaseModel
 
-from core.config import ModelPrice, price_for, role_config
+from core.config import CALLS, ModelPrice, price_for, role_config
 from core.events import utc_iso
 from core.trace import RunTrace
 
@@ -38,10 +45,65 @@ def get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
         load_dotenv()  # does not override variables already set in the environment
-        client = AsyncOpenAI()
+        # max_retries=0: the SDK's own retries would be invisible to the trace (§14: every retry
+        # logged). call_model does the one retry itself, and says so.
+        client = AsyncOpenAI(max_retries=0, timeout=CALLS.timeout_s)
         client.responses  # the SDK loads this resource lazily, and synchronously: do it now
         _client = client
     return _client
+
+
+class TransientExhausted(Exception):
+    """A transient error on the request and again on its one retry."""
+
+
+def _is_transient(error: Exception) -> bool:
+    """Connection errors (timeouts included), 5xx, and 429s other than the spend cap."""
+    if isinstance(error, (openai.APIConnectionError, openai.InternalServerError)):
+        return True
+    if isinstance(error, openai.RateLimitError):
+        return error.code != "insufficient_quota"
+    return False
+
+
+def _error_detail(error: Exception) -> dict[str, Any]:
+    return {"error_class": type(error).__name__,
+            "status": getattr(error, "status_code", None),
+            "code": getattr(error, "code", None)}
+
+
+def _retry_wait(error: Exception) -> tuple[float, str]:
+    """Seconds before the retry: Retry-After if the error carries one (capped), else config."""
+    response = getattr(error, "response", None)
+    header = response.headers.get("retry-after") if response is not None else None
+    if header is not None:
+        try:
+            return min(max(float(header), 0.0), CALLS.max_retry_wait_s), "retry_after"
+        except ValueError:
+            pass
+    return CALLS.retry_wait_s, "config"
+
+
+async def _create(client, request: dict[str, Any], trace: RunTrace, role: str, trip: int):
+    """The request, with one logged retry on a transient error. Raises after logging."""
+    for attempt in (1, 2):
+        try:
+            return await client.responses.with_raw_response.create(**request)
+        except Exception as error:
+            transient = _is_transient(error)
+            if transient and attempt == 1:
+                wait, source = _retry_wait(error)
+                trace.emit("round_trip_retry", role, {
+                    "trip": trip, **_error_detail(error), "wait_s": wait, "wait_source": source})
+                await asyncio.sleep(wait)
+                continue
+            trace.emit("round_trip_failed", role, {
+                "trip": trip, **_error_detail(error), "transient": transient,
+                "attempts": attempt, "error": repr(error)})
+            if transient:
+                raise TransientExhausted(f"{role} trip {trip}: {error!r}") from error
+            raise
+    raise AssertionError("unreachable: the second attempt always returns or raises")
 
 
 class LLMResult(BaseModel):
@@ -111,7 +173,7 @@ async def call_model(
             request["text"] = {"format": text_format}  # part of the request, so raw/ records it
         started_at = utc_iso()
         t0 = time.monotonic()
-        raw = await client.responses.with_raw_response.create(**request)
+        raw = await _create(client, request, trace, role, trip)
         latency_s = round(time.monotonic() - t0, 3)
         body = json.loads(raw.text)  # the HTTP body exactly as returned
         response = raw.parse()  # the SDK's typed view of the same body

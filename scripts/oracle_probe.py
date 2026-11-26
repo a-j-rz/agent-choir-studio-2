@@ -55,12 +55,13 @@ async def _simulated_outage(**_kwargs):
 
 
 async def run_turn(trace, label, requests, spent):
-    _, ask, state = oracle.bind_oracle(FIGURE, trace, FIGURE)
+    lane = trace.for_figure(FIGURE)
+    _, ask, state = oracle.bind_oracle(FIGURE, lane)
     trace.emit("probe_turn", "system", {"turn": label, "requests": len(requests)})
     for n, (concept, where) in enumerate(requests, 1):
         started = time.monotonic()
         result = await ask(concept=concept, where_encountered=where)
-        trace.emit("tool_result", FIGURE, {
+        lane.emit("tool_result", "figure", {
             "name": "ask_oracle", "call_id": f"probe-{label}{n}",
             "arguments": {"concept": concept, "where_encountered": where},
             "result": result, "duration_s": round(time.monotonic() - started, 3)})

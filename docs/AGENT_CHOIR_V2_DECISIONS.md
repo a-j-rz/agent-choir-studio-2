@@ -418,6 +418,32 @@ been. Each item is updated with evidence as its slice lands.
   analysis of whether a synthesis drifts toward the asker. *Rejected:* persisting a paused run across
   restarts (production hardening); unlimited corrections (cast override by attrition); passing the
   user's view to call 1 (the Phase 4 leak path) or to the Editor (invites pandering).
+- **K9 — The four-figure substrate (slice 5a).** **RESOLVED 2026-11-26**, as design before code.
+  *Lanes:* every event carries `role`, the seat that acted (`host`, `figure`, `oracle`, `editor`,
+  `system`), and `figure`, whose lane it belongs to (none for Host and Editor); event schema 2. A
+  lane view of the trace (`trace.for_figure(id)`) stamps `figure` on every event and raw file name
+  (`<seq>-<figure>-<role>-…`) and is the only trace a figure turn receives; one `seq`, one
+  `events.jsonl`. *Retry:* the SDK's own retries are off (`max_retries=0`, explicit timeout from
+  config); `call_model` retries one failed request once, logged as `round_trip_retry`, on
+  connection errors, timeouts, rate-limit 429s and 5xx — never on 400/401/403, a 429
+  `insufficient_quota` (the spend cap), an invalid contribution or the round-trip cap. This applies
+  to every role; the Oracle's former "no retry" was two silent SDK retries. *Lanes run* as tasks
+  awaited as they finish: one failure degrades the run (status `complete`, `degraded` recorded);
+  a second cancels the rest (`cancelled_by_hard_fail`) and fails the run; an abort cancels all of
+  them. Failure classes: `transient_exhausted`, `contribution_invalid`, `round_trip_cap`,
+  `cannot_access_corpus`, `other`. *`Contribution` schema 2:* an `insufficiency` object
+  (`looked_for`, `not_found`) present exactly when the status is `insufficient_corpus_basis`,
+  enforced as a parse failure; `declared_without_search` and `grounded_without_citations` are
+  recorded as check flags, not failures, for the Editor (J10, K7). No partial status yet. *Baseline:*
+  `baseline.json`, written once after every lane settles and before any Editor event, on every
+  outcome, then named with its SHA-256 by an `independent_baseline` event. *Loads:* the embedding
+  model once at server start; each figure's index per run in a worker thread, with `load_ms`
+  recorded; a missing or stale vector cache is `cannot_access_corpus` (rebuilding is offline);
+  query embedding stays on the loop, timed, until a trace says otherwise. *Routing:* a `token_ring`
+  topology ends the run `complete` with outcome `topology_not_built`. *Rejected:* compound role
+  labels; `contextvars`; a trace per figure; the SDK's retries; retrying a whole turn;
+  `TaskGroup` (cancels siblings on one failure); failing a figure for declaring without a search;
+  caching indexes across runs; status `failed` for an unbuilt topology.
 
 ---
 

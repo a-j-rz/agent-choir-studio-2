@@ -20,6 +20,26 @@ from core.config import EMBEDDING
 from retrieval.bm25 import load_chunks
 
 
+class CorpusUnavailable(FileNotFoundError):
+    """A figure's corpus cannot be used by a run: files missing, or the vector cache missing or
+    stale when building is not allowed. Rebuilding is offline work, never part of a run (K9)."""
+
+
+_model = None
+
+
+def get_model():
+    """The one embedding model, loaded on first call and kept (like core.llm.get_client).
+
+    The server loads it at startup; a run fetches it in a worker thread. Offline: the pinned
+    model must already be in the local Hugging Face cache.
+    """
+    global _model
+    if _model is None:
+        _model, _ = load_model()
+    return _model
+
+
 NORM_TOLERANCE = 1e-5
 # Everything the vectors depend on. Any mismatch with the current run means rebuild.
 CACHE_KEYS = ("chunks_sha256", "model_id", "revision", "pooling", "normalise", "dimensions")
@@ -130,8 +150,12 @@ def _read_cache(npy, meta_path, expected, chunk_ids):
     return vectors, None
 
 
-def build(path, model):
-    """The vector index for one figure's chunks file, from cache if provably current."""
+def build(path, model, allow_build=True):
+    """The vector index for one figure's chunks file, from cache if provably current.
+
+    allow_build=False (runs): a missing or stale cache raises CorpusUnavailable instead of
+    embedding. Probes and offline builds keep the default.
+    """
     path = Path(path)
     started = time.perf_counter()
     chunks = load_chunks(path)
@@ -142,6 +166,9 @@ def build(path, model):
 
     vectors, reason = _read_cache(npy, meta_path, expected, chunk_ids)
     status = "hit" if vectors is not None else "miss"
+    if vectors is None and not allow_build:
+        raise CorpusUnavailable(f"vector cache for {path.parent.parent.name} is unusable "
+                                f"({reason}) and building is not allowed in a run")
     if vectors is None:
         vectors = embed_passages(model, chunks)
         np.save(npy, vectors)
@@ -171,7 +198,9 @@ def embed_query(model, text, instruction=True):
 
 def search(index, model, query, k=8, instruction=True):
     """Rank every chunk by cosine to the query; ties by chunk order. JSON-serialisable."""
+    started = time.perf_counter()
     query_vector = embed_query(model, query, instruction)
+    embed_ms = round((time.perf_counter() - started) * 1000, 1)
     check_norms(query_vector[None, :])
     cosines = index["vectors"] @ query_vector  # both unit length, so dot product = cosine
     order = sorted(range(len(cosines)), key=lambda i: (-float(cosines[i]), i))
@@ -184,4 +213,4 @@ def search(index, model, query, k=8, instruction=True):
             "query": {"text": query,
                       "embedded_text": (EMBEDDING.query_instruction if instruction else "")
                       + query},
-            "N": len(cosines), "hits": hits}
+            "N": len(cosines), "hits": hits, "query_embed_ms": embed_ms}
