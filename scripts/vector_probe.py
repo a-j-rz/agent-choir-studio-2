@@ -132,9 +132,10 @@ def selfcheck(model, index):
     chunks = index["chunks"]
     words = [len(c["text"].split()) for c in chunks]  # same rule as chunk.py's word_count
     mid = median(words)
-    picks = [chunks[0],
-             [c for c in chunks if c["locator"] == "Book I, 17"][-1],
-             next(c for c, w in zip(chunks, words) if w >= mid)]
+    book_i_17 = [c for c in chunks if c["locator"] == "Book I, 17"]  # Marcus only
+    candidates = [chunks[0], chunks[-1], next(c for c, w in zip(chunks, words) if w >= mid),
+                  *book_i_17[-1:]]
+    picks = list({c["chunk_id"]: c for c in candidates}.values())  # dedupe, first order kept
     failures = 0
     print(f"{'chunk':<16}{'words':>6}  {'self rank':>9}  {'cosine':>10}  ok")
     for chunk, w in [(p, len(p["text"].split())) for p in picks]:

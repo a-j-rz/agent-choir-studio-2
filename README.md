@@ -476,7 +476,9 @@ python -m scripts.host_probe --offline                                # 46 canne
 
 The probes run offline and cost nothing: `bm25_probe`, `vector_probe` and `retrieval_probe`
 show each retrieval stage on its own. `bm25_probe` and `retrieval_probe` each have a `--selftest`
-with hand-computed answers; `vector_probe --selfcheck` checks that every chunk retrieves itself.
+with hand-computed answers; `vector_probe --selfcheck` spot-checks that the first, last and a
+median-length chunk (plus Marcus's Book I, 17) each retrieve themselves at cosine ≥ 0.999,
+and that the query instruction is applied exactly as embedded.
 `compile_horizon --selftest` proves the Epistemic Horizon compiler.
 
 Corpus texts, built indexes, run traces and `.env` are gitignored by design. The repo carries
