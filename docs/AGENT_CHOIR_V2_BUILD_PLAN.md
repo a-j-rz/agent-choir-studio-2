@@ -297,7 +297,8 @@ self-contained HTML file — replacing the parked "human-readable Detective repo
 Wire the four figures in parallel (each independent, private Oracle, no cross-talk), persist the
 four as the independent baseline, then the Editor's audit + synthesis.
 *Prerequisites, from Phase 4:* corpora, Manifests and compiled Horizons for Plato, Frederick
-Douglass and Charles Darwin — only Marcus's exist. *Moved in from Phase 4:* the in-run pause, built
+Douglass and Charles Darwin — Marcus's exist; Darwin's corpus recipe is built (C1), his compiled
+Horizon is not. *Moved in from Phase 4:* the in-run pause, built
 once, first for the user correction boundary (Topology & Steering §2), then reused for the clarify
 loop and "Before we go on, what do you think?" (Decisions J7). Phase 5 may need to split.
 *Trace evidence:* a full hub-and-spoke run; four independent contributions; an Editor synthesis
@@ -309,7 +310,8 @@ decision recorded either way. Also confirm, on the first Editor call that report
 `reasoning_tokens > 0`, that its estimated cost counts reasoning inside output tokens and not on
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
-*Plan, agreed 2026-11-26 (Decisions K1–K8). Nothing below is built yet.* Two tracks meet at the
+*Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-27: 5a, 5b and 5c are committed; C1's
+corpus is done; nothing else below is built.* Two tracks meet at the
 first four-figure run; the machinery is tested offline until all four corpora pass the token gate.
 
 ```mermaid
@@ -354,6 +356,17 @@ lifecycle once that lifecycle holds four figures.
   linked to the audit. **No overall run colour and no quality colour** (A3, Topology & Steering
   §13: a scalar quality score is counterfeit certainty one level up). Thresholds are decisions,
   recorded and versioned like rubric anchors.
+
+*C1 note (2026-11-27):* Darwin's corpus is done — recipe landed, rebuilt byte-identically, token
+gate passed, roster flipped to `built` (Decisions K3). His profile, lineages, compiled Horizon and
+coverage probe are pending.
+
+*Parked at C1 (2026-11-27):*
+
+- **The Horizon gap.** Darwin is `built` in the roster with no compiled Horizon: no live run may cast
+  him until it is compiled (Decisions K3).
+- **A guard for it,** for the Phase 5 checkpoint: refuse to cast a built figure with no compiled
+  Horizon.
 
 **Phase 6 — Token-ring.**
 R1 blind baseline → later rounds seeing the transcript → direct-question/challenge objects →

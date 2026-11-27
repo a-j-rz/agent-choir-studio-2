@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "figure_id": "charles_darwin",
+  "author": "Charles Darwin",
+  "included_works": [
+    "On the Origin of Species, 6th edition (1872)",
+    "The Descent of Man, 2nd edition (1874), with a supplemental note of 1876"
+  ],
+  "period": "Editions of 1872 and 1874; supplemental note 1876",
+  "genre": "Scientific treatise",
+  "audience_context": "Book-length argument for a general educated readership.",
+  "authorship_status": "Darwin's own English. Quotations from other writers embedded in his prose are retained. Huxley's note is excluded as Huxley's.",
+  "prompt_edition": "in the original English",
+  "reading_rule": null,
+  "translation_edition": {
+    "translator": null,
+    "language": "English",
+    "note": "Not a translation; Darwin wrote in English."
+  },
+  "source_provenance": [
+    {
+      "url": "https://www.gutenberg.org/cache/epub/2009/pg2009.txt",
+      "gutenberg_number": 2009,
+      "sha256": "2b13c8524d813e706ad23336d81a142d48b44f1f96788b41494a0a83e1b82f88",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    },
+    {
+      "url": "https://www.gutenberg.org/cache/epub/2300/pg2300.txt",
+      "gutenberg_number": 2300,
+      "sha256": "2911dfcc2b0b498fe92ad9bd7e2c712046edb448eb6fe3bd669bcf9629adf8fd",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    }
+  ],
+  "chronology": {
+    "work_order": "Origin then Descent, in source reading order; no composition chronology inferred."
+  },
+  "exclusions": [
+    "origin: gutenberg_header: 1 spans",
+    "origin: edition_and_title_matter: 1 spans",
+    "origin: epigraph: 3 spans",
+    "origin: heading: 92 spans",
+    "origin: footnote_marker: 3 spans",
+    "origin: footnote: 3 spans",
+    "origin: contents: 1 spans",
+    "origin: detailed_contents_and_title: 1 spans",
+    "origin: synopsis: 15 spans",
+    "origin: illustration: 1 spans",
+    "origin: glossary: 1 spans",
+    "origin: index: 1 spans",
+    "origin: gutenberg_footer: 1 spans",
+    "descent: gutenberg_header: 1 spans",
+    "descent: title_matter: 2 spans",
+    "descent: contents: 1 spans",
+    "descent: heading: 129 spans",
+    "descent: preface_signoff: 2 spans",
+    "descent: detailed_contents: 1 spans",
+    "descent: footnote: 1173 spans",
+    "descent: part_title: 3 spans",
+    "descent: synopsis: 21 spans",
+    "descent: figure_caption: 57 spans",
+    "descent: table: 2 spans",
+    "descent: huxley_note: 1 spans",
+    "descent: reprint_line: 1 spans",
+    "descent: index: 1 spans",
+    "descent: gutenberg_footer: 1 spans"
+  ],
+  "caveats": [
+    "CRLF raw bytes are pinned.",
+    "Footnotes removed: Origin 3; Descent 1173, including one star form. Seven authorised source defects recorded in strip_report.json.",
+    "Two tables removed.",
+    "57 figure-caption spans removed; ordinary in-text figure references remain.",
+    "Embedded quotations from others, including Vogt’s French in the Introduction, are retained.",
+    "Heading text is represented in structural metadata, not chunk prose.",
+    "Origin's italic markup (_word_) is retained in prose as printed."
+  ],
+  "rights_status": {
+    "source_statement": "The supplied Gutenberg licence states that this electronic work is derived from texts not protected by U.S. copyright law and requires users elsewhere to check local law.",
+    "scope": "Public-domain source for the local experiment; no worldwide rights clearance asserted. Corpus text and generated data are excluded from the public repository."
+  }
+}

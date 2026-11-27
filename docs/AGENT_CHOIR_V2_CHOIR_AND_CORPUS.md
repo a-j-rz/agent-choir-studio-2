@@ -76,12 +76,14 @@ from day one. Rights are clean for all four in public-domain English.
 | Frederick Douglass | Speeches, letters, autobiography | One speech segment or letter | Rhetorical, occasion-bound, first-person testimony |
 | Charles Darwin | Scientific prose | One proposition or section | Sustained empirical argument; the heaviest Oracle load |
 
-*Works chosen for Phase 5 (Decisions K3–K5, 2026-11-26; not yet built):* Darwin — *The Origin of
-Species*, 6th edition (1872), and *The Descent of Man*, 2nd edition (1874); horizon year 1882.
+*Works chosen for Phase 5 (Decisions K3–K5, 2026-11-26):* Darwin — *The Origin of
+Species*, 6th edition (1872), and *The Descent of Man*, 2nd edition (1874); horizon year 1882;
+corpus built 2026-11-27 (his Horizon is not yet compiled).
 Plato — eight dialogues in Jowett's 3rd-edition translation: *Republic*, *Apology*, *Crito*,
 *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Douglass — *My Bondage and My Freedom*
 (1855) with its appendix of speech extracts, *Three Addresses* (1880s) and *Collected Articles*;
-horizon year 1895. Marcus is built: George Long's translation of the *Meditations*.
+horizon year 1895. Plato and Douglass are not yet built. Marcus is built: George Long's
+translation of the *Meditations*.
 
 **Darwin was kept over Descartes** (the strongest reserve pick) deliberately: Descartes'
 corpus shape (structured treatise/meditation) overlaps Plato's, whereas Darwin's scientific
@@ -300,6 +302,12 @@ paragraph break, then a sentence, then a semicolon, nearest the middle. 504 chun
 is checked against the embedding model's 512-token limit **before** embedding and is never
 truncated: the library would cut silently, so the check is the only guard. The word limit stays
 model-independent; the token check belongs to the embedding step.
+
+*As built for Darwin:* only his argument prose is kept, footnotes and apparatus stripped (K3). One
+chunk never crosses a section heading; a section over 340 words splits as Marcus's do (paragraph,
+then sentence, then semicolon, nearest the middle), but never after a listed abbreviation or
+initials. 340, not 380, because dense Latin nomenclature pushed five 380-word chunks over 512
+tokens. 1,874 chunks, the largest 493 tokens.
 
 The trace exposes, per turn: original search query; lexical candidates; semantic candidates;
 merged/ranked results; passages opened; passages cited; whether fresh retrieval occurred.

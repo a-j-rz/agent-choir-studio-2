@@ -89,6 +89,12 @@ def scored(decomposition, units, primary="Moral / Ethical", secondaries=()) -> s
 DEFAULT_SCORE = [scored("single", [unit([1, 0, 1, 0, 1])])]  # total 3 → hub_and_spoke
 
 ROSTER_IDS = ["marcus_aurelius", "plato", "frederick_douglass", "charles_darwin"]
+# J6: a roster-consistent rating is "adequate" where the corpus is built, "unassessable" where not.
+ROSTER_CORPUS = {f.figure_id: f.corpus for f in host_cast.load_roster()}
+
+
+def roster_rating(figure_id):
+    return "adequate" if ROSTER_CORPUS.get(figure_id) == "built" else "unassessable"
 
 
 def assess(figure_id, corpus="unassessable", relevance="adequate", fit="adequate", reason="canned reason"):
@@ -99,16 +105,16 @@ def assess(figure_id, corpus="unassessable", relevance="adequate", fit="adequate
 
 
 def cast_out(assessments=None, selected=ROSTER_IDS, near_misses=(), tension="canned tension") -> str:
-    """One call-3 message item. Default: Marcus adequate, the three unbuilt unassessable."""
+    """One call-3 message item. Default: every figure rated from the roster (J6)."""
     if assessments is None:
-        assessments = [assess("marcus_aurelius", corpus="adequate")] + [assess(f) for f in ROSTER_IDS[1:]]
+        assessments = [assess(f, corpus=roster_rating(f)) for f in ROSTER_IDS]
     return json.dumps({"candidate_assessments": assessments, "selected": list(selected),
                        "panel_diversity": "canned diversity", "panel_redundancy": "canned redundancy",
                        "panel_tension": tension, "near_misses": list(near_misses)})
 
 
 DEFAULT_CAST = [cast_out()]
-UNBUILT = [assess(f) for f in ROSTER_IDS[1:]]
+OTHERS = [assess(f, corpus=roster_rating(f)) for f in ROSTER_IDS[1:]]  # the other three, rated from the roster
 MARCUS = assess("marcus_aurelius", corpus="adequate")
 
 
@@ -262,26 +268,26 @@ CASES_5B = [
 ]
 
 CASES_4C = [
-    case("valid cast: Marcus adequate, three unassessable", CITY, P, "complete", "framed", C,
-         cast={"would_reject": [], "gate_unassessable": ROSTER_IDS[1:],
+    case("valid cast: Marcus and Darwin adequate, two unassessable", CITY, P, "complete", "framed", C,
+         cast={"would_reject": [], "gate_unassessable": ["plato", "frederick_douglass"],
                "gate_not_applied": "roster exhausted",
                "near_miss_note": "roster of four; none to miss"}),
     case("valid cast: Marcus corpus weak", CITY, P, "complete", "framed", C,
-         [cast_out([assess("marcus_aurelius", corpus="weak")] + UNBUILT)],
+         [cast_out([assess("marcus_aurelius", corpus="weak")] + OTHERS)],
          cast={"would_reject": ["marcus_aurelius"], "gate_not_applied": "roster exhausted"}),
     case("figure assessed twice", CITY, P, "failed", None, C,
-         [cast_out([MARCUS, MARCUS] + UNBUILT)],
+         [cast_out([MARCUS, MARCUS] + OTHERS)],
          cast_invalid="marcus_aurelius assessed 2 times; exactly once required"),
     case("figure missing", CITY, P, "failed", None, C,
-         [cast_out([MARCUS] + UNBUILT[:2])], cast_invalid="roster figure charles_darwin not assessed"),
+         [cast_out([MARCUS] + OTHERS[:2])], cast_invalid="roster figure charles_darwin not assessed"),
     case("unknown figure assessed", CITY, P, "failed", None, C,
-         [cast_out([MARCUS] + UNBUILT + [assess("socrates")])],
+         [cast_out([MARCUS] + OTHERS + [assess("socrates")])],
          cast_invalid="unknown figure socrates assessed"),
     case("not-built figure rated strong", CITY, P, "failed", None, C,
-         [cast_out([MARCUS, assess("plato", corpus="strong")] + UNBUILT[1:])],
+         [cast_out([MARCUS, assess("plato", corpus="strong")] + OTHERS[1:])],
          cast_invalid="plato: corpus_suitability is strong, but its corpus is not_built"),
     case("built figure rated unassessable", CITY, P, "failed", None, C,
-         [cast_out([assess("marcus_aurelius")] + UNBUILT)],
+         [cast_out([assess("marcus_aurelius")] + OTHERS)],
          cast_invalid="marcus_aurelius: corpus_suitability is unassessable, but its corpus is built"),
     case("3 selected", CITY, P, "failed", None, C,
          [cast_out(selected=ROSTER_IDS[:3])], cast_invalid="exactly 4 selected required, got 3"),

@@ -352,6 +352,41 @@ been. Each item is updated with evidence as its slice lands.
   *Descent*'s Victorian views on race are primary and stay. *Rejected:* the 1859 1st edition (not
   his final view; inconsistent with a horizon at death); *Origin* alone; *Beagle*, *Expression* and
   the letters (Phase 9, on trace evidence).
+  *Built 2026-11-27 (the corpus recipe; slice C1):* sources *Origin* 6th edition (#2009,
+  `2b13c852…`) and *Descent* 2nd edition (#2300, `2911dfcc…`), CRLF bytes pinned; fetched 2026-11-27 by rsync from gutenberg.pglaf.org (owner-supplied) while www.gutenberg.org returned 503 —
+  **provisional** until a re-fetch from gutenberg.org matches the SHA. *Rule:* keep only prose
+  Darwin wrote as argument. Stripped: the Gutenberg wrapper, title and edition matter, *Origin*'s
+  three epigraphs, contents lists, part titles, chapter synopses (15 + 21), Dallas's glossary,
+  indexes, Huxley's note on the brain, 57 figure captions, two tables, the *Nature* reprint line,
+  and *Descent*'s preface sign-off and edition line. Kept: the Historical Sketch, Introductions,
+  Preface, all chapters with their Summary sections, the 1876 Supplemental Note. *Footnotes:* all
+  stripped (*Origin* 3; *Descent* 1,173, numbered per chapter) by a balanced-parenthesis scanner
+  with a strict 1…n sequence per unit; seven source defects handled as exact-marker exceptions
+  (five notes missing a closing parenthesis, two duplicate numbers). *Conservation:* non-whitespace
+  characters per book, difference 0 for both. *Headings:* *Origin*: 75 italic section headings; *Descent*: 105 all-uppercase section headings (92 and 129
+  heading spans including unit titles), except the five ch. XVI "CLASS II–VI" rules, kept as
+  body text to match the run-in CLASS I. *Chunking:* a chunk never crosses a heading; Marcus's
+  midpoint splitter, unchanged, plus two exclusions — no sentence boundary after a listed
+  abbreviation or after initials — guarded by an independent end-of-chunk check. *Ceiling:* at 380
+  words five chunks measured 521–530 tokens (dense Latin nomenclature), so `max_words` is 340 for
+  Darwin only (Marcus stays 380). *Result:* 1,874 chunks; words min/median/p90/max 27/223/312/340;
+  258 sentence-level splits; tokens 36/277.5/387/493, none over 512. `chunks.jsonl` `d4122ff0…`,
+  identical on two machines at 340 (three agreed at 380) and rebuilt byte-identically again in the commit pass.
+  `book` is the chapter-level unit (`origin-04`, `descent-supplement`…); locators read
+  `Origin (1872), Ch. IV — <section>` and `Descent (1874), Pt II, Ch. VIII`, the supplement 1876;
+  `translator: null` — Darwin is not a translation, and `list_my_works()` returns it as `None`
+  (offline case). The preface sign-off strip is guarded too: removing its marker fails the build
+  on "BECKENHAM". *Lessons:* a guard never seen firing is untested — emptying the abbreviation list
+  left the 380-word build unchanged while the real failure (initials) sat next to it; all seven source defects surfaced through the strict sequence and balance checks; none was
+  silently absorbed. Stale "only Marcus is built" assumptions were
+  found in probe fixtures and one expectation; fixtures now derive from the roster, and
+  expectations stay explicit literals, updated deliberately when a figure is built. *Rejected:*
+  footnotes kept as separate note chunks (little value, more leakage surface); `book` as the whole
+  work (context windows would cross chapter breaks); a token-aware splitter (couples the recipe to
+  the embedding model); a ceiling of 350 or 360 (too little headroom). **Open:** Darwin is `built`
+  in the roster but has no compiled Horizon, so **no live run may cast him until his Horizon is
+  compiled**. Candidate code guard, parked for the Phase 5 checkpoint: refuse to cast a built figure
+  with no compiled Horizon.
 - **K4 — Plato's corpus.** **RESOLVED 2026-11-26.** Jowett's translation, 3rd edition; the
   *Republic* from Gutenberg #55201 (Stephanus numbering throughout). Eight dialogues: *Republic*,
   *Apology*, *Crito*, *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Jowett's introductions,

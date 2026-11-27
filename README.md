@@ -471,7 +471,7 @@ python -m scripts.figure_turn "How should a person govern their own mind?" --con
 
 ```bash
 python -m scripts.host_probe "Is beauty subjective or objective?"   # live, ~$0.0015
-python -m scripts.host_probe --offline                                # 43 canned cases, no calls
+python -m scripts.host_probe --offline                                # 46 canned cases, no calls
 ```
 
 The probes run offline and cost nothing: `bm25_probe`, `vector_probe` and `retrieval_probe`
@@ -523,6 +523,7 @@ agent-choir-studio-2/
     host_cast.md
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
+    charles_darwin/      # the recipe only, as above; his compiled Horizon is not yet built
   epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
   horizons/              # shared concept lineages, figure profiles, compiled Horizons
   demo/live_demo.py      # labelled fake corpus for the live demo run

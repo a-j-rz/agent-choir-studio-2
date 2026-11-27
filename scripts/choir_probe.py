@@ -34,6 +34,7 @@ from choir.deliberation import deliberation_run
 from core.config import CALLS, EMBEDDING
 from core.runner import relay
 from core.trace import TRACES_DIR, RunTrace
+from host.cast import load_roster
 from retrieval import bm25, hybrid, vectors
 
 CAST = ["marcus_aurelius", "plato", "frederick_douglass", "charles_darwin"]
@@ -193,11 +194,15 @@ def score(scores):
                 d: {"rationale": "probe", "score": s} for d, s in zip(dims, scores)}}]}
 
 
+# J6: a roster-consistent rating is "adequate" where the corpus is built, "unassessable" where not.
+ROSTER_CORPUS = {f.figure_id: f.corpus for f in load_roster()}
+
+
 def assess(fid):
     return {"figure_id": fid, "archetype_relevance": {"reason": "probe", "rating": "adequate"},
             "question_fit": {"reason": "probe", "rating": "adequate"},
             "corpus_suitability": {"reason": "probe", "rating": "adequate"
-                                   if fid == "marcus_aurelius" else "unassessable"}}
+                                   if ROSTER_CORPUS[fid] == "built" else "unassessable"}}
 
 
 def cast_out(marcus_weak=False):
@@ -949,6 +954,31 @@ async def case_e18():
     return " · ".join(dirs), misses
 
 
+async def case_17():
+    """Decisions K3 as built: Darwin is not a translation. His real Manifest's
+    translation_edition.translator is null, and list_my_works() returns it as None."""
+    from retrieval.tools import bind_corpus_tools
+    manifest = json.loads((hybrid.CORPORA_DIR / "charles_darwin" / "manifest.json").read_text(encoding="utf-8"))
+    misses = []
+    check(manifest["translation_edition"]["translator"] is None,
+          f"Darwin's Manifest translator is {manifest['translation_edition']['translator']!r}",
+          misses)
+    figure = {**fake_load_figure("charles_darwin", MODEL), "manifest": manifest}
+    trace = RunTrace()
+    try:
+        _, handlers, _ = bind_corpus_tools(figure, MODEL, trace.for_figure("charles_darwin"))
+        try:
+            works = handlers["list_my_works"]()
+        except Exception as error:
+            works, misses = None, misses + [f"list_my_works raised {error!r}"]
+        if works is not None:
+            check(works["translator"] is None, f"translator {works['translator']!r}", misses)
+            check(works["author"] == "Charles Darwin", f"author {works['author']!r}", misses)
+    finally:
+        trace.finish("complete")
+    return trace.dir, misses
+
+
 WORDS = ["governing", "government", "governs", "consciousness", "conscious", "happily",
          "happiness", "relational", "relations", "duties", "dutiful", "running", "generously",
          "generalization", "national", "nationalism", "hopefulness", "hoped", "philosophical",
@@ -1071,6 +1101,7 @@ async def offline() -> int:
         await run("13 token-ring → topology_not_built", case_13())
         await run("14 unbuilt corpus → cannot_access_corpus", case_14())
         await run("15 stemmer under threads", case_15())
+        await run("17 null translator → list_my_works", case_17())
         await run("16 one model owner", case_16())
         await run("1×20 case 1 repeated", case_1_repeated())
         await run("E1 input written, hashed, sent verbatim", case_e1())
