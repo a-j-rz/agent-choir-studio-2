@@ -63,6 +63,8 @@ flowchart TD
 - **The window report reads the sources,** not the compiled file, and shows the figure's boundary
   for a human to confirm. It shows; it does not judge.
 - **Probe questions are generated blind,** written once and never curated (Decisions E1).
+- **Nothing compiled is committed until the gate passes** (Decisions K12): the pre-flight guard
+  checks that a Horizon is current, not that it is free of collisions with the figure's own text.
 
 ---
 

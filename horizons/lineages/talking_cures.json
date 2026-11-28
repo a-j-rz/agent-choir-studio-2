@@ -6,6 +6,35 @@
   "wikidata": null,
   "senses": [
     {
+      "sense_id": "talking_cures.speech_as_drug",
+      "label": "Speech as a drug for the soul",
+      "summary": "Words act on the soul as drugs act on the body: speech can stop fear, banish grief and change belief.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -400,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "passions",
+        "judgement",
+        "therapy"
+      ],
+      "markers": [
+        "words act on the soul as drugs act on the body"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Gorgias, Encomium of Helen 8–14 (late fifth century BCE; c. 414?)",
+          "note": "Speech can stop fear, banish grief, create joy and nurture pity; its incantation works with the soul's judgement. The date is uncertain; 'century' is the evidence's precision."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
       "sense_id": "talking_cures.stoic_therapy",
       "label": "Stoic therapy of the passions",
       "summary": "Distress comes from false judgements about what is good or bad; correcting the judgement removes the passion.",
@@ -16,13 +45,12 @@
           "precision": "century"
         }
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        "talking_cures.speech_as_drug"
+      ],
       "terms": [
-        "passions",
-        "assent",
-        "judgement",
-        "impressions",
-        "therapy"
+        "assent to impressions",
+        "Stoic therapy"
       ],
       "markers": [
         "it is not things that disturb us but our judgements about them",

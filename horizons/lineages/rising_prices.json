@@ -8,7 +8,34 @@
     {
       "sense_id": "rising_prices.debasement",
       "label": "Debased coinage",
-      "summary": "Rulers reduce the silver in coins, and the coins buy less.",
+      "summary": "Rulers or cities issue coins with less silver in them, and the coins buy less.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -406,
+          "precision": "circa"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "debasement"
+      ],
+      "markers": [
+        "coins lose value because they contain less silver"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Aristophanes, Frogs 718–737 (405 BCE)",
+          "note": "The chorus sets the base bronze coins issued in 406/5 against the old silver. Whether they were silver-plated is disputed (Giovannini); either way they were token coins circulating above their metal value. Withdrawn about twelve years later."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "rising_prices.roman_debasement",
+      "label": "Roman debased coinage",
+      "summary": "Emperors reduce the silver in the denarius, and the coins buy less.",
       "available_in": [
         {
           "tradition": "greco-roman",
@@ -16,15 +43,14 @@
           "precision": "exact"
         }
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        "rising_prices.debasement"
+      ],
       "terms": [
-        "debasement",
-        "coinage",
-        "denarius",
-        "silver"
+        "denarius"
       ],
       "markers": [
-        "coins lose value because they contain less silver"
+        "the denarius loses value because it contains less silver"
       ],
       "hazards": [
         "Debasement continued in Marcus's own reign; he would know it from the treasury side."
@@ -49,7 +75,7 @@
         }
       ],
       "prerequisites": [
-        "rising_prices.debasement"
+        "rising_prices.roman_debasement"
       ],
       "terms": [
         "maximum prices",

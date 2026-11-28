@@ -13,28 +13,6 @@
     },
     {
       "lineages": [
-        "energy"
-      ],
-      "stems": [
-        "actual"
-      ],
-      "terms": [
-        "actuality"
-      ]
-    },
-    {
-      "lineages": [
-        "stress"
-      ],
-      "stems": [
-        "agit"
-      ],
-      "terms": [
-        "agitation"
-      ]
-    },
-    {
-      "lineages": [
         "emergency_help"
       ],
       "stems": [
@@ -60,10 +38,12 @@
         "talking_cures"
       ],
       "stems": [
-        "assent"
+        "assent",
+        "to",
+        "impress"
       ],
       "terms": [
-        "assent"
+        "assent to impressions"
       ]
     },
     {
@@ -71,21 +51,12 @@
         "attention"
       ],
       "stems": [
-        "attend"
+        "attent",
+        "to",
+        "oneself"
       ],
       "terms": [
-        "attend"
-      ]
-    },
-    {
-      "lineages": [
-        "attention"
-      ],
-      "stems": [
-        "attent"
-      ],
-      "terms": [
-        "attention"
+        "attention to oneself"
       ]
     },
     {
@@ -215,17 +186,6 @@
     },
     {
       "lineages": [
-        "rising_prices"
-      ],
-      "stems": [
-        "coinag"
-      ],
-      "terms": [
-        "coinage"
-      ]
-    },
-    {
-      "lineages": [
         "trading_shares"
       ],
       "stems": [
@@ -316,8 +276,7 @@
     },
     {
       "lineages": [
-        "mental_disorder",
-        "stress"
+        "mental_disorder"
       ],
       "stems": [
         "distress"
@@ -421,17 +380,6 @@
     },
     {
       "lineages": [
-        "business_duties"
-      ],
-      "stems": [
-        "guild"
-      ],
-      "terms": [
-        "guild"
-      ]
-    },
-    {
-      "lineages": [
         "habit"
       ],
       "stems": [
@@ -486,17 +434,6 @@
       ],
       "terms": [
         "imperial post"
-      ]
-    },
-    {
-      "lineages": [
-        "talking_cures"
-      ],
-      "stems": [
-        "impress"
-      ],
-      "terms": [
-        "impressions"
       ]
     },
     {
@@ -950,6 +887,17 @@
     },
     {
       "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "prosoch"
+      ],
+      "terms": [
+        "prosoche"
+      ]
+    },
+    {
+      "lineages": [
         "trading_shares"
       ],
       "stems": [
@@ -1040,17 +988,6 @@
     },
     {
       "lineages": [
-        "rising_prices"
-      ],
-      "stems": [
-        "silver"
-      ],
-      "terms": [
-        "silver"
-      ]
-    },
-    {
-      "lineages": [
         "interest_on_loans"
       ],
       "stems": [
@@ -1084,6 +1021,18 @@
       ],
       "terms": [
         "stock exchange"
+      ]
+    },
+    {
+      "lineages": [
+        "talking_cures"
+      ],
+      "stems": [
+        "stoic",
+        "therapi"
+      ],
+      "terms": [
+        "stoic therapy"
       ]
     },
     {
@@ -1213,14 +1162,12 @@
     },
     {
       "lineages": [
-        "attention",
         "emergency_help"
       ],
       "stems": [
         "vigil"
       ],
       "terms": [
-        "vigilance",
         "vigiles"
       ]
     },
@@ -1233,17 +1180,6 @@
       ],
       "terms": [
         "vigour"
-      ]
-    },
-    {
-      "lineages": [
-        "attention"
-      ],
-      "stems": [
-        "watch"
-      ],
-      "terms": [
-        "watchfulness"
       ]
     },
     {
@@ -2836,7 +2772,7 @@
     },
     {
       "available_sense": {
-        "label": "Habit as character (hexis)",
+        "label": "Habit as character",
         "sense_id": "habit.hexis",
         "via": "tradition"
       },
@@ -3324,5 +3260,5 @@
   ],
   "oracle_epoch": "An educated person in Britain in the later nineteenth century.",
   "schema_version": "2",
-  "sources_sha256": "ff2dd27a01296bc8ebdbdd00272086ca4ec96068ad3f436532f368534d693504"
+  "sources_sha256": "7f7b1ad8842758a9cfb526f1f7b51d86c0697574dc0707ac2b7a5a8d3af68c30"
 }

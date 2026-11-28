@@ -6,8 +6,38 @@
   "wikidata": null,
   "senses": [
     {
+      "sense_id": "trading_shares.tax_farming",
+      "label": "Shares in tax-farming syndicates",
+      "summary": "Citizens buy the right to collect a public revenue and take shares in the venture with partners.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -400,
+          "precision": "circa"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "shares",
+        "partners",
+        "company",
+        "tax-farming"
+      ],
+      "markers": [
+        "citizens share in a contract to collect a public revenue"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Andocides, On the Mysteries 133–134 (400/399 BCE)",
+          "note": "Agyrrhius bought the two-per-cent harbour tax for thirty talents, and his associates took shares with him."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
       "sense_id": "trading_shares.publicani",
-      "label": "Shares in tax-farming companies",
+      "label": "Shares in Roman public-contract companies",
       "summary": "Wealthy citizens hold shares in companies contracted to collect taxes and supply the state.",
       "available_in": [
         {
@@ -16,12 +46,10 @@
           "precision": "century"
         }
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        "trading_shares.tax_farming"
+      ],
       "terms": [
-        "shares",
-        "partners",
-        "company",
-        "tax-farming",
         "publicani"
       ],
       "markers": [

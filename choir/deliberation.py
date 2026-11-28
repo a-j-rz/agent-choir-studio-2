@@ -8,6 +8,7 @@
                   a Choir hard fail (which has already raised) or an unbuilt topology
 """
 
+from pathlib import Path
 from typing import Any
 
 from choir.editor import run_editor
@@ -18,15 +19,16 @@ from host.cast import load_roster
 from host.run import host_decide
 
 
-def horizon_preflight() -> None:
+def horizon_preflight(root: Path = horizon.HORIZONS_DIR) -> None:
     """Refuse a deliberation run before any model call if a built figure's compiled Horizon is
     missing or stale, which would otherwise surface as a lane failure after the Host's paid calls,
-    recorded as a degraded run (Decisions K12). Reads the roster and horizons; writes nothing."""
+    recorded as a degraded run (Decisions K12). Reads the roster and horizons; writes nothing.
+    `root` exists for the offline probe (case 18); production calls use the default."""
     problems = []
     for figure in load_roster():
         if figure.corpus != "built":
             continue
-        found = horizon.check(horizon.HORIZONS_DIR, figure.figure_id)
+        found = horizon.check(root, figure.figure_id)
         if not found:
             continue
         if found[0].startswith("no compiled file"):

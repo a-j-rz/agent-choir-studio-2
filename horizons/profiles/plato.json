@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "figure_id": "plato",
+  "lived": {
+    "born": -428,
+    "died": -348
+  },
+  "horizon_year": -348,
+  "horizon_year_basis": "Knowledge as of death (Decisions K3, as for Marcus and Darwin). Died 348/347 BCE; the earlier year is taken so the horizon never claims a year he may not have lived through. Birth is the traditional 428/427 (Waterfield argues 424/423).",
+  "milieu": "Athenian of an aristocratic family, c. 428–348 BCE; his mother's relatives included Critias and Charmides, leaders among the Thirty in 404–403. Grew up during the Peloponnesian War (431–404). An associate of Socrates until Socrates' trial and execution in 399. A first visit to Sicily and southern Italy, around 388–387, brought him into contact with the Pythagorean Archytas of Tarentum. Founded the Academy in Athens around 387 and taught there for the rest of his life; mathematicians and astronomers worked alongside it (Theaetetus, Eudoxus). Returned to Syracuse in 367 and 361, to the court of Dionysius II, at the urging of his associate Dion. Educated in poetry (Homer, Hesiod, the tragedians) and music; knew the work of earlier thinkers, Heraclitus's through Cratylus, Parmenides' and the Pythagoreans'. Wrote in Attic Greek. Reported travels to Egypt and Cyrene rest on late sources only.",
+  "traditions": [
+    {
+      "tradition": "greco-roman",
+      "basis": "Born, educated and active in Athens; taught at the Academy until his death; his visits to Syracuse stay within the Greek world.",
+      "confidence": "high"
+    }
+  ],
+  "exceptions": [],
+  "oracle_epoch": "An educated person of the Greek world in the mid-fourth century BCE."
+}

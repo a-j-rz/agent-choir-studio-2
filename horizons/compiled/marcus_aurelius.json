@@ -13,28 +13,6 @@
     },
     {
       "lineages": [
-        "energy"
-      ],
-      "stems": [
-        "actual"
-      ],
-      "terms": [
-        "actuality"
-      ]
-    },
-    {
-      "lineages": [
-        "stress"
-      ],
-      "stems": [
-        "agit"
-      ],
-      "terms": [
-        "agitation"
-      ]
-    },
-    {
-      "lineages": [
         "mental_disorder"
       ],
       "stems": [
@@ -49,10 +27,12 @@
         "talking_cures"
       ],
       "stems": [
-        "assent"
+        "assent",
+        "to",
+        "impress"
       ],
       "terms": [
-        "assent"
+        "assent to impressions"
       ]
     },
     {
@@ -60,21 +40,12 @@
         "attention"
       ],
       "stems": [
-        "attend"
+        "attent",
+        "to",
+        "oneself"
       ],
       "terms": [
-        "attend"
-      ]
-    },
-    {
-      "lineages": [
-        "attention"
-      ],
-      "stems": [
-        "attent"
-      ],
-      "terms": [
-        "attention"
+        "attention to oneself"
       ]
     },
     {
@@ -131,17 +102,6 @@
       ],
       "terms": [
         "climate"
-      ]
-    },
-    {
-      "lineages": [
-        "rising_prices"
-      ],
-      "stems": [
-        "coinag"
-      ],
-      "terms": [
-        "coinage"
       ]
     },
     {
@@ -223,8 +183,7 @@
     },
     {
       "lineages": [
-        "mental_disorder",
-        "stress"
+        "mental_disorder"
       ],
       "stems": [
         "distress"
@@ -254,17 +213,6 @@
       ],
       "terms": [
         "fire brigade"
-      ]
-    },
-    {
-      "lineages": [
-        "business_duties"
-      ],
-      "stems": [
-        "guild"
-      ],
-      "terms": [
-        "guild"
       ]
     },
     {
@@ -310,17 +258,6 @@
       ],
       "terms": [
         "imperial post"
-      ]
-    },
-    {
-      "lineages": [
-        "talking_cures"
-      ],
-      "stems": [
-        "impress"
-      ],
-      "terms": [
-        "impressions"
       ]
     },
     {
@@ -548,6 +485,17 @@
     },
     {
       "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "prosoch"
+      ],
+      "terms": [
+        "prosoche"
+      ]
+    },
+    {
+      "lineages": [
         "trading_shares"
       ],
       "stems": [
@@ -603,13 +551,14 @@
     },
     {
       "lineages": [
-        "rising_prices"
+        "talking_cures"
       ],
       "stems": [
-        "silver"
+        "stoic",
+        "therapi"
       ],
       "terms": [
-        "silver"
+        "stoic therapy"
       ]
     },
     {
@@ -670,14 +619,12 @@
     },
     {
       "lineages": [
-        "attention",
         "emergency_help"
       ],
       "stems": [
         "vigil"
       ],
       "terms": [
-        "vigilance",
         "vigiles"
       ]
     },
@@ -690,17 +637,6 @@
       ],
       "terms": [
         "vigour"
-      ]
-    },
-    {
-      "lineages": [
-        "attention"
-      ],
-      "stems": [
-        "watch"
-      ],
-      "terms": [
-        "watchfulness"
       ]
     },
     {
@@ -2682,8 +2618,8 @@
     },
     {
       "available_sense": {
-        "label": "Partnership and guild obligations",
-        "sense_id": "business_duties.societas",
+        "label": "Partnership obligations",
+        "sense_id": "business_duties.partnership",
         "via": "tradition"
       },
       "beyond": [
@@ -2905,7 +2841,7 @@
     },
     {
       "available_sense": {
-        "label": "Activity and actuality (energeia)",
+        "label": "Energy as activity",
         "sense_id": "energy.energeia",
         "via": "tradition"
       },
@@ -2964,7 +2900,7 @@
     },
     {
       "available_sense": {
-        "label": "Habit as character (hexis)",
+        "label": "Habit as character",
         "sense_id": "habit.hexis",
         "via": "tradition"
       },
@@ -3010,8 +2946,8 @@
     },
     {
       "available_sense": {
-        "label": "Roman lending at interest",
-        "sense_id": "interest_on_loans.roman",
+        "label": "Lending at interest",
+        "sense_id": "interest_on_loans.lending",
         "via": "tradition"
       },
       "beyond": [
@@ -3387,8 +3323,8 @@
     },
     {
       "available_sense": {
-        "label": "Debased coinage",
-        "sense_id": "rising_prices.debasement",
+        "label": "Roman debased coinage",
+        "sense_id": "rising_prices.roman_debasement",
         "via": "tradition"
       },
       "beyond": [
@@ -3610,7 +3546,7 @@
     },
     {
       "available_sense": {
-        "label": "Shares in tax-farming companies",
+        "label": "Shares in Roman public-contract companies",
         "sense_id": "trading_shares.publicani",
         "via": "tradition"
       },
@@ -3671,5 +3607,5 @@
   ],
   "oracle_epoch": "An educated person of the Roman world in the late second century CE.",
   "schema_version": "2",
-  "sources_sha256": "d968ae7600f0d16c2f3c40edc3dfeefdae90991331241b38d6f9296ffd3bc0a6"
+  "sources_sha256": "da718e385125af5cb451331bbe42691e57449f3553d82237da6450ecb9de929b"
 }

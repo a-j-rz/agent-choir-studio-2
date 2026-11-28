@@ -6,14 +6,14 @@
   "wikidata": null,
   "senses": [
     {
-      "sense_id": "interest_on_loans.roman",
-      "label": "Roman lending at interest",
-      "summary": "Money is lent at interest under legal ceilings; debt and default are matters of law and honour.",
+      "sense_id": "interest_on_loans.lending",
+      "label": "Lending at interest",
+      "summary": "Money is lent at interest; debt and default are matters of law and honour.",
       "available_in": [
         {
           "tradition": "greco-roman",
-          "from": -200,
-          "precision": "century"
+          "from": -423,
+          "precision": "circa"
         }
       ],
       "prerequisites": [],
@@ -25,15 +25,19 @@
         "usury"
       ],
       "markers": [
-        "interest is a private charge, capped by law"
+        "interest is a private charge owed to the lender"
       ],
       "hazards": [
         "'Usury' is not a modern word here: Latin usura is ordinary interest."
       ],
       "sources": [
         {
+          "citation": "Aristophanes, Clouds (first produced 423 BCE; surviving text revised c. 420–417)",
+          "note": "Strepsiades' debts and the interest on them, due monthly at the 'Old and New' day, are the play's premise."
+        },
+        {
           "citation": "Cicero, Letters to Atticus V.21",
-          "note": "Cicero's edict in Cilicia caps interest at one per cent a month."
+          "note": "The Roman refinement: Cicero's edict in Cilicia caps interest at one per cent a month."
         }
       ],
       "confidence": "high"
@@ -50,7 +54,7 @@
         }
       ],
       "prerequisites": [
-        "interest_on_loans.roman"
+        "interest_on_loans.lending"
       ],
       "terms": [
         "sin of usury"

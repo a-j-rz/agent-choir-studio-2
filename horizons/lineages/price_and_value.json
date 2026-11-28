@@ -12,8 +12,8 @@
       "available_in": [
         {
           "tradition": "greco-roman",
-          "from": -350,
-          "precision": "century"
+          "from": -430,
+          "precision": "circa"
         }
       ],
       "prerequisites": [],
@@ -31,6 +31,10 @@
       ],
       "hazards": [],
       "sources": [
+        {
+          "citation": "Herodotus, Histories I.94 (c. 430 BCE)",
+          "note": "The Lydians the first known to coin and use gold and silver money, and the first retail traders. Attests coin, market and retail; the account of need holding exchange together is first spelled out later (Aristotle)."
+        },
         {
           "citation": "Aristotle, Nicomachean Ethics V.5",
           "note": "Need holds exchange together; money as its measure."

@@ -311,8 +311,8 @@ decision recorded either way. Also confirm, on the first Editor call that report
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
 *Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-28: 5a, 5b and 5c are committed; C1 is
-done (corpus and Horizon); the toolkit slice T is done; C2's corpus is done (Plato's Horizon is
-not); nothing else in the content track, or below, is built.* Two tracks meet at the first
+done (corpus and Horizon); the toolkit slice T is done; C2's corpus and Horizon are done (its
+coverage probe is not); nothing else in the content track, or below, is built.* Two tracks meet at the first
 four-figure run; the machinery is tested offline until all four corpora pass the token gate.
 
 ```mermaid
@@ -371,13 +371,24 @@ current.
 
 *C2 note (2026-11-28):* Plato's corpus is done: the recipe was built outside the repo on the kit,
 byte-identical on two machines; the token gate passed at 320 words (max 447 tokens); the roster
-flipped to `built` (Decisions K4). His Horizon is not built, so the Horizon pre-flight guard (K12)
-refuses every deliberation run until it is, and `horizon_gate --all` exits 1 on Plato.
+flipped to `built` (Decisions K4).
+
+*C2 note (2026-11-28, Horizon):* Plato's Horizon is compiled (Decisions K4): horizon year −348,
+`greco-roman`. He is the first figure inside a century bracket: three −350 roots dated on Aristotle
+re-anchored on earlier sources. The gate, run as evidence, found 554 hits on his own text across 17
+terms; a lineage pass (re-date or split where the concept existed for him, re-term or drop where it
+did not) took it to 0 for all three figures, with Marcus's and Darwin's breach sets unchanged. The
+owner confirmed the window: 13 lineages available at their edges, 4 empty by design; 161 breach
+terms. The pre-flight guard is refined and case 18 made figure-agnostic (K12). The blind coverage
+probe (step 12) is next; Douglass (C3) follows; then figures 5–8 (K13).
 
 *Parked at C1 (2026-11-27; updated 2026-11-28):*
 
-- **The probe's BCE template,** for C2: `horizon_coverage_probe` prints "before -347 CE" for a BCE
-  figure. Not fixed.
+- **The probe's BCE template,** for C2's step 12: `horizon_coverage_probe` prints "before -347 CE"
+  for a BCE figure, and its instruction to leave out "concepts that already existed in antiquity"
+  would hide the band between Plato and late antiquity. Not fixed.
+- **The gate's selftest** checks live state for Darwin and Marcus only; Plato is gated by `--all`
+  but absent from the selftest.
 - **Lineage data:** `stimulant_drinks.tea` is dated 1658 (an English source) in
   `european-early-modern`, and listed before coffee (1650). To be fixed against a source in a
   lineage pass.
@@ -400,6 +411,41 @@ refuses every deliberation run until it is, and `horizon_gate --all` exits 1 on 
   drift; (3) source verification cannot be an LLM, and cross-checking-LLM verification is out of
   scope; (4) the output must be versioned diffs a human merges, so runs stay stateless. See the
   out-of-scope "self-improving / compounding loop" bullet below, which stands: out of scope for V2.
+- **A scripted veneer, before or with Phase 6** (owner, 2026-11-28). Scripted human framing
+  around the moments the instrument measures. No model writes it; code fills templates from trace
+  fields: "Oracle, …" on an `oracle_request`; "A question for Mr Douglass: …" on a direct
+  question; "Respectfully disagreeing with Mr Darwin, …" on a direct challenge.
+  - *Display only:* rendered from the trace in the deliberation view; never enters any model's
+    input, the Oracle's included.
+  - *Field-driven:* a template says only what a field says; it never reads the prose. Variants
+    per template are chosen deterministically by event seq, so a trace always renders the same.
+  - *Visibly scripted:* styled apart from model text, so it is never mistaken for a figure's words.
+  - *Sourced per figure, like the Horizon:* phrases attested in the figure's corpus edition (the
+    edition `prompt_edition` names), selected, reviewed, frozen and hashed; the speaker's era sets
+    the register (Darwin: "Mr. Douglass"; Plato: "Darwin,"). Attested is not obligatory: courteous
+    forms only. No phrase may contain the speaker's breach terms (`find_breaches`, reused). A
+    candidate fourteenth New Figure step; the three built figures retrofitted.
+  - *School selects register* (Stoic measured, Cynic blunt), sourced from the school's texts, in
+    the script only. Never in a prompt: whether a figure holds under pressure is an observable,
+    and a school label in a prompt is the general model's idea of the school (leakage). Labels
+    must survive the figure's own corpus. Not called "archetype" (taken by the Host, §5).
+  - *Forms of address follow the speaker's era; no gendered debate register.* A blanket gendered
+    register is unsourced and contradicted by the corpora (Douglass at Seneca Falls; *Republic*
+    V); where sourced (Darwin, *Descent*) it is condescension, which the courtesy rule excludes;
+    and a softened template over an unsoftened contribution says what no field says.
+  - *Dependency:* "Agreeing with …" needs a declared stance toward a named figure (target;
+    agrees / disagrees / builds on) in token-ring turn state, which today has none. Justified by
+    the consensus and counterfeit-consensus observables, not by the veneer.
+  - *Rejected:* model-generated period phrasing (improv); handwritten pastiche (unsourced);
+    persona in prompts (a designed variable, and leakage).
+- **A coverage slice and a review model, before Phase 9** (owner, 2026-11-28). Breadth (which
+  concepts have lineages) comes from questions, not from figures; figures correct the lineages that
+  exist. Proposed: a coverage map of lineages by Library of Congress main class against tradition,
+  and a blind probe stratified by class (one builder call per class, naming a domain but no figure,
+  year or context; written once, never curated). That changes how E1 generates probes, so it needs
+  its own design session. The runs' `unmapped` Oracle lookups are the check. With it, a review
+  model that protects the owner's learning: one step at a time while a pattern is new; batched and
+  independently verified once it is learned; every surprise surfaced singly.
 
 *Toolkit slice T (done, 2026-11-28), before C2: commits `30e009c`, `3a17071` and `193b894`
 (Decisions K11).*

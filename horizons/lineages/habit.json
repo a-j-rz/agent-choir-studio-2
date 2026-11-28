@@ -7,12 +7,12 @@
   "senses": [
     {
       "sense_id": "habit.hexis",
-      "label": "Habit as character (hexis)",
+      "label": "Habit as character",
       "summary": "Character is formed by repeated action: we become just by doing just acts.",
       "available_in": [
         {
           "tradition": "greco-roman",
-          "from": -350,
+          "from": -400,
           "precision": "century"
         }
       ],
@@ -29,6 +29,14 @@
       ],
       "hazards": [],
       "sources": [
+        {
+          "citation": "Democritus, fr. B242 DK (Stobaeus)",
+          "note": "More become good from practice than from nature."
+        },
+        {
+          "citation": "Democritus, fr. B33 DK (Clement)",
+          "note": "Teaching reshapes a person and in reshaping makes their nature. Democritus's works are undated; 'century' is the evidence's precision."
+        },
         {
           "citation": "Aristotle, Nicomachean Ethics II.1",
           "note": "Virtue comes about by habituation."

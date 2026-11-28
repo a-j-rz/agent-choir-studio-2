@@ -499,6 +499,45 @@ been. Each item is updated with evidence as its slice lands.
   sentence-level splits. *Rejected:* the 1999 etexts for all eight; keeping the sidenotes as section
   titles; one chunk per Stephanus page; greedy packing; a token-aware splitter; shorter labels to
   fix the gate.
+  *Horizon (2026-11-28; slice C2):* profile `horizon_year` −348 (knowledge as of death, as K3;
+  died 348/347 BCE, the earlier year taken so the horizon never claims a year he may not have lived
+  through); tradition `greco-roman` alone (the reported travels to Egypt and Cyrene rest on late
+  sources only); no exceptions; `oracle_epoch` "An educated person of the Greek world in the
+  mid-fourth century BCE." *Rejected:* −347 (errs toward a year too many); "Athens" in the epoch
+  line (narrows toward identity); a second tradition for the travels (unsourced; no such tradition
+  or sense exists). *The first figure inside a century bracket:* three roots dated −350 on Aristotle
+  sources (`habit.hexis`, `energy.energeia`, `price_and_value.classical`) compiled as available to
+  Plato, because the compiler reads `from` and ignores `precision`. Each was re-anchored on its
+  earliest attestation: Herodotus I.94 (−430), Democritus B242 and B33 (−400, century), Plato's
+  *Theaetetus* and *Euthydemus* (−369). *Energeia* is Aristotle's coinage; the possession/use
+  contrast it grows from is Plato's, so this is the one sense whose availability to Plato rests on
+  his own text. `actuality` left the tree. *Rejected:* re-dating them to Aristotle (their everyday
+  terms would become Plato's breach terms and collide with his own text); profile exceptions (they
+  patch one figure for a defect in the shared tree); honouring `precision` in compile.
+  *The gate as evidence:* with the profile and those three fixes, `horizon_gate --all` exited 1:
+  554 hits on Plato's own text across 17 terms, Darwin and Marcus 0, the five terms predicted in
+  the brief among them. The rule adopted: for each colliding term, did the concept exist for Plato?
+  If yes, re-date or split the root on a source from before him; if no, the term does not name its
+  sense, so re-term or drop it; never a profile exception or a gate allowance list. Applied:
+  `interest_on_loans` (root renamed `.roman` → `.lending`, −423, Aristophanes' *Clouds*);
+  `drugs_for_the_mind` (new root `.hippocratic`, −400, the Hippocratic *Aphorisms*; `.galenic`
+  re-dated −300 → 60 on Andromachus's theriac); `trading_shares` (new root `.tax_farming`, −400,
+  Andocides, *On the Mysteries* 133–134; `.publicani` keeps `publicani`); `business_duties` (root
+  renamed `.societas` → `.partnership`, −400, Andocides; `guild` dropped); `talking_cures` (new root
+  `.speech_as_drug`, −400, Gorgias, *Helen* 8–14; the Stoic sense re-termed `assent to
+  impressions`, `Stoic therapy`); `attention`, `rising_prices` and `stress` re-termed. One
+  design-chat call was overturned by its source: `company` and `shares` were first classed as
+  wrong-word collisions, until Andocides showed shares in a tax-farming syndicate before Plato.
+  *Window (step 11), confirmed by the owner,* with one further change: debasement predates Plato
+  (Aristophanes, *Frogs* 718–737, 405 BCE; whether the coins were plated is disputed, token
+  coinage either way), so `rising_prices.debasement` is −406 and a new `.roman_debasement` (64)
+  carries `denarius`; two labels tidied. Final state: 13 lineages available at their edges, 4 empty
+  by design (attention, emergency_help, productivity, stress); 161 breach terms; `horizon_gate
+  --all` exit 0, 0 hits for all three figures; Marcus's and Darwin's breach sets identical to
+  `de9d039`'s, compared as sets; compiled files byte-identical on two machines. Opium stays beyond,
+  low confidence. *Side effect, deliberate:* everyday words removed from root senses (attention,
+  silver, assent and others) leave Marcus's and Darwin's available terms, so their Oracle lookups
+  for those words read `unmapped`, not `his`; not a coverage regression.
 - **K5 — Douglass's corpus.** **RESOLVED 2026-11-26.** *My Bondage and My Freedom* (1855;
   Gutenberg #202), with its appendix of speech extracts he chose; *Three Addresses on the Relations
   Subsisting Between the White and Colored People of the United States* (Gutenberg #67919);
@@ -669,11 +708,38 @@ been. Each item is updated with evidence as its slice lands.
   figure turns and are not guarded. Without it a missing Horizon surfaces as a lane failure after
   the Host's paid calls, and the run is recorded as degraded (K9), so a configuration error looks
   like a figure failure. Offline, `choir_probe` binds the guard to a no-op for its existing cases;
-  its case 18 runs the real guard against the real roster and horizons, raises naming Plato, and
-  records zero model calls, and a guard that returns without checking fails it. Closes the parked
-  item "refuse to cast a built figure with no compiled Horizon". Plato's Horizon is not built yet,
-  so every deliberation run is refused until it is; that is intended. *Rejected:* a corpus/Horizon
-  split in the roster's `built` status; guarding at cast time (after the Host's calls).
+  its case 18 runs the real guard (as refined below). Closes the parked item "refuse to cast a
+  built figure with no compiled Horizon". Until Plato's Horizon was compiled (C2), every
+  deliberation run was refused; that was intended. *Rejected:* a corpus/Horizon split in the
+  roster's `built` status; guarding at cast time (after the Host's calls).
+  *Refined 2026-11-28 (C2):* the guard checks currency only; the gate stays a build-time rule:
+  nothing compiled is committed until `horizon_gate --all` passes (New Figure). C2 showed the gap:
+  Plato's Horizon was current while colliding 554 times with his own text. *Rejected:* running the
+  gate inside the guard (every run dependent on local chunks and a full scan; the coupling K11
+  rejected for compile); a gate stamp the guard verifies (machinery for a gap the procedure
+  closes). `horizon_preflight()` takes an optional `root`, default `horizon.HORIZONS_DIR`. Case 18
+  is figure-agnostic, on a temporary copy of `horizons/`, its subject the first `built` figure in
+  the roster: the current tree passes and the run completes; a missing compiled file and a stale
+  tree each refuse, naming the figure, with zero model calls. Both directions were shown by
+  mutation: a guard that checks nothing fails the missing and stale checks; a guard that always
+  refuses fails the current-tree check; the file was restored by hash. *Rejected:* pointing case 18
+  at the next figure without a Horizon (the same trap, one figure later).
+- **K13 — Figures 5–8, and automation for 9–24.** **RESOLVED 2026-11-28 (owner).** After the
+  machine-proving four (Douglass, C3, still comes first), figures 5–8 are Sun Tzu, Shakespeare,
+  Carl Jung and Aristotle, chosen to meet every kind of problem a figure build can raise, not by
+  roster order. Sun Tzu: a tradition the tree lacks (`han-chinese` begins c. 200 BCE), uncertain
+  historicity with no death date, a very small corpus. Shakespeare: drama in verse, early-modern
+  spelling against the stemmer and breach matching, no authorial voice. Jung: rights (UK copyright
+  for author and translator) and the first `global-modern` horizon. Aristotle: the densest stretch
+  of the tree (the senses re-anchored away from him in C2), translator rights, lecture-note
+  provenance. Each of 5–8 ends with a record of which decisions needed the owner and which a rule
+  settled; by figure 8 that record is the rulebook on which 9–24 run with as much automation as the
+  owner allows. The selection rationales and copyright terms are the design chat's, to be verified
+  in each figure's design session before anything is built. *Rejected:* roster order; Descartes
+  (the reserve; his treatise shape overlaps Plato's); Marx (Engels's editing is a provenance test
+  the strip rule mostly covers, and his era overlaps Darwin's); Austen and Saint Paul (Shakespeare
+  and Sun Tzu cover their hard parts). *Recorded gap:* none of 5–8 is a woman; no pipeline effect,
+  but the scripted veneer's forms of address need one, from 9–24.
 
 ---
 

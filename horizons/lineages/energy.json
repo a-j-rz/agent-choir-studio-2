@@ -7,21 +7,20 @@
   "senses": [
     {
       "sense_id": "energy.energeia",
-      "label": "Activity and actuality (energeia)",
+      "label": "Energy as activity",
       "summary": "Energy is a thing's activity, the exercise of a capacity.",
       "available_in": [
         {
           "tradition": "greco-roman",
-          "from": -350,
-          "precision": "century"
+          "from": -369,
+          "precision": "circa"
         }
       ],
       "prerequisites": [],
       "terms": [
         "energy",
         "activity",
-        "vigour",
-        "actuality"
+        "vigour"
       ],
       "markers": [
         "energy is the activity of a thing exercising its nature"
@@ -30,6 +29,14 @@
         "'Energy' is ancient: the modern physical and commercial senses are what's new."
       ],
       "sources": [
+        {
+          "citation": "Plato, Theaetetus 197a–199b",
+          "note": "Possessing knowledge against actively holding it (the aviary). Written no earlier than 369, the year of Theaetetus's death in its frame. The only anchor is Plato's own text: no pre-Plato source exists, so this sense's availability to Plato cannot be checked independently."
+        },
+        {
+          "citation": "Plato, Euthydemus 280b–e",
+          "note": "The possession and the use of goods. The word energeia is Aristotle's coinage (not in Plato; Menn); the possession/use contrast it grows from is Plato's."
+        },
         {
           "citation": "Aristotle, Metaphysics IX (Theta)",
           "note": "Energeia and dynamis: actuality and potentiality."

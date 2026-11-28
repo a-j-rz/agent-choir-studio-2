@@ -6,27 +6,59 @@
   "wikidata": null,
   "senses": [
     {
+      "sense_id": "drugs_for_the_mind.hippocratic",
+      "label": "Hippocratic purges for madness",
+      "summary": "Physicians treat madness and melancholy with purges such as hellebore, to restore the balance of the humours.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -400,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "physician",
+        "remedy",
+        "hellebore"
+      ],
+      "markers": [
+        "a remedy works by rebalancing the humours"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Hippocratic corpus, Aphorisms (c. 400 BCE), IV–V",
+          "note": "Hellebore as a purge, and its dangers (V.1)."
+        },
+        {
+          "citation": "Hippocratic corpus",
+          "note": "Madness and melancholy treated by purging, to restore the balance of the humours."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
       "sense_id": "drugs_for_the_mind.galenic",
       "label": "Galenic remedies",
       "summary": "Compound remedies, some containing opium, are given to restore the balance of the humours and calm the patient.",
       "available_in": [
         {
           "tradition": "greco-roman",
-          "from": -300,
-          "precision": "century"
+          "from": 60,
+          "precision": "circa"
         }
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        "drugs_for_the_mind.hippocratic"
+      ],
       "terms": [
-        "remedy",
-        "hellebore",
         "theriac",
         "opium",
-        "physician",
         "sedative"
       ],
       "markers": [
-        "a remedy works by rebalancing the humours"
+        "a compound remedy calms the patient"
       ],
       "hazards": [
         "Galen prepared opium-containing theriac for Marcus himself: this is first-hand knowledge."
@@ -34,11 +66,7 @@
       "sources": [
         {
           "citation": "Galen, On Antidotes I",
-          "note": "Galen's account of preparing theriac for the emperor."
-        },
-        {
-          "citation": "Hippocratic corpus",
-          "note": "Hellebore as a purge for madness and melancholy."
+          "note": "Galen's account of preparing theriac for the emperor, and of Andromachus's Galene ('tranquillity'), made for Nero."
         }
       ],
       "confidence": "high"

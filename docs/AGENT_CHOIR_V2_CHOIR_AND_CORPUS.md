@@ -82,7 +82,7 @@ corpus built 2026-11-27, Horizon compiled 2026-11-28.
 Plato — eight dialogues in Jowett's 3rd-edition translation: *Republic*, *Apology*, *Crito*,
 *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Douglass — *My Bondage and My Freedom*
 (1855) with its appendix of speech extracts, *Three Addresses* (1880s) and *Collected Articles*;
-horizon year 1895. Plato's corpus is built (2026-11-28); his Horizon is not. Douglass is not
+horizon year 1895. Plato's corpus is built and his Horizon compiled (2026-11-28). Douglass is not
 yet built. Marcus is built: George Long's
 translation of the *Meditations*.
 

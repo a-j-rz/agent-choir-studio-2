@@ -21,6 +21,7 @@ import re
 import sys
 import threading
 import time
+from pathlib import Path
 from types import SimpleNamespace
 
 import httpx2
@@ -35,6 +36,7 @@ from choir.deliberation import deliberation_run
 from core.config import CALLS, EMBEDDING
 from core.runner import relay
 from core.trace import TRACES_DIR, RunTrace
+from epistemic import horizon
 from host.cast import load_roster
 from retrieval import bm25, hybrid, vectors
 
@@ -991,21 +993,55 @@ WORDS = ["governing", "government", "governs", "consciousness", "conscious", "ha
 
 
 async def case_18():
-    """Decisions K12: the real Horizon pre-flight guard, against the real roster and horizons.
-    A built figure with no compiled Horizon (Plato) refuses the run before any model call."""
-    scenario = Scenario()
-    deliberation.horizon_preflight = _real_horizon_preflight  # the real guard, this case only
-    try:
-        events, error, run_dir, summary = await run_case(scenario)
-    finally:
-        deliberation.horizon_preflight = lambda: None
+    """Decisions K12: the real Horizon pre-flight guard, on a temporary copy of horizons/.
+    Figure-agnostic: the subject is the first built figure in the real roster. Three checks:
+    the real tree passes; a missing compiled file refuses; a stale one refuses. Each refusal
+    names the figure and records zero model calls."""
+    import shutil
+    import tempfile
     misses = []
-    check(error is not None and "RuntimeError" in error and "plato" in error,
-          f"expected RuntimeError naming plato, got {error}", misses)
-    calls = sum(scenario.attempts.values())
-    check(calls == 0, f"{calls} model calls recorded", misses)
-    check(summary["status"] == "failed", f"status {summary['status']}", misses)
-    return run_dir, misses
+    subject = next(f.figure_id for f in load_roster() if f.corpus == "built")
+    run_dirs = []
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / "horizons"
+        shutil.copytree(horizon.HORIZONS_DIR, root)
+
+        async def attempt(label):
+            scenario = Scenario()
+            deliberation.horizon_preflight = lambda: _real_horizon_preflight(root)
+            try:
+                events, error, run_dir, summary = await run_case(scenario)
+            finally:
+                deliberation.horizon_preflight = lambda: None
+            run_dirs.append(run_dir)
+            return error, sum(scenario.attempts.values()), summary
+
+        error, calls, summary = await attempt("current")
+        check(error is None and summary["status"] == "complete",
+              f"current tree: expected a complete run, got {error} / {summary['status']}", misses)
+
+        compiled = horizon.compiled_path(root, subject)
+        saved = compiled.read_bytes()
+        compiled.unlink()
+        error, calls, summary = await attempt("missing")
+        check(error is not None and "RuntimeError" in error and subject in error
+              and "no compiled file" in error,
+              f"missing: expected RuntimeError naming {subject}, got {error}", misses)
+        check(calls == 0, f"missing: {calls} model calls recorded", misses)
+        check(summary["status"] == "failed", f"missing: status {summary['status']}", misses)
+        compiled.write_bytes(saved)
+
+        lineage = sorted((root / "lineages").glob("*.json"))[0]
+        data = json.loads(lineage.read_text(encoding="utf-8"))
+        data["senses"][-1]["label"] += " (probe)"  # any source change makes it stale
+        lineage.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        error, calls, summary = await attempt("stale")
+        check(error is not None and "RuntimeError" in error and subject in error
+              and "stale" in error,
+              f"stale: expected RuntimeError naming {subject} as stale, got {error}", misses)
+        check(calls == 0, f"stale: {calls} model calls recorded", misses)
+        check(summary["status"] == "failed", f"stale: status {summary['status']}", misses)
+    return " · ".join(d.name for d in run_dirs), misses
 
 
 async def case_15():
@@ -1123,7 +1159,7 @@ async def offline() -> int:
         await run("14 unbuilt corpus → cannot_access_corpus", case_14())
         await run("15 stemmer under threads", case_15())
         await run("17 null translator → list_my_works", case_17())
-        await run("18 Horizon pre-flight: refuses before any call", case_18())
+        await run("18 Horizon pre-flight: passes current, refuses missing/stale", case_18())
         await run("16 one model owner", case_16())
         await run("1×20 case 1 repeated", case_1_repeated())
         await run("E1 input written, hashed, sent verbatim", case_e1())
