@@ -82,7 +82,8 @@ corpus built 2026-11-27, Horizon compiled 2026-11-28.
 Plato — eight dialogues in Jowett's 3rd-edition translation: *Republic*, *Apology*, *Crito*,
 *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Douglass — *My Bondage and My Freedom*
 (1855) with its appendix of speech extracts, *Three Addresses* (1880s) and *Collected Articles*;
-horizon year 1895. Plato and Douglass are not yet built. Marcus is built: George Long's
+horizon year 1895. Plato's corpus is built (2026-11-28); his Horizon is not. Douglass is not
+yet built. Marcus is built: George Long's
 translation of the *Meditations*.
 
 **Darwin was kept over Descartes** (the strongest reserve pick) deliberately: Descartes'
@@ -316,6 +317,13 @@ chunk never crosses a section heading; a section over 340 words splits as Marcus
 then sentence, then semicolon, nearest the middle), but never after a listed abbreviation or
 initials. 340, not 380, because dense Latin nomenclature pushed five 380-word chunks over 512
 tokens. 1,874 chunks, the largest 493 tokens.
+
+*As built for Plato:* only the dialogues' text is kept; everything the edition added (Jowett's
+introductions, analyses, sidenotes and notes) is stripped, and speaker labels are normalised to
+`NAME:` (K4). Each *Republic* book and each other dialogue is one unit, split as Darwin's are; the
+locator records the Stephanus range a chunk spans, or a paragraph range where the source prints
+none. 320, not 380, because normalised speaker labels made rapid exchanges token-dense: one
+372-word chunk measured 552 tokens. 1,248 chunks, the largest 447 tokens.
 
 The trace exposes, per turn: original search query; lexical candidates; semantic candidates;
 merged/ranked results; passages opened; passages cited; whether fresh retrieval occurred.

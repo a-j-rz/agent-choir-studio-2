@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "unit": "dialogue_or_book",
+  "max_words": 320,
+  "max_words_rationale": "Lowered to 320 for Plato (Marcus stays 380, Darwin 340). At 380 one chunk (Phaedo 58–59, 372 words) measured 552 bge-small tokens. The densest chunks, at up to 1.48 tokens per word, are rapid labelled exchanges, where each normalised speaker label is one word but several model tokens; 320 leaves about 7% headroom at that density. Every chunk is checked to be at most 512 model tokens before embedding.",
+  "word_count": "Whitespace-delimited tokens, including punctuation-only tokens.",
+  "split_strategy": "Recursively choose the paragraph boundary closest to half the words; if none, the nearest sentence boundary; if none, the nearest point just after a semicolon followed by whitespace. Preserve order and paragraph breaks. Fail if a span with no paragraph, sentence or semicolon boundary exceeds max_words. No overlap. A sentence boundary following a listed abbreviation ending in a full stop is excluded (case-sensitive). A sentence boundary after a token consisting of one or more uppercase initials, each followed by a full stop, is excluded.",
+  "abbreviations": [
+    "Mr",
+    "Mrs",
+    "Dr",
+    "Prof",
+    "Rev",
+    "St",
+    "Capt",
+    "Hon",
+    "etc",
+    "vol",
+    "p",
+    "pp",
+    "viz",
+    "cf",
+    "i.e",
+    "e.g"
+  ],
+  "initials": true
+}

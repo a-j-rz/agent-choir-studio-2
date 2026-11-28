@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "figure_id": "plato",
+  "author": "Plato",
+  "included_works": [
+    "Republic",
+    "Apology",
+    "Crito",
+    "Phaedo",
+    "Gorgias",
+    "Meno",
+    "Symposium",
+    "Phaedrus"
+  ],
+  "period": "Dialogues written in the 4th century BCE",
+  "genre": "Philosophical dialogue",
+  "audience_context": "Written dialogues for an educated Athenian readership; dramatic conversations, some narrated by a participant.",
+  "authorship_status": "Plato's dialogues in English translation. Every speaker's words are corpus; a character's line is not thereby Plato's view. Jowett's introductions, analyses, marginal sidenotes and notes are excluded.",
+  "prompt_edition": "in Benjamin Jowett's English translation",
+  "reading_rule": "Your writings are dialogues, and every speaker in them is part of your argument: the positions you refute belong to it too. A character's line is not automatically your view, and Socrates does not simply speak for you, least of all in the Apology. Reason from where a dialogue's argument comes to rest, and say when a reading is interpretive.",
+  "translation_edition": {
+    "translator": "Benjamin Jowett",
+    "language": "English",
+    "print_edition": [
+      {
+        "gutenberg_number": 55201,
+        "edition": "Republic, 3rd ed., Clarendon Press 1888"
+      },
+      {
+        "gutenberg_number": 76464,
+        "edition": "Vol. II, 3rd ed., Oxford University Press 1892"
+      },
+      {
+        "gutenberg_number": 1600,
+        "edition": "Not stated by Project Gutenberg."
+      },
+      {
+        "gutenberg_number": 1636,
+        "edition": "Not stated by Project Gutenberg."
+      }
+    ],
+    "note": "Comparison of two sibling Gutenberg etexts (Meno #1643, Crito #1657) with the 1892 third edition (#76464) found the same wording apart from speaker labels, inlined notes and American spelling; the Symposium and Phaedrus texts are therefore probably third-edition text with American spelling."
+  },
+  "source_provenance": [
+    {
+      "url": "https://www.gutenberg.org/cache/epub/55201/pg55201.txt",
+      "gutenberg_number": 55201,
+      "sha256": "8a30ff0c9c6384c218e28298aee340fea0fea820f81b59bb63e5f640d27a7460",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org (owner-supplied) while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    },
+    {
+      "url": "https://www.gutenberg.org/cache/epub/76464/pg76464.txt",
+      "gutenberg_number": 76464,
+      "sha256": "504709b2c61926590988589a33099841fc9b1f77ae18c3cb38bf4f3d49ca1882",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org (owner-supplied) while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    },
+    {
+      "url": "https://www.gutenberg.org/cache/epub/1600/pg1600.txt",
+      "gutenberg_number": 1600,
+      "sha256": "8b5c599ea734ff0f5e8d83f399dead8c796800897b107c8d53fa909f74a05d6f",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org (owner-supplied) while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    },
+    {
+      "url": "https://www.gutenberg.org/cache/epub/1636/pg1636.txt",
+      "gutenberg_number": 1636,
+      "sha256": "ce41cbe9eb5750163ef9084d253d7786d13c24968ae7f5079be3abda53114734",
+      "retrieval_date": "2026-11-27",
+      "retrieval_context": "Bytes fetched by rsync from Project Gutenberg's archive host gutenberg.pglaf.org (owner-supplied) while www.gutenberg.org returned HTTP 503. Provisional: acquire.py must be re-run against the gutenberg.org URL when it is available, and must match these exact bytes."
+    }
+  ],
+  "chronology": {
+    "work_order": "K4's order; no composition chronology inferred."
+  },
+  "locators": "Republic: Stephanus section (e.g. 327B), as printed inline in #55201. Apology, Crito, Phaedo, Gorgias, Meno: Stephanus page only, as printed in the margin of #76464. Symposium and Phaedrus: paragraph sequence numbers, since the source prints no Stephanus numbers. Never inferred.",
+  "exclusions": [
+    "pg55201: gutenberg_header: 1 spans",
+    "pg55201: title_matter: 1 spans",
+    "pg55201: preface: 1 spans",
+    "pg55201: introduction_analysis: 1 spans",
+    "pg55201: dialogue_title: 1 spans",
+    "pg55201: book_heading: 10 spans",
+    "pg55201: persons_block: 1 spans",
+    "pg55201: opening_note: 1 spans",
+    "pg55201: stephanus: 1355 spans",
+    "pg55201: sidenote: 746 spans",
+    "pg55201: footnote_marker: 119 spans",
+    "pg55201: footnote: 119 spans",
+    "pg55201: page_marker: 328 spans",
+    "pg55201: bracket_note: 10 spans",
+    "pg55201: index: 1 spans",
+    "pg55201: transcriber_note: 1 spans",
+    "pg55201: gutenberg_footer: 1 spans",
+    "pg76464: gutenberg_header: 1 spans",
+    "pg76464: front_matter: 1 spans",
+    "pg76464: transcriber_note: 2 spans",
+    "pg76464: title_matter: 1 spans",
+    "pg76464: contents: 1 spans",
+    "pg76464: introduction_analysis: 5 spans",
+    "pg76464: appended_essay: 2 spans",
+    "pg76464: dialogue_title: 5 spans",
+    "pg76464: persons_block: 4 spans",
+    "pg76464: sidenote: 658 spans",
+    "pg76464: speaker_label: 1779 spans",
+    "pg76464: stephanus: 211 spans",
+    "pg76464: footnote_marker: 51 spans",
+    "pg76464: illustration: 1 spans",
+    "pg76464: bracket_note: 3 spans",
+    "pg76464: footnotes_section: 5 spans",
+    "pg76464: excluded_dialogue: 1 spans",
+    "pg76464: scene_heading: 4 spans",
+    "pg76464: excluded_appendix_i: 1 spans",
+    "pg76464: excluded_appendix_ii: 1 spans",
+    "pg76464: gutenberg_footer: 1 spans",
+    "pg1600: gutenberg_header: 1 spans",
+    "pg1600: title_matter: 1 spans",
+    "pg1600: introduction_analysis: 1 spans",
+    "pg1600: dialogue_title: 1 spans",
+    "pg1600: persons_block: 1 spans",
+    "pg1600: scene_heading: 1 spans",
+    "pg1600: inline_note: 22 spans",
+    "pg1600: back_matter: 1 spans",
+    "pg1600: gutenberg_footer: 1 spans",
+    "pg1636: gutenberg_header: 1 spans",
+    "pg1636: title_matter: 1 spans",
+    "pg1636: introduction_analysis: 1 spans",
+    "pg1636: appended_essay: 1 spans",
+    "pg1636: dialogue_title: 1 spans",
+    "pg1636: persons_block: 1 spans",
+    "pg1636: scene_heading: 1 spans",
+    "pg1636: inline_note: 12 spans",
+    "pg1636: back_matter: 1 spans",
+    "pg1636: gutenberg_footer: 1 spans"
+  ],
+  "caveats": [
+    "CRLF raw bytes are pinned.",
+    "Republic VIII prints 561E followed by 561A; preserved as printed.",
+    "Republic I opening page-only 327 preserved; no inferred 327A. Meno begins without a printed marker; first is 71.",
+    "Speaker labels were normalised; original labels ledgered and generated characters separately accounted from replacement records.",
+    "Verse line breaks were flattened.",
+    "Euthyphro and the appendix dialogues are excluded.",
+    "American spelling in Symposium and Phaedrus.",
+    "P02 and P06–P10 mechanical footnote/page-marker exceptions recorded in strip_report.json.",
+    "P11: Republic introduction apparatus is unvalidated by design; stripped whole.",
+    "P12 authorised: Republic VII malformed Sidenote semicolon delimiter, exact balanced strip.",
+    "P04 Stage B: register SHA-256 fd847b5d3bee0929d31c413cff7f6d85b6eeacc9467cced7ce0213686ea69fec. Physical exclusions: sym-001, sym-003, sym-004, sym-006, sym-007, sym-009, sym-012, sym-013, sym-015, sym-016, sym-018, sym-019, sym-020, sym-021, sym-023, sym-027, sym-028, sym-029, sym-032, sym-035, sym-037, sym-038, phr-004, phr-008, phr-016, phr-017, phr-018, phr-020, phr-021, phr-022, phr-023, phr-024, phr-025, phr-026. Covered nested entries: sym-002, phr-019.",
+    "P04 classification criterion: A Greek word in parentheses is kept only where the English does not already carry the wordplay or argument it marks (mantike/manike, erromenos eros, nous/istoria/oiesis, oionoistike/oionistike, the place and parent names); a Greek gloss on a word the English already renders is a note. Every other register entry is text and is kept.",
+    "P04 changed classifications: phr-016 (sophrosune), phr-020 (imeros), phr-023 (Anteros).",
+    "P13 Stage B: register SHA-256 79cf49e5cf8a8f7cac5ff4e4069866f755e2a6613543eaceb77281b6ed041fe6. Closed bracket_note exclusions: brk-01, brk-04, brk-05, brk-06, brk-07, brk-08, brk-09, brk-10, brk-11, brk-12, brk-14, brk-15, brk-18. Kept: brk-02, brk-03, brk-13, brk-16, brk-17.",
+    "P13 classification criterion: Square-bracketed words that render what the Greek leaves implicit are translation and are kept; Plato's own Greek words that a pun turns on are kept; identifications, alternative renderings, 'i. e.' glosses and explanations of a pun are translator commentary and are stripped.",
+    "Square-bracket insertion candidates: 5 retained, 13 stripped."
+  ],
+  "rights_status": {
+    "source_statement": "The supplied Gutenberg licence states that this electronic work is derived from texts not protected by U.S. copyright law and requires users elsewhere to check local law.",
+    "scope": "Public-domain source for the local experiment; no worldwide rights clearance asserted. Corpus text and generated data are excluded from the public repository."
+  }
+}

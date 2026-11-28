@@ -12,9 +12,9 @@ from where it shouldn't have.
 **Not a product.** The trace is the point; the final answer is a by-product.
 
 > **Status:** Phase 5 in progress — hub-and-spoke and the Editor. Done: 5a–5c (the four-figure
-> substrate, the call-1 revision, the Editor), C1 (Darwin's corpus and Epistemic Horizon) and the
-> toolkit slice T (corpus survey, Horizon gate and window, recipe kit).
-> **Next: C2 (Plato).** See [Build status](#build-status).
+> substrate, the call-1 revision, the Editor), C1 (Darwin's corpus and Epistemic Horizon), the
+> toolkit slice T (corpus survey, Horizon gate and window, recipe kit) and C2's corpus (Plato).
+> **Next: Plato's Epistemic Horizon.** See [Build status](#build-status).
 
 ---
 
@@ -530,6 +530,7 @@ agent-choir-studio-2/
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
     charles_darwin/      # the recipe only, as above
+    plato/               # the recipe only, as above
   corpus_kit/            # shared recipe mechanics, standard library only (Decisions K11)
     source.py            # pinned fetch from www.gutenberg.org only, SHA-256, CRLF to LF, envelope
     spans.py             # unique, balanced, Ledger, nc, contamination
@@ -560,6 +561,7 @@ agent-choir-studio-2/
 | *Why* this exists | [`EXPERIMENTAL_FRAME`](docs/AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md) |
 | The roles and their contracts | [`SYSTEM`](docs/AGENT_CHOIR_V2_SYSTEM.md) |
 | The figures, corpora and retrieval | [`CHOIR_AND_CORPUS`](docs/AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md) |
+| How a new figure is built | [`NEW_FIGURE`](docs/AGENT_CHOIR_V2_NEW_FIGURE.md) |
 | Routing and the topologies | [`TOPOLOGY_AND_STEERING`](docs/AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md) |
 | The interesting idea | [`LEAKAGE_AND_DETECTIVE`](docs/AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md) |
 | What's settled and what isn't | [`DECISIONS`](docs/AGENT_CHOIR_V2_DECISIONS.md) |

@@ -147,8 +147,8 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   example questions or working conversation; every entry traces to a source about the world. A term
   belongs to a sense only if it names that sense's concept as it existed at the sense's date; a
   later product or system gets its own later sense. Self-collision gate: no breach term may match
-  the figure's own chunk text by stem sequence; a brief-time check now, made permanent in T2
-  (planned). Known bias, recorded and not deepened by us: the tree's first 15 lineages were shaped
+  the figure's own chunk text by stem sequence; made permanent in T2 (`scripts/horizon_gate.py`,
+  K11). Known bias, recorded and not deepened by us: the tree's first 15 lineages were shaped
   by three owner-chosen questions.
 - **E3 — No figure prompt may contain a breach term.** **RESOLVED 2026-11-25.** The filled prompt
   is checked with `find_breaches` before every turn and the turn raises on any hit. *Rejected:*
@@ -417,8 +417,8 @@ been. Each item is updated with evidence as its slice lands.
   Its first run found 5 terms already committed: "tranquilizer"/"tranquilliser" (Marcus's own
   "tranquillity", 18 hits), "inflation" (Darwin 12, Marcus 1), "elasticity" (Darwin 6),
   "reinforcement" (Darwin 1); each was replaced by phrases or removed. Now 0 for both figures (148
-  and 102 breach sequences), and shown able to fail (bare "productivity": 150). It is a brief-time
-  check; making it permanent is planned (T2). *Re-probe (no calls):* Darwin's unmapped 39 → 16
+  and 102 breach sequences), and shown able to fail (bare "productivity": 150). It was a
+  brief-time check, made permanent in T2 (K11). *Re-probe (no calls):* Darwin's unmapped 39 → 16
   (mapped_beyond 13, near 16); what remains is one-offs, boundaries, "optimized", "screen", "tabs".
   The Marcus probe trace's classifications are unchanged by the removals: none of those words occurs
   in it. Compiled files: Marcus `57717ab0…`, Darwin `e33171c4…`, both `--check` current.
@@ -437,6 +437,68 @@ been. Each item is updated with evidence as its slice lands.
   figure through the stand-in's slot. *Rejected:* complete works (the *Laws* without Socrates;
   dialogues of doubtful authorship); the *Republic* alone; Socrates' lines only (loses the
   dialectic; presumes Socrates is Plato); a later translation (UK rights).
+  *Built 2026-11-28 (the corpus recipe; slice C2):* sources #55201, the *Republic* (Jowett 3rd ed.,
+  Clarendon Press 1888; `8a30ff0c…`); #76464, *Dialogues* Vol. II (Jowett 3rd ed., OUP 1892;
+  released on Gutenberg 8 July 2025, per Project Gutenberg's record for eBook #76464; `504709b2…`),
+  for *Meno*, *Apology*, *Crito*, *Phaedo* and *Gorgias*; #1600 and #1636 (edition not stated by
+  Gutenberg; `8b5c599e…`, `ce41cbe9…`), for the *Symposium* and *Phaedrus*. These two are probably
+  third-edition text with American spelling: two sibling etexts (*Meno* #1643, *Crito* #1657)
+  compared against #76464 showed the same wording apart from speaker labels, inlined notes and
+  American spelling (similarity 0.957 and 0.980, nearly all the differences speaker labels; from a
+  read-only comparison run in this build session on 2026-11-28, not committed). The five duplicate
+  1999 etexts were dropped. Fetched 2026-11-27 by rsync from gutenberg.pglaf.org (owner-supplied);
+  **provisional** until a re-fetch from www.gutenberg.org matches the pinned bytes. *Correction:*
+  #76464 was in the fetch script; K4 had not named it. *Speaker labels:* normalised to `NAME:` from
+  each dialogue's persons list, 1,779 replacements in #76464; an unmapped label fails the build, and
+  the guard was shown firing (removing one map entry failed the build); conservation accounts for
+  the generated label characters exactly: 14,277 non-whitespace characters, computed label by label.
+  *Strip rule:* the corpus is each dialogue's text; everything the edition added is stripped:
+  Jowett's introductions, analyses and essays; all sidenotes (746 in the *Republic*, 658 in #76464),
+  which are Jowett's interpretation and, as section titles, would put his reading inside Plato's
+  corpus; footnotes, page markers, persons lists and scene lines; and Euthyphro and the appendices.
+  *Units and locators:* *Republic* Books I–X, and each other dialogue as one unit, chunked by the
+  kit's `split_section` over the whole unit. Speech integrity over Stephanus alignment, refining
+  "cut at Stephanus sections" above: the Stephanus numbers fall mid-sentence (inline in #55201) or
+  against a printed line (the margin of #76464), so they go into the locator as a range: the
+  *Republic* by section (`Republic I, 327B–328A`), #76464 by page (`Meno 81–82`), the *Symposium*
+  and *Phaedrus* by paragraph sequence (`Symposium ¶14–17`). No number is ever inferred (the *Meno*
+  opens "beginning" before its first printed 71); the strip report locates 1,566 Stephanus tokens at
+  their source positions (1,355 in #55201, 211 in #76464). *Voice:* `prompt_edition` "in Benjamin
+  Jowett's English translation"; the reading rule, verbatim from the Manifest: "Your writings are
+  dialogues, and every speaker in them is part of your argument: the positions you refute belong to
+  it too. A character's line is not automatically your view, and Socrates does not simply speak for
+  you, least of all in the Apology. Reason from where a dialogue's argument comes to rest, and say
+  when a reading is interpretive." *The owner's rationale* (owner judgement, in substance): the
+  demarcation is drawn where provenance changes; the translator's notes come out; inside the
+  dialogues, taking a pen to what Plato said against what Socrates said would go off the objective
+  and create complexity creep. *Translator commentary inside the dialogue:* P04, inline
+  parentheticals: 34 stripped (*Symposium* 22, *Phaedrus* 12), which in the 1999 etexts are the
+  third edition's footnotes, inlined; a Greek word in parentheses is kept only where the English
+  does not already carry the wordplay it marks; three readers (ChatGPT, Claude sealed, the owner
+  blind), and the owner's reading of *imeros* adopted: Jowett's English "emotion" already carries
+  the pun (owner-supplied). P13, square brackets: 13 stripped, 5 kept, by the criterion the owner's
+  blind reading refined: supplied words that render what the Greek implies are translation; Plato's
+  own Greek words a pun turns on are kept; identifications, alternative renderings, "i. e." glosses
+  and explanations of a pun are commentary. *Lesson:* Claude's test, "does the sentence stand
+  without it?", sorted these wrongly three times. *Source defects,* each an exact-marker exception,
+  never corrected: P01, the *Meno* has no page-70 marker; P02, the *Meno*'s paired notes 7, 8 and 9;
+  P03, #76464's notes run 1–78 across the whole file, checked as one bijection; P05, `*Ed. Steph.
+  327*`; P06, a footnote missing its closing bracket; P07, a duplicate note 38; P08, `[Footnote:
+  11:`; P09, an unnumbered note; P10, `(308}`; P12, `[Sidenote;`; 561E→561A, kept as printed. P11:
+  the *Republic*'s introduction apparatus is unvalidated by design, because it is stripped whole.
+  *Ceiling:* at 380 words one chunk failed the token gate (*Phaedo* 58–59, 372 words, 552 tokens).
+  The cause is the normalised speaker labels: each is one word but several model tokens, so the
+  densest chunks (up to 1.48 tokens per word) are labelled exchanges. Lowered to 320, for about 7%
+  headroom at that density; Marcus stays 380 and Darwin 340. *Result:* 1,248 chunks; words
+  min/median/p90/max 3/200/281/320; 154 sentence-level splits, 0 semicolon-level; tokens
+  9/249/353/447, none over 512; conservation difference 0 in all 17 units; byte-identical on two
+  machines (`chunks.jsonl` `dbdd6b75…`). The shortest chunk is three words: "Yes, said Glaucon."
+  (*Republic* III, 417B). *A metric flaw, recorded:* the recipe's "mid-speech start" counts any
+  chunk whose first paragraph lacks a label in a labelled dialogue; in the narrated *Phaedo* and
+  *Symposium* that fires on nearly every chunk (329 in all). The real speech breaks are the 154
+  sentence-level splits. *Rejected:* the 1999 etexts for all eight; keeping the sidenotes as section
+  titles; one chunk per Stephanus page; greedy packing; a token-aware splitter; shorter labels to
+  fix the gate.
 - **K5 — Douglass's corpus.** **RESOLVED 2026-11-26.** *My Bondage and My Freedom* (1855;
   Gutenberg #202), with its appendix of speech extracts he chose; *Three Addresses on the Relations
   Subsisting Between the White and Colored People of the United States* (Gutenberg #67919);
@@ -599,6 +661,19 @@ been. Each item is updated with evidence as its slice lands.
   uses the kit for source and chunker only. *Rejected:* retrofitting, which would be a corpus
   change. *Recipes import the kit through one `sys.path` line,* so the documented commands
   (`python corpora/<figure_id>/acquire.py`) are unchanged. *Rejected:* `python -m`.
+- **K12 — The Horizon pre-flight guard.** **RESOLVED 2026-11-28.** `horizon_preflight()` in
+  `choir/deliberation.py` runs first in `deliberation_run`, before `host_decide` and before any
+  model call: for every figure the roster marks `built`, `horizon.check` must find a current
+  compiled Horizon; otherwise it raises `RuntimeError` naming each failing figure and the problem.
+  It makes no model call and writes nothing. Host-only runs (`host_run`, `POST /run/host`) make no
+  figure turns and are not guarded. Without it a missing Horizon surfaces as a lane failure after
+  the Host's paid calls, and the run is recorded as degraded (K9), so a configuration error looks
+  like a figure failure. Offline, `choir_probe` binds the guard to a no-op for its existing cases;
+  its case 18 runs the real guard against the real roster and horizons, raises naming Plato, and
+  records zero model calls, and a guard that returns without checking fails it. Closes the parked
+  item "refuse to cast a built figure with no compiled Horizon". Plato's Horizon is not built yet,
+  so every deliberation run is refused until it is; that is intended. *Rejected:* a corpus/Horizon
+  split in the roster's `built` status; guarding at cast time (after the Host's calls).
 
 ---
 

@@ -27,6 +27,7 @@ import httpx2
 import numpy as np
 import openai
 
+import choir.deliberation as deliberation
 import choir.editor as editor
 import choir.oracle as oracle
 import core.llm as llm
@@ -106,6 +107,7 @@ LOADS: list[tuple[float, float]] = []  # (start, end) of each fake figure load, 
 STATE = {"load_delay": 0.0, "unbuilt": set()}
 _real_load_figure = hybrid.load_figure
 _real_load_context = oracle.load_context
+_real_horizon_preflight = deliberation.horizon_preflight
 _marcus_ctx = None
 
 
@@ -988,6 +990,24 @@ WORDS = ["governing", "government", "governs", "consciousness", "conscious", "ha
          "controlling", "controllables", "emergence", "emerging", "variations", "harmonious"]
 
 
+async def case_18():
+    """Decisions K12: the real Horizon pre-flight guard, against the real roster and horizons.
+    A built figure with no compiled Horizon (Plato) refuses the run before any model call."""
+    scenario = Scenario()
+    deliberation.horizon_preflight = _real_horizon_preflight  # the real guard, this case only
+    try:
+        events, error, run_dir, summary = await run_case(scenario)
+    finally:
+        deliberation.horizon_preflight = lambda: None
+    misses = []
+    check(error is not None and "RuntimeError" in error and "plato" in error,
+          f"expected RuntimeError naming plato, got {error}", misses)
+    calls = sum(scenario.attempts.values())
+    check(calls == 0, f"{calls} model calls recorded", misses)
+    check(summary["status"] == "failed", f"status {summary['status']}", misses)
+    return run_dir, misses
+
+
 async def case_15():
     """The stemmer under threads: every result equals the single-threaded one."""
     import random
@@ -1060,6 +1080,7 @@ def install_fakes():
     """Patch in the fake client, figures, Oracle context and model. Returns a restore function."""
     patches = [(llm, "_client", FAKE_CLIENT), (hybrid, "load_figure", fake_load_figure),
                (oracle, "load_context", fake_load_context),
+               (deliberation, "horizon_preflight", lambda: None),
                (vectors, "get_model", lambda: MODEL)]
     saved = [(obj, name, getattr(obj, name)) for obj, name, _ in patches]
     for obj, name, value in patches:
@@ -1102,6 +1123,7 @@ async def offline() -> int:
         await run("14 unbuilt corpus → cannot_access_corpus", case_14())
         await run("15 stemmer under threads", case_15())
         await run("17 null translator → list_my_works", case_17())
+        await run("18 Horizon pre-flight: refuses before any call", case_18())
         await run("16 one model owner", case_16())
         await run("1×20 case 1 repeated", case_1_repeated())
         await run("E1 input written, hashed, sent verbatim", case_e1())

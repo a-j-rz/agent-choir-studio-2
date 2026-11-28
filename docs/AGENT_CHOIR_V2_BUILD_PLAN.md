@@ -311,9 +311,9 @@ decision recorded either way. Also confirm, on the first Editor call that report
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
 *Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-28: 5a, 5b and 5c are committed; C1 is
-done (corpus and Horizon); the toolkit slice T is done; nothing else in the content track, or below,
-is built.* Two tracks meet at the first four-figure run; the machinery is tested offline until all
-four corpora pass the token gate.
+done (corpus and Horizon); the toolkit slice T is done; C2's corpus is done (Plato's Horizon is
+not); nothing else in the content track, or below, is built.* Two tracks meet at the first
+four-figure run; the machinery is tested offline until all four corpora pass the token gate.
 
 ```mermaid
 flowchart LR
@@ -369,10 +369,13 @@ self-collision gate that found 5 committed terms matching a figure's own text, n
 figures (148 and 102 breach sequences); the free re-probe took unmapped 39 → 16. Compiled, `--check`
 current.
 
+*C2 note (2026-11-28):* Plato's corpus is done: the recipe was built outside the repo on the kit,
+byte-identical on two machines; the token gate passed at 320 words (max 447 tokens); the roster
+flipped to `built` (Decisions K4). His Horizon is not built, so the Horizon pre-flight guard (K12)
+refuses every deliberation run until it is, and `horizon_gate --all` exits 1 on Plato.
+
 *Parked at C1 (2026-11-27; updated 2026-11-28):*
 
-- **A guard,** for C2 and C3: refuse to cast a built figure with no compiled Horizon. (The gap it
-  covered closed for Darwin on 2026-11-28.)
 - **The probe's BCE template,** for C2: `horizon_coverage_probe` prints "before -347 CE" for a BCE
   figure. Not fixed.
 - **Lineage data:** `stimulant_drinks.tea` is dated 1658 (an English source) in

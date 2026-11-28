@@ -268,8 +268,8 @@ CASES_5B = [
 ]
 
 CASES_4C = [
-    case("valid cast: Marcus and Darwin adequate, two unassessable", CITY, P, "complete", "framed", C,
-         cast={"would_reject": [], "gate_unassessable": ["plato", "frederick_douglass"],
+    case("valid cast: Marcus, Darwin and Plato adequate, one unassessable", CITY, P, "complete", "framed", C,
+         cast={"would_reject": [], "gate_unassessable": ["frederick_douglass"],
                "gate_not_applied": "roster exhausted",
                "near_miss_note": "roster of four; none to miss"}),
     case("valid cast: Marcus corpus weak", CITY, P, "complete", "framed", C,
@@ -284,8 +284,8 @@ CASES_4C = [
          [cast_out([MARCUS] + OTHERS + [assess("socrates")])],
          cast_invalid="unknown figure socrates assessed"),
     case("not-built figure rated strong", CITY, P, "failed", None, C,
-         [cast_out([MARCUS, assess("plato", corpus="strong")] + OTHERS[1:])],
-         cast_invalid="plato: corpus_suitability is strong, but its corpus is not_built"),
+         [cast_out([MARCUS, OTHERS[0], assess("frederick_douglass", corpus="strong"), OTHERS[2]])],
+         cast_invalid="frederick_douglass: corpus_suitability is strong, but its corpus is not_built"),
     case("built figure rated unassessable", CITY, P, "failed", None, C,
          [cast_out([assess("marcus_aurelius")] + OTHERS)],
          cast_invalid="marcus_aurelius: corpus_suitability is unassessable, but its corpus is built"),
