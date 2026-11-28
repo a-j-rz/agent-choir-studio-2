@@ -14,7 +14,7 @@ here directly.
 
 If you are a fresh reader — a new Claude project, ChatGPT, Claude Code, or a human
 picking this up cold — everything you need to understand *what we are building and
-why* lives in these twelve files. In the repository, eleven sit in `docs/` and the
+why* lives in these thirteen files. In the repository, twelve sit in `docs/` and the
 non-technical glossary sits at the repo root beside the README (Decisions I1). The
 **code** is the source of truth for *behaviour*; this pack is the source of truth for
 *intent, reasoning and design constraints*.
@@ -65,17 +65,18 @@ Read in this order for a cold start. Skip freely once oriented.
 | 3 | [**AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md**](AGENT_CHOIR_V2_EXPERIMENTAL_FRAME.md) | The intellectual spine — the *why*. The layered purpose, the seven observables, the knowing-everything paradox, the mitigation hierarchy, deliberation triage. The anchor document. |
 | 4 | [**AGENT_CHOIR_V2_SYSTEM.md**](AGENT_CHOIR_V2_SYSTEM.md) | The *what* — roles and their contracts (Host, Choir, Editor, Detective, Researcher, Oracle), the stateless run boundary, the technology posture. |
 | 5 | [**AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md**](AGENT_CHOIR_V2_CHOIR_AND_CORPUS.md) | The historical-agent canon — the roster of 24, the machine-proving four, corpus standard, Manifests / Persona Dossiers / Epistemic Horizons, the retrieval tool loop, per-figure rules. |
-| 6 | [**AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md**](AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md) | Orchestration mechanics — archetypes, complexity rubric, locked topology threshold, cast steering, hub-and-spoke, token-ring (rounds, seat rotation, direct questions/challenges, stop logic), Researcher steering. |
-| 7 | [**AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md**](AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md) | The Detective's full spec, the hard/soft leakage taxonomy, the Oracle cross-check, `detective.json`, and the mandatory self-limitation clause. |
-| 8 | [**AGENT_CHOIR_V2_DECISIONS.md**](AGENT_CHOIR_V2_DECISIONS.md) | The decision record (ADR) — every resolved implementation choice as decision + rationale + rejected alternative, plus repo-hygiene decisions. |
-| 9 | [**AGENT_CHOIR_V2_BUILD_PLAN.md**](AGENT_CHOIR_V2_BUILD_PLAN.md) | The phased vertical-slice build plan, the keystone slice, trace-evidence per phase, the cast-steering activation checkpoint, and the explicit out-of-scope list. |
-| 10 | [**AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md**](AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md) | What every run captures — raw + normalized, `schema_version`, the per-run trace directory, where each of the seven observables physically lives, the live-vs-expandable UI split. |
-| 11 | [**AGENT_CHOIR_V2_GLOSSARY.md**](AGENT_CHOIR_V2_GLOSSARY.md) | Conceptual glossary — the project's own vocabulary. |
-| 12 | [**AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md**](../AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md) *(repo root)* | Stack-literacy glossary — the plumbing, for a reader who follows the ideas but hasn't touched the machinery. |
+| 6 | [**AGENT_CHOIR_V2_NEW_FIGURE.md**](AGENT_CHOIR_V2_NEW_FIGURE.md) | How a figure goes from chosen to `built` — the thirteen-step procedure, who does each step and what the figure supplies, and the standard every corpus recipe meets. |
+| 7 | [**AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md**](AGENT_CHOIR_V2_TOPOLOGY_AND_STEERING.md) | Orchestration mechanics — archetypes, complexity rubric, locked topology threshold, cast steering, hub-and-spoke, token-ring (rounds, seat rotation, direct questions/challenges, stop logic), Researcher steering. |
+| 8 | [**AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md**](AGENT_CHOIR_V2_LEAKAGE_AND_DETECTIVE.md) | The Detective's full spec, the hard/soft leakage taxonomy, the Oracle cross-check, `detective.json`, and the mandatory self-limitation clause. |
+| 9 | [**AGENT_CHOIR_V2_DECISIONS.md**](AGENT_CHOIR_V2_DECISIONS.md) | The decision record (ADR) — every resolved implementation choice as decision + rationale + rejected alternative, plus repo-hygiene decisions. |
+| 10 | [**AGENT_CHOIR_V2_BUILD_PLAN.md**](AGENT_CHOIR_V2_BUILD_PLAN.md) | The phased vertical-slice build plan, the keystone slice, trace-evidence per phase, the cast-steering activation checkpoint, and the explicit out-of-scope list. |
+| 11 | [**AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md**](AGENT_CHOIR_V2_TRACE_AND_INSTRUMENTATION.md) | What every run captures — raw + normalized, `schema_version`, the per-run trace directory, where each of the seven observables physically lives, the live-vs-expandable UI split. |
+| 12 | [**AGENT_CHOIR_V2_GLOSSARY.md**](AGENT_CHOIR_V2_GLOSSARY.md) | Conceptual glossary — the project's own vocabulary. |
+| 13 | [**AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md**](../AGENT_CHOIR_V2_GLOSSARY_NON_TECHNICAL.md) *(repo root)* | Stack-literacy glossary — the plumbing, for a reader who follows the ideas but hasn't touched the machinery. |
 
 ---
 
-The same twelve, by the question each one answers:
+The same thirteen, by the question each one answers:
 
 ```mermaid
 flowchart TD
@@ -97,6 +98,7 @@ flowchart TD
         B["Build Plan<br/>phases + scope"]
         R["Trace & Instrumentation<br/>what every run records"]
         DE["Decisions<br/>what's settled"]
+        NF["New Figure<br/>procedure + recipe standard"]
     end
     subgraph REF["Reference"]
         direction LR
@@ -110,14 +112,14 @@ flowchart TD
 ## If you only read three
 
 - **New to the whole thing** → 3 (Frame), then 4 (System), then 5 (Choir & Corpus).
-- **About to build** → 9 (Build Plan), then 8 (Decisions), then 10 (Trace).
-- **Here for the interesting idea** → 3 (Frame), then 7 (Leakage & Detective).
+- **About to build** → 10 (Build Plan), then 9 (Decisions), then 11 (Trace).
+- **Here for the interesting idea** → 3 (Frame), then 8 (Leakage & Detective).
 
 ---
 
 ## Status
 
-*As of 2026-11-26, end of Phase 4.* V2 started greenfield. **Phase 0 is complete:** the repository
+*As of 2026-11-28, during Phase 5.* V2 started greenfield. **Phase 0 is complete:** the repository
 stands up with identity hygiene verified before commit one, a FastAPI skeleton streams
 events to a vanilla page, and a live spike has proven the model → tool → model loop on
 `gpt-6-luna` through the Responses API. Its findings are recorded in the Build Plan.
@@ -131,8 +133,11 @@ concepts beyond his time, which explains them from what his world already knew (
 and every turn ends with a deterministic reconciliation of the modern vocabulary he used against
 the channels that sanctioned it. **Phase 4, the Host, is complete (2026-11-26):** three structured calls triage the question, score it
 and choose the cast, with code doing every count, threshold and check (Decisions J1–J10); the rubric's
-anchors were calibrated against two blind readers. **Next is Phase 5, hub-and-spoke and the Editor**,
-which first needs corpora for the other three machine-proving figures.
+anchors were calibrated against two blind readers. **Phase 5, hub-and-spoke and the Editor, is in
+progress:** the four-figure substrate, the call-1 revision and the Editor are committed (5a–5c);
+Charles Darwin is built, corpus and Epistemic Horizon (C1, Decisions K3); and the toolkit slice T
+(Decisions K11) gives each new figure a corpus survey, a Horizon gate and window, and a shared
+recipe kit, with the procedure in New Figure. Plato and Frederick Douglass are next (C2, C3).
 The Build Plan carries the live status; this section is a pointer, not a second source of truth.
 
 Every role currently runs on one model, with reasoning effort as the per-role dial and

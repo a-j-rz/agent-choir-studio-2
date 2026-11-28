@@ -580,6 +580,25 @@ been. Each item is updated with evidence as its slice lands.
   as support, with an unsupporting passage left to the audit. *Rejected:* waiting for real runs
   (the gap is known; the first expensive runs would only rediscover it); a code check on what the
   fields mean (a form check is what was just met without its substance).
+- **K11 — The toolkit slice (T1–T3).** **RESOLVED 2026-11-28.** Three tools for building a figure,
+  committed in `30e009c`, `3a17071` and `193b894`; the procedure they serve is New Figure. *The
+  survey reports and never decides:* `scripts/corpus_survey.py` lists candidates per section and
+  writes no recipe configuration. *Rejected:* letting it write recipe configuration. *Answer keys
+  are region-scoped on the key side; the survey stays region-free:* the selftest windows Marcus's
+  key to his books (lines 2129–7178) and reads run 8 as 1–80 through Huxley's note, while the
+  survey scans each whole text. *Rejected:* teaching the survey regions or authorship. *Descent's
+  table 2 is recorded as a known miss:* the table rule misses rows that wrap onto unspaced text
+  lines, and the selftest reports it without failing. *Rejected:* a fitted rule change. *The gate
+  is a separate script from compile:* `scripts/horizon_gate.py` reads a figure's chunks.
+  *Rejected:* folding it into compile, which would make compile depend on gitignored local data.
+  *The window reads the sources and shares the compiler's availability logic*
+  (`horizon.availability`). *Rejected:* a view of the compiled file, which holds no dates. *The
+  kit moves code; it does not redesign it:* each kit function behaves as the recipe code it
+  replaced, and all nine outputs stayed byte-identical; Darwin's note walker stays in his recipe.
+  *Rejected:* extracting a walker with one user. *Marcus is not retrofitted to the ledger:* he
+  uses the kit for source and chunker only. *Rejected:* retrofitting, which would be a corpus
+  change. *Recipes import the kit through one `sys.path` line,* so the documented commands
+  (`python corpora/<figure_id>/acquire.py`) are unchanged. *Rejected:* `python -m`.
 
 ---
 

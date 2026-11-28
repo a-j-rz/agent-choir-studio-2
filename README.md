@@ -12,8 +12,9 @@ from where it shouldn't have.
 **Not a product.** The trace is the point; the final answer is a by-product.
 
 > **Status:** Phase 5 in progress — hub-and-spoke and the Editor. Done: 5a–5c (the four-figure
-> substrate, the call-1 revision, the Editor) and C1 (Darwin's corpus and Epistemic Horizon).
-> **Next: toolkit slice T, then C2 (Plato).** See [Build status](#build-status).
+> substrate, the call-1 revision, the Editor), C1 (Darwin's corpus and Epistemic Horizon) and the
+> toolkit slice T (corpus survey, Horizon gate and window, recipe kit).
+> **Next: C2 (Plato).** See [Build status](#build-status).
 
 ---
 
@@ -529,11 +530,17 @@ agent-choir-studio-2/
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
     charles_darwin/      # the recipe only, as above
+  corpus_kit/            # shared recipe mechanics, standard library only (Decisions K11)
+    source.py            # pinned fetch from www.gutenberg.org only, SHA-256, CRLF to LF, envelope
+    spans.py             # unique, balanced, Ledger, nc, contamination
+    chunker.py           # split_section, end_check, word_stats, serialise
+    selftest.py          # unit tests on synthetic text
   epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
   horizons/              # shared concept lineages, figure profiles, compiled Horizons
     probe_questions/     # blind coverage-probe questions, one write-once file per figure
   demo/live_demo.py      # labelled fake corpus for the live demo run
   scripts/               # llm_smoke, figure_turn, retrieval probes, compile_horizon,
+                         # compile_horizon --window, horizon_gate, corpus_survey,
                          # generate_probe_questions, horizon_coverage_probe, oracle_probe,
                          # host_probe, score_stability
   frontend/index.html    # vanilla page: renders any event type, live

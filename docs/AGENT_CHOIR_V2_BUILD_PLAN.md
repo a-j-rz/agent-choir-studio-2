@@ -311,14 +311,14 @@ decision recorded either way. Also confirm, on the first Editor call that report
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
 *Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-28: 5a, 5b and 5c are committed; C1 is
-done (corpus and Horizon); nothing else in the content track, or below, is built.* Two tracks meet
-at the first four-figure run; the machinery is tested offline until all four corpora pass the token
-gate.
+done (corpus and Horizon); the toolkit slice T is done; nothing else in the content track, or below,
+is built.* Two tracks meet at the first four-figure run; the machinery is tested offline until all
+four corpora pass the token gate.
 
 ```mermaid
 flowchart LR
     subgraph Content["Content track — one figure at a time"]
-        C1["C1 · Darwin"] --> C2["C2 · Plato"] --> C3["C3 · Douglass"]
+        C1["C1 · Darwin"] --> TK["T · toolkit"] --> C2["C2 · Plato"] --> C3["C3 · Douglass"]
     end
     subgraph Machinery["Machinery track"]
         A["5a · four-figure substrate"] --> B["5b · call-1 revision"] --> E["5c · Editor"]
@@ -375,16 +375,69 @@ current.
   covered closed for Darwin on 2026-11-28.)
 - **The probe's BCE template,** for C2: `horizon_coverage_probe` prints "before -347 CE" for a BCE
   figure. Not fixed.
+- **Lineage data:** `stimulant_drinks.tea` is dated 1658 (an English source) in
+  `european-early-modern`, and listed before coffee (1650). To be fixed against a source in a
+  lineage pass.
 
-*Toolkit slice T (planned, agreed 2026-11-28), before C2. Plan, not result: nothing here is built.*
+*Banked for later (owner, 2026-11-28):*
 
-- **T1 — a corpus survey script,** proven by finding Darwin's known defects (7 note defects, 57
-  captions including 2 nested, 2 tables, 14 wrapped headings) and Marcus's 127 footnotes.
-- **T2 — the self-collision gate made permanent,** plus an available-window report, proven on the
-  C1 gate's finds.
-- **T3 — a shared recipe kit of proven mechanics,** proven by Darwin's recipe rebuilt on it
-  byte-identical (`d4122ff0…`), with Marcus's untouched.
-- **Two docs written during T:** a corpus-recipe standard and a new-figure procedure.
+- **An architecture page, after Phase 5.** A deterministic/probabilistic split: one-third
+  probabilistic above a horizontal line, two-thirds deterministic below. Every role drawn as a
+  column straddling the line; the embedding model below the line, labelled "a model, run as a
+  function"; a build-time/run-time vertical divider; nested *n* stacks for corpora, indexes,
+  profiles and model instances; built components solid, planned ones dashed; a stage stepper
+  highlighting and captioning activity. Hand-built SVG in one HTML page, served by GitHub Pages
+  from `docs/`, with a static picture and a link in the repo.
+- **A question, not a plan:** how far a self-questioning loop can be automated before its verdicts
+  stop agreeing with independent readers. Five seats: (1) an independent question asker, knowing
+  nothing of the project; (2) the Choir, unaware it is tested; (3) an analyst proposing lineage
+  diffs with sources; (4) an adversarial critic; (5) a judge. Four caveats: (1) prompts separate
+  what each model is told, not what it knows, so independence needs different model families,
+  which collides with H1; (2) a frozen held-out question set is needed to tell improvement from
+  drift; (3) source verification cannot be an LLM, and cross-checking-LLM verification is out of
+  scope; (4) the output must be versioned diffs a human merges, so runs stay stateless. See the
+  out-of-scope "self-improving / compounding loop" bullet below, which stands: out of scope for V2.
+
+*Toolkit slice T (done, 2026-11-28), before C2: commits `30e009c`, `3a17071` and `193b894`
+(Decisions K11).*
+
+- **T1 — `scripts/corpus_survey.py`** reports what is in a figure's raw texts and never decides:
+  generic detectors, with no per-figure branch, region or threshold. Its `--selftest` joins the
+  survey against the strip reports the committed recipes write: 22 *Descent* note runs, 1,184
+  notes, with run 8 (Ch. VII) 1–80, because Huxley's note continues Darwin's numbering with 70–80,
+  all inside the recipe's `huxley_note` span; the 5 unclosed notes and the 2 duplicate-plus-gap
+  anomalies (Ch. IV, Ch. XIX); 57 `[Fig.` captions, 2 of them nested; all 221 heading spans
+  (129 + 92), each on a heading candidate; *Origin*'s 3 bracketed notes; Marcus's 127 notes within
+  his books (lines 2129–7178), with a further 38 note bodies before Book I, in the Biographical
+  Sketch and the Philosophy essay, outside the recipe's region. The plan's "7 note defects, 2
+  tables, 14 wrapped headings" became these joins: of the 2 tables, table 1 is found and table 2 is
+  a known miss, because the survey misses tables whose rows wrap onto unspaced text lines. Three
+  data mutations run in the selftest; four code mutations were shown failing; the output is
+  deterministic. Run 8's key reads 1–80 where the recipe's report, which stops at the stripped
+  `huxley_note`, reads 1–69; Marcus's key is windowed to his books. The keys are region-scoped; the
+  survey is not.
+- **T2 — `scripts/horizon_gate.py`** runs `horizon.find_breaches` over a figure's own chunk text;
+  `--all` gates every figure the roster marks `built`; a stale compile, a missing compiled file or
+  missing chunks fail with exit 1. Live state: Darwin 0 hits over 1,874 chunks and 102 breach
+  sequences; Marcus 0 over 504 chunks and 148. Darwin's historical "productivity" collision is
+  reproduced at 150 hits. **`compile_horizon --window`** reads the sources, not the compiled file,
+  which holds no dates and lists only the edge sense. It shows available senses with their route
+  (the tradition id, or exception) and date, the edge, beyond senses with bridge distance and years
+  after the horizon (year 0 skipped across BCE/CE), and unreached senses with the traditions that
+  have them; where several of the figure's traditions qualify, the earliest is the route and the
+  others are listed. The availability logic is shared with the compiler; the compiled files are
+  byte-identical, and `--check` reports both current.
+- **T3 — `corpus_kit/`:** `source` (pinned fetch, www.gutenberg.org only, checked before anything
+  else; SHA-256; CRLF to LF; the envelope), `spans` (`unique`, `balanced`, `Ledger`, `nc`,
+  `contamination`) and `chunker` (`split_section` with optional abbreviation and initials
+  exclusions, `end_check`, `word_stats`, `serialise`). Darwin migrated fully; Marcus for source and
+  chunker only, with no exclusions, as before. All nine outputs are byte-identical before and
+  after. Recipes keep their documented commands through one `sys.path` line. The kit selftest is
+  28 checks on synthetic text; three mutations were shown failing. A fresh machine fetches Darwin's
+  sources from gutenberg.org, and they must match the pinned hashes: still pending, and it is the
+  re-fetch that clears K3's provisional provenance.
+- **The two docs** (a new-figure procedure and a corpus-recipe standard) are one:
+  [New Figure](AGENT_CHOIR_V2_NEW_FIGURE.md).
 
 *Principle (planned, not yet applied):* each figure supplies only its true delta. Two judgement
 items: the texts and the voice. Two sourced fact sets: the profile and the dates. Three

@@ -17,3 +17,7 @@ the affected figures: `python -m scripts.compile_horizon <figure_id>`.
 **Personal boundaries:** appeared in 2 of 6 answers in Darwin's coverage probe
 (`traces/20261127T162636Z-919b`), with no natural home in an existing lineage. It gets a
 lineage when a real run's trace shows it again.
+
+**Tea's date:** `stimulant_drinks.tea` is dated 1658 (an English source) in
+`european-early-modern`, and listed before coffee (1650). To be fixed against a source in a
+lineage pass.
