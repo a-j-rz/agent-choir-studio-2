@@ -1,10 +1,12 @@
 """Verify pinned sources and strip only specified spans. Run from repository root."""
-import bisect
-import hashlib
 import json
 from pathlib import Path
 import re
-from urllib.request import urlopen
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # the repo root, so corpus_kit imports when run as python corpora/<id>/<script>.py
+from corpus_kit.source import envelope, load_pinned  # noqa: E402
+from corpus_kit.spans import Ledger, balanced, contamination, nc, unique  # noqa: E402
 
 BASE = Path('corpora/charles_darwin')
 SOURCES = {2009: '2b13c8524d813e706ad23336d81a142d48b44f1f96788b41494a0a83e1b82f88',
@@ -20,49 +22,18 @@ EXCEPTIONS = [
     ('descent-20', 1, '(1. ‘Schopenhauer and Darwinism,’ in', 'Jan. 1871, p. 323.', 'Missing closing parenthesis'),
 ]
 
-def nc(s):
-    return sum(not c.isspace() for c in s)
-
-def unique(s, marker, lo=0, hi=None):
-    hi = len(s) if hi is None else hi
-    p = s.find(marker, lo, hi)
-    if p < 0 or s.find(marker, p+len(marker), hi) >= 0:
-        raise ValueError(f'Marker not unique in region: {marker!r}')
-    return p
-
-def balanced(s, start, left, right, limit):
-    depth = 0
-    for i in range(start, limit):
-        if s[i] == left: depth += 1
-        elif s[i] == right:
-            depth -= 1
-            if depth == 0: return i+1
-    raise ValueError(f'Unbalanced {left} at offset {start}')
-
 def acquire(n):
-    p = BASE / f'data/raw/pg{n}.txt'
-    raw = p.read_bytes() if p.exists() else urlopen(f'https://www.gutenberg.org/cache/epub/{n}/pg{n}.txt').read()
-    digest = hashlib.sha256(raw).hexdigest()
-    if digest != SOURCES[n]: raise ValueError(f'Raw SHA mismatch: {n}: {digest}')
-    if not p.exists():
-        p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(raw)
-    s = raw.decode('utf-8').replace('\r\n','\n')
+    s = load_pinned(BASE / f'data/raw/pg{n}.txt', f'https://www.gutenberg.org/cache/epub/{n}/pg{n}.txt', SOURCES[n])
     if '[[' in s: raise ValueError('Reserved marker in source')
     return s
 
 def strip(n,s):
-    ledger=[]; units=[]; defects=[]; headings={}; synopses={}; notes={}; stars=0
-    newlines=[-1]+[m.start() for m in re.finditer('\n',s)]
-    def line(p): return bisect.bisect_left(newlines,p)
-    def add(a,b,cat):
-        if a>=b: raise ValueError(f'Empty span: {cat}')
-        t=s[a:b]; ledger.append((a,b,{'category':cat,'start_marker':t[:60],'end_marker':t[-60:], 'lf_line_range':[line(a),line(b-1)],'token_count':len(t.split()),'non_whitespace_chars':nc(t),'first_60':t[:60]}))
+    ledger=Ledger(s); units=[]; defects=[]; headings={}; synopses={}; notes={}; stars=0
+    line=ledger.line; add=ledger.add
     def loc(marker,lo=0,hi=None): return unique(s,marker,lo,hi)
     def para_end(a):
         m=re.search(r'\n[ \t]*\n',s[a:]); return a+m.start() if m else len(s)
-    start_match=list(re.finditer(r'(?m)^\*\*\* START OF .*$',s)); end_match=list(re.finditer(r'(?m)^\*\*\* END OF .*$',s))
-    if len(start_match)!=1 or len(end_match)!=1: raise ValueError('Gutenberg envelope')
-    start=start_match[0].end(); end=end_match[0].start()
+    start,end=envelope(s)
     add(0,start,'gutenberg_header'); add(end,len(s),'gutenberg_footer')
     if n==2009:
         sketch=loc('AN HISTORICAL SKETCH OF THE PROGRESS OF OPINION ON THE ORIGIN OF\nSPECIES, PREVIOUSLY TO THE PUBLICATION OF THE FIRST EDITION OF THIS\nWORK.',start,end)
@@ -201,9 +172,7 @@ def strip(n,s):
                         k=j-1
                         while k>=0 and raw_chars[k].isspace(): raw_chars[k]=''; k-=1
                 flat=' '.join(''.join(raw_chars).split()); out.append(flat); body_chars+=nc(flat)
-    ledger.sort(key=lambda v:v[0])
-    for prev,cur in zip(ledger,ledger[1:]):
-        if prev[1]>cur[0]: raise ValueError(f'Overlapping ledger {prev[2]} / {cur[2]}')
+    ledger.check_overlap()
     clean='\n\n'.join(out)+'\n'
     # Body region is everything between first retained unit and glossary/index.
     low=units[0][2]; high=glossary if n==2009 else index
@@ -213,7 +182,7 @@ def strip(n,s):
     body='\n'.join(x for x in clean.splitlines() if not x.startswith('[['))
     if nc(body)!=body_chars: raise ValueError('Rendered clean character count mismatch')
     if n==2300 and 'females, and agree' not in body: raise ValueError('Chapter XIX note 8 join mismatch')
-    bad=[x for x in ['Project Gutenberg','GLOSSARY','INDEX','[Fig.','[Illustration','Reprinted from NATURE','BY PROFESSOR HUXLEY','DETAILED','[1]','[2]','[3]','BECKENHAM','First Edition February'] if x in clean]
+    bad=contamination(clean,['Project Gutenberg','GLOSSARY','INDEX','[Fig.','[Illustration','Reprinted from NATURE','BY PROFESSOR HUXLEY','DETAILED','[1]','[2]','[3]','BECKENHAM','First Edition February'])
     if re.search(r'\(\*?\d{1,3}\.\s',clean): bad.append('numbered parenthetical')
     if re.search(r'(?m)^Fig\.\s*\d',body): bad.append('orphan figure caption')
     if any(x.rstrip().endswith(']') and x.count(']') > x.count('[') for x in body.splitlines()): bad.append('orphan closing bracket')

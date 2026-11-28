@@ -7,34 +7,14 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # the repo root, so corpus_kit imports when run as python corpora/<id>/<script>.py
+from corpus_kit.chunker import serialise, split_section, word_stats, words  # noqa: E402
 
 
 BASE = Path("corpora/marcus_aurelius")
 ROMANS = "I II III IV V VI VII VIII IX X XI XII".split()
-
-
-def words(text):
-    return len(text.split())
-
-
-def split_section(text, maximum):
-    if words(text) <= maximum:
-        return [text]
-    boundaries = [match.start() for match in re.finditer(r"\n\n", text)]
-    if not boundaries:
-        # A capital after terminal punctuation is a sentence boundary here.
-        boundaries = [match.start() for match in re.finditer(
-            r'''(?<=[.!?])\s+(?=["'\[]?[A-Z])''', text)]
-    if not boundaries:
-        # Last resort: just after a semicolon followed by whitespace.
-        boundaries = [match.end() for match in re.finditer(r";(?=\s)", text)]
-    if not boundaries:
-        raise ValueError("A sentence exceeds max_words with no semicolon; "
-                         "no permitted split boundary")
-    midpoint = words(text) / 2
-    cut = min(boundaries, key=lambda pos: (abs(words(text[:pos]) - midpoint), pos))
-    return (split_section(text[:cut].strip(), maximum)
-            + split_section(text[cut:].strip(), maximum))
 
 
 def read_sections(clean, manifest):
@@ -68,6 +48,8 @@ def make_chunks(clean, manifest, config):
         raise ValueError("Expected section units and a positive max_words")
     chunks, splits, coverage = [], [], {}
     for book, section, text in read_sections(clean, manifest):
+        # Marcus uses no abbreviation or initials rule (the defaults). Adding one would change
+        # his chunks, so it would be a corpus change, not a refactor.
         pieces = split_section(text, config["max_words"])
         if " ".join(text.split()) != " ".join(" ".join(pieces).split()):
             raise ValueError("Split changed section text")
@@ -96,23 +78,21 @@ def main():
     config = json.loads((BASE / "chunking.json").read_text(encoding="utf-8"))
     clean = (BASE / "data/clean/thoughts.txt").read_text(encoding="utf-8")
     chunks, splits, coverage = make_chunks(clean, manifest, config)
-    payload = "".join(json.dumps(chunk, ensure_ascii=False) + "\n" for chunk in chunks)
-    sizes = sorted(chunk["word_count"] for chunk in chunks)
-    count = len(sizes)
-    median = (sizes[(count - 1) // 2] + sizes[count // 2]) / 2
+    payload, payload_sha = serialise(chunks)
+    stats = word_stats(chunks)
+    count = len(chunks)
     report = {"schema_version": 1, "total_chunks": count,
               "section_count": sum(coverage.values()),
-              "word_counts": {"min": sizes[0], "median": median,
-                              "p90": sizes[(9 * count + 9) // 10 - 1], "max": sizes[-1]},
+              "word_counts": stats,
               "p90_method": "nearest rank", "split_sections": splits,
-              "chunks_sha256": hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+              "chunks_sha256": payload_sha,
               "clean_sha256": hashlib.sha256(clean.encode("utf-8")).hexdigest(),
               "config_sha256": hashlib.sha256((BASE / "chunking.json").read_bytes()).hexdigest()}
     (BASE / "data/chunks.jsonl").write_text(payload, encoding="utf-8")
     (BASE / "data/chunk_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Chunks: {count}; words min/median/p90/max: "
-          f"{sizes[0]}/{median:g}/{report['word_counts']['p90']}/{sizes[-1]}")
+          f"{stats['min']}/{stats['median']:g}/{stats['p90']}/{stats['max']}")
     print(f"Split sections: {', '.join(s['section_id'] for s in splits)}")
     print(f"chunks.jsonl SHA-256: {report['chunks_sha256']}")
 

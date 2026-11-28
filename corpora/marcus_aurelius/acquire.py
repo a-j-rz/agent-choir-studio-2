@@ -3,11 +3,13 @@
 Run from the repository root. Only data/ contains source or generated text.
 """
 
-import hashlib
 import json
 from pathlib import Path
 import re
-from urllib.request import urlopen
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # the repo root, so corpus_kit imports when run as python corpora/<id>/<script>.py
+from corpus_kit.source import load_pinned  # noqa: E402
 
 
 BASE = Path("corpora/marcus_aurelius")
@@ -131,18 +133,8 @@ def strip_source(source, manifest):
 def main():
     manifest = json.loads((BASE / "manifest.json").read_text(encoding="utf-8"))
     provenance = manifest["source_provenance"]
-    raw = BASE / "data/raw/pg15877.txt"
-    raw.parent.mkdir(parents=True, exist_ok=True)
-    if not raw.exists():
-        with urlopen(provenance["url"], timeout=60) as response:
-            payload = response.read()
-        if hashlib.sha256(payload).hexdigest() != provenance["sha256"]:
-            raise ValueError("Downloaded source SHA-256 mismatch; raw file was not written")
-        raw.write_bytes(payload)
-    payload = raw.read_bytes()
-    if hashlib.sha256(payload).hexdigest() != provenance["sha256"]:
-        raise ValueError("Raw source SHA-256 mismatch; clean output was not written")
-    clean, report = strip_source(payload.decode("utf-8").replace("\r\n", "\n"), manifest)
+    source = load_pinned(BASE / "data/raw/pg15877.txt", provenance["url"], provenance["sha256"])
+    clean, report = strip_source(source, manifest)
     target = BASE / "data/clean"
     target.mkdir(parents=True, exist_ok=True)
     (target / "thoughts.txt").write_text(clean, encoding="utf-8")
