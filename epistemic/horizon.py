@@ -270,21 +270,27 @@ def validate_set(traditions, lineages, profile) -> None:
         raise HorizonError("; ".join(problems))
 
 
+def availability(sense, mine, horizon_year, exceptions):
+    """(available, via) for one sense: via is 'tradition', 'exception', or None.
+
+    `mine` is the profile's tradition ids; `exceptions` maps sense_id -> include. Shared by the
+    compiler and the window report (scripts/compile_horizon.py --window), so both see one rule.
+    """
+    if sense.sense_id in exceptions:
+        return exceptions[sense.sense_id], ("exception" if exceptions[sense.sense_id] else None)
+    ok = any(a.tradition in mine and a.from_ <= horizon_year for a in sense.available_in)
+    return ok, ("tradition" if ok else None)
+
+
+def not_yet_anywhere(sense, horizon_year):
+    """Beyond, not unreached: its earliest date anywhere is after the horizon year."""
+    return min(a.from_ for a in sense.available_in) > horizon_year
+
+
 def compile_horizon(traditions, lineages, profile, sources_sha256) -> dict:
     """The compiled Horizon as a plain dict. Deterministic: same inputs, same output."""
     mine = {t.tradition for t in profile.traditions}
     exceptions = {e.sense_id: e.include for e in profile.exceptions}
-
-    def availability(sense):
-        """(available, via) for one sense: 'tradition', 'exception', or None."""
-        if sense.sense_id in exceptions:
-            return exceptions[sense.sense_id], ("exception" if exceptions[sense.sense_id] else None)
-        ok = any(a.tradition in mine and a.from_ <= profile.horizon_year
-                 for a in sense.available_in)
-        return ok, ("tradition" if ok else None)
-
-    def not_yet_anywhere(sense):
-        return min(a.from_ for a in sense.available_in) > profile.horizon_year
 
     records = []
     available, candidates = {}, {}  # stems -> {"terms": set, "lineages": set}
@@ -296,7 +302,8 @@ def compile_horizon(traditions, lineages, profile, sources_sha256) -> dict:
             entry["lineages"].add(lineage_id)
 
     for lineage in sorted(lineages, key=lambda lin: lin.lineage_id):
-        status = [availability(s) for s in lineage.senses]
+        status = [availability(s, mine, profile.horizon_year, exceptions)
+                  for s in lineage.senses]
         last = max((i for i, (ok, _) in enumerate(status) if ok), default=-1)
         beyond, unreached, markers = [], [], []
         for sense, (ok, _) in zip(lineage.senses, status):
@@ -307,7 +314,7 @@ def compile_horizon(traditions, lineages, profile, sources_sha256) -> dict:
             markers += [m for m in sense.markers if m not in markers]
             item = {"sense_id": sense.sense_id, "label": sense.label,
                     "terms": list(sense.terms), "markers": list(sense.markers)}
-            if not_yet_anywhere(sense):
+            if not_yet_anywhere(sense, profile.horizon_year):
                 beyond.append({**item, "bridge_distance": len(beyond) + 1})
             else:
                 unreached.append(item)
