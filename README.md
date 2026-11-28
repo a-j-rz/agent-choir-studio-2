@@ -11,9 +11,9 @@ from where it shouldn't have.
 
 **Not a product.** The trace is the point; the final answer is a by-product.
 
-> **Status:** Phase 4 complete — the Host. It triages each question, scores it on five dimensions
-> and picks the cast, writing down why at every step; code, not the model, applies the threshold.
-> **Next: Phase 5, hub-and-spoke and the Editor.** See [Build status](#build-status).
+> **Status:** Phase 5 in progress — hub-and-spoke and the Editor. Done: 5a–5c (the four-figure
+> substrate, the call-1 revision, the Editor) and C1 (Darwin's corpus and Epistemic Horizon).
+> **Next: toolkit slice T, then C2 (Plato).** See [Build status](#build-status).
 
 ---
 
@@ -302,7 +302,7 @@ Built in thin vertical slices. "Done" means the trace shows it, not that the cod
 | 2 | **Keystone:** one figure, one real corpus, hybrid index, grounded turn | ✅ Done |
 | 3 | Oracle loop, on a shared tree of concept lineages | ✅ Done |
 | 4 | Host flow: triage, scoring, topology, cast | ✅ Done |
-| 5 | Hub-and-spoke + Editor | ⏭ Next |
+| 5 | Hub-and-spoke + Editor | In progress |
 | 6 | Token-ring | |
 | 7 | Researcher + frozen fact pack | |
 | 8 | Failure and degraded-run hardening | |
@@ -480,6 +480,9 @@ with hand-computed answers; `vector_probe --selfcheck` spot-checks that the firs
 median-length chunk (plus Marcus's Book I, 17) each retrieve themselves at cosine ≥ 0.999,
 and that the query instruction is applied exactly as embedded.
 `compile_horizon --selftest` proves the Epistemic Horizon compiler.
+`generate_probe_questions <figure_id>` writes a figure's coverage-probe questions blind (one live
+call, write-once); `horizon_coverage_probe <figure_id>` asks them against the profile's horizon
+year (at most 12 live calls), or re-classifies a past run free with `--from-trace`.
 
 Corpus texts, built indexes, run traces and `.env` are gitignored by design. The repo carries
 the *recipe* for a corpus, never the texts.
@@ -525,12 +528,14 @@ agent-choir-studio-2/
     host_cast.md
   corpora/
     marcus_aurelius/     # the recipe only: acquire, chunk, Manifest, chunking config
-    charles_darwin/      # the recipe only, as above; his compiled Horizon is not yet built
+    charles_darwin/      # the recipe only, as above
   epistemic/horizon.py   # Epistemic Horizon: lineages + profile → compiled Horizon
   horizons/              # shared concept lineages, figure profiles, compiled Horizons
+    probe_questions/     # blind coverage-probe questions, one write-once file per figure
   demo/live_demo.py      # labelled fake corpus for the live demo run
   scripts/               # llm_smoke, figure_turn, retrieval probes, compile_horizon,
-                         # horizon_coverage_probe, oracle_probe, host_probe, score_stability
+                         # generate_probe_questions, horizon_coverage_probe, oracle_probe,
+                         # host_probe, score_stability
   frontend/index.html    # vanilla page: renders any event type, live
   spikes/                # Phase 0 evidence, frozen
     tool_loop.py         # Phase 0 spike: model → tool → model round trip

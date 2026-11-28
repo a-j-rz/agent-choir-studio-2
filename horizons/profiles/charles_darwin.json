@@ -1,0 +1,35 @@
+{
+  "schema_version": "1",
+  "figure_id": "charles_darwin",
+  "lived": {
+    "born": 1809,
+    "died": 1882
+  },
+  "horizon_year": 1882,
+  "horizon_year_basis": "Knowledge as of death (Decisions K3, as for Marcus); the corpus editions are 1872 and 1874, with a supplemental note of 1876.",
+  "milieu": "English naturalist of independent means. Schooled at Shrewsbury School; studied medicine at Edinburgh (1825–27); read for the ordinary BA at Christ's College, Cambridge (1828–31), intending to take holy orders, and studied natural history with John Stevens Henslow. Naturalist on HMS Beagle's survey voyage (1831–36), round South America and the world. Settled at Down House, Kent, from 1842, working by observation, experiment and a wide scientific correspondence. Fellow of the Royal Society from 1839. Read Lyell's Principles of Geology on the voyage and Malthus on population in 1838.",
+  "traditions": [
+    {
+      "tradition": "european-modern",
+      "basis": "Lived 1809–1882 in England; the science, institutions and public life of his era.",
+      "confidence": "high"
+    },
+    {
+      "tradition": "european-early-modern",
+      "basis": "His natural history and science rest on it: Linnaean classification, Newtonian physics, the naturalists of the seventeenth and eighteenth centuries.",
+      "confidence": "high"
+    },
+    {
+      "tradition": "greco-roman",
+      "basis": "A classical education at Shrewsbury School and Cambridge, centred on Latin and Greek.",
+      "confidence": "high"
+    },
+    {
+      "tradition": "latin-medieval",
+      "basis": "Read for a Cambridge BA (1828–31) intending to take holy orders; the course required Paley and Christian theology, which rests on the medieval Christian tradition.",
+      "confidence": "medium"
+    }
+  ],
+  "exceptions": [],
+  "oracle_epoch": "An educated person in Britain in the later nineteenth century."
+}

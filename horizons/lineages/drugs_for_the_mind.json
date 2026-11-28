@@ -89,8 +89,6 @@
         "drugs_for_the_mind.synthetic"
       ],
       "terms": [
-        "tranquilliser",
-        "tranquilizer",
         "benzodiazepine",
         "anxiolytic",
         "Valium",
@@ -100,7 +98,9 @@
         "a pill can reduce anxiety by acting on the brain",
         "a patient can become dependent on a prescribed drug"
       ],
-      "hazards": [],
+      "hazards": [
+        "'Tranquilliser'/'tranquilizer' are not terms: they stem to 'tranquil', matching Marcus's own 'tranquillity' (18 hits)."
+      ],
       "sources": [
         {
           "citation": "Meprobamate (Miltown), 1955; chlordiazepoxide (Librium), 1960",

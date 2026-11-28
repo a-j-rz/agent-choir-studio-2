@@ -113,7 +113,7 @@
         "rising_prices.quantity_theory"
       ],
       "terms": [
-        "inflation",
+        "price inflation",
         "deflation",
         "price index",
         "inflation rate"
@@ -122,7 +122,9 @@
         "prices rise by a measured percentage each year",
         "governments aim at a target inflation rate"
       ],
-      "hazards": [],
+      "hazards": [
+        "Bare 'inflation' is not a term: it matches physical inflating (Darwin 12 hits, Marcus 1); 'inflation rate' and 'price inflation' carry the sense, and a bare use still shows as near."
+      ],
       "sources": [
         {
           "citation": "Official consumer price indices, from the late 1910s",

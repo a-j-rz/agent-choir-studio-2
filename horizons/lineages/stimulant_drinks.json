@@ -42,6 +42,11 @@
           "tradition": "han-chinese",
           "from": -59,
           "precision": "circa"
+        },
+        {
+          "tradition": "european-early-modern",
+          "from": 1658,
+          "precision": "exact"
         }
       ],
       "prerequisites": [
@@ -60,6 +65,10 @@
         {
           "citation": "Wang Bao, 'Contract with a Servant' (59 BCE)",
           "note": "Early reference to buying and preparing tea."
+        },
+        {
+          "citation": "Mercurius Politicus, September 1658",
+          "note": "Advertisement for tea ('Tcha … Tay alias Tee') sold at the Sultaness Head coffee-house, London."
         }
       ],
       "confidence": "medium"
@@ -111,8 +120,7 @@
         "stimulant_drinks.coffee"
       ],
       "terms": [
-        "caffeine",
-        "energy drink"
+        "caffeine"
       ],
       "markers": [
         "a single chemical in the drink causes wakefulness"
@@ -122,6 +130,35 @@
         {
           "citation": "Friedlieb Ferdinand Runge isolates caffeine, 1819",
           "note": "Identification of the compound."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "stimulant_drinks.energy_drink",
+      "label": "Energy drink",
+      "summary": "A packaged drink sold to boost alertness and stamina, typically caffeine with taurine and vitamins.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1962,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "stimulant_drinks.caffeine"
+      ],
+      "terms": [
+        "energy drink"
+      ],
+      "markers": [
+        "drinks are sold specifically to boost energy and alertness"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Taisho Pharmaceutical, Lipovitan D (1962)",
+          "note": "Widely cited as the first energy drink."
         }
       ],
       "confidence": "high"

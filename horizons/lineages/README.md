@@ -11,3 +11,9 @@ class letter), `wikidata` (`Q…` or null), and `senses`, each with `available_i
 
 Seeded only for the questions in hand; grown on trace evidence. After any edit, recompile
 the affected figures: `python -m scripts.compile_horizon <figure_id>`.
+
+## Open gaps, recorded not seeded
+
+**Personal boundaries:** appeared in 2 of 6 answers in Darwin's coverage probe
+(`traces/20261127T162636Z-919b`), with no natural home in an existing lineage. It gets a
+lineage when a real run's trace shows it again.

@@ -124,6 +124,17 @@
     },
     {
       "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "climat"
+      ],
+      "terms": [
+        "climate"
+      ]
+    },
+    {
+      "lineages": [
         "rising_prices"
       ],
       "stems": [
@@ -879,6 +890,18 @@
     },
     {
       "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "carbon",
+        "emiss"
+      ],
+      "terms": [
+        "carbon emissions"
+      ]
+    },
+    {
+      "lineages": [
         "talking_cures"
       ],
       "stems": [
@@ -922,6 +945,54 @@
       ],
       "terms": [
         "chemical compound"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "climat",
+        "adapt"
+      ],
+      "terms": [
+        "climate adaptation"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "climat",
+        "financ"
+      ],
+      "terms": [
+        "climate finance"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "climat",
+        "impact"
+      ],
+      "terms": [
+        "climate impacts"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "climat",
+        "polici"
+      ],
+      "terms": [
+        "climate policy"
       ]
     },
     {
@@ -1059,6 +1130,42 @@
     },
     {
       "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "digit",
+        "platform"
+      ],
+      "terms": [
+        "digital platform"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "digit",
+        "space"
+      ],
+      "terms": [
+        "digital spaces"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "digit",
+        "tool"
+      ],
+      "terms": [
+        "digital tools"
+      ]
+    },
+    {
+      "lineages": [
         "trading_shares"
       ],
       "stems": [
@@ -1085,10 +1192,12 @@
         "price_and_value"
       ],
       "stems": [
-        "elast"
+        "elast",
+        "of",
+        "demand"
       ],
       "terms": [
-        "elasticity"
+        "elasticity of demand"
       ]
     },
     {
@@ -1223,6 +1332,56 @@
     },
     {
       "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "global",
+        "warm"
+      ],
+      "terms": [
+        "global warming"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "greenhous",
+        "effect"
+      ],
+      "terms": [
+        "greenhouse effect"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "greenhous",
+        "gas",
+        "emiss"
+      ],
+      "terms": [
+        "greenhouse gas emissions"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "heat",
+        "trap",
+        "gase"
+      ],
+      "terms": [
+        "heat-trapping gases"
+      ]
+    },
+    {
+      "lineages": [
         "trading_shares"
       ],
       "stems": [
@@ -1283,17 +1442,6 @@
         "rising_prices"
       ],
       "stems": [
-        "inflat"
-      ],
-      "terms": [
-        "inflation"
-      ]
-    },
-    {
-      "lineages": [
-        "rising_prices"
-      ],
-      "stems": [
         "inflat",
         "rate"
       ],
@@ -1311,6 +1459,17 @@
       ],
       "terms": [
         "information overload"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "internet"
+      ],
+      "terms": [
+        "internet"
       ]
     },
     {
@@ -1375,6 +1534,18 @@
     },
     {
       "lineages": [
+        "productivity"
+      ],
+      "stems": [
+        "labour",
+        "product"
+      ],
+      "terms": [
+        "labour productivity"
+      ]
+    },
+    {
+      "lineages": [
         "business_duties"
       ],
       "stems": [
@@ -1395,6 +1566,19 @@
       ],
       "terms": [
         "limited liability"
+      ]
+    },
+    {
+      "lineages": [
+        "climate"
+      ],
+      "stems": [
+        "loss",
+        "and",
+        "damag"
+      ],
+      "terms": [
+        "loss and damage"
       ]
     },
     {
@@ -1544,6 +1728,41 @@
     },
     {
       "lineages": [
+        "attention"
+      ],
+      "stems": [
+        "multitask"
+      ],
+      "terms": [
+        "multitasking"
+      ]
+    },
+    {
+      "lineages": [
+        "energy"
+      ],
+      "stems": [
+        "nation",
+        "grid"
+      ],
+      "terms": [
+        "national grid"
+      ]
+    },
+    {
+      "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "negat",
+        "reinforc"
+      ],
+      "terms": [
+        "negative reinforcement"
+      ]
+    },
+    {
+      "lineages": [
         "mental_disorder"
       ],
       "stems": [
@@ -1578,6 +1797,29 @@
     },
     {
       "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "onlin"
+      ],
+      "terms": [
+        "online"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "onlin",
+        "platform"
+      ],
+      "terms": [
+        "online platform"
+      ]
+    },
+    {
+      "lineages": [
         "habit"
       ],
       "stems": [
@@ -1597,6 +1839,18 @@
       ],
       "terms": [
         "paramedic"
+      ]
+    },
+    {
+      "lineages": [
+        "productivity"
+      ],
+      "stems": [
+        "person",
+        "product"
+      ],
+      "terms": [
+        "personal productivity"
       ]
     },
     {
@@ -1635,6 +1889,18 @@
     },
     {
       "lineages": [
+        "habit"
+      ],
+      "stems": [
+        "posit",
+        "reinforc"
+      ],
+      "terms": [
+        "positive reinforcement"
+      ]
+    },
+    {
+      "lineages": [
         "energy"
       ],
       "stems": [
@@ -1659,6 +1925,18 @@
     },
     {
       "lineages": [
+        "price_and_value"
+      ],
+      "stems": [
+        "price",
+        "elast"
+      ],
+      "terms": [
+        "price elasticity"
+      ]
+    },
+    {
+      "lineages": [
         "rising_prices"
       ],
       "stems": [
@@ -1675,10 +1953,34 @@
       ],
       "stems": [
         "price",
+        "inflat"
+      ],
+      "terms": [
+        "price inflation"
+      ]
+    },
+    {
+      "lineages": [
+        "rising_prices"
+      ],
+      "stems": [
+        "price",
         "revolut"
       ],
       "terms": [
         "price revolution"
+      ]
+    },
+    {
+      "lineages": [
+        "productivity"
+      ],
+      "stems": [
+        "product",
+        "labour"
+      ],
+      "terms": [
+        "productive labour"
       ]
     },
     {
@@ -1743,22 +2045,23 @@
         "habit"
       ],
       "stems": [
-        "reinforc"
-      ],
-      "terms": [
-        "reinforcement"
-      ]
-    },
-    {
-      "lineages": [
-        "habit"
-      ],
-      "stems": [
         "reward",
         "schedul"
       ],
       "terms": [
         "reward schedule"
+      ]
+    },
+    {
+      "lineages": [
+        "productivity"
+      ],
+      "stems": [
+        "scientif",
+        "manag"
+      ],
+      "terms": [
+        "scientific management"
       ]
     },
     {
@@ -2124,28 +2427,6 @@
         "drugs_for_the_mind"
       ],
       "stems": [
-        "tranquil"
-      ],
-      "terms": [
-        "tranquilizer"
-      ]
-    },
-    {
-      "lineages": [
-        "drugs_for_the_mind"
-      ],
-      "stems": [
-        "tranquillis"
-      ],
-      "terms": [
-        "tranquilliser"
-      ]
-    },
-    {
-      "lineages": [
-        "drugs_for_the_mind"
-      ],
-      "stems": [
         "valium"
       ],
       "terms": [
@@ -2162,6 +2443,30 @@
       ],
       "terms": [
         "variable reward"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "video",
+        "call"
+      ],
+      "terms": [
+        "video call"
+      ]
+    },
+    {
+      "lineages": [
+        "messages_at_distance"
+      ],
+      "stems": [
+        "video",
+        "chat"
+      ],
+      "terms": [
+        "video chat"
       ]
     }
   ],
@@ -2180,10 +2485,15 @@
     "benzodiazepine",
     "burnout",
     "caffeine",
+    "carbon emissions",
     "cbt",
     "cell phone",
     "central bank",
     "chemical compound",
+    "climate adaptation",
+    "climate finance",
+    "climate impacts",
+    "climate policy",
     "coffee",
     "coffeehouse",
     "cognitive behavioral therapy",
@@ -2195,9 +2505,12 @@
     "crisis line",
     "deflation",
     "demand curve",
+    "digital platform",
+    "digital spaces",
+    "digital tools",
     "dividend",
     "e-mail",
-    "elasticity",
+    "elasticity of demand",
     "electricity",
     "email",
     "emergency number",
@@ -2209,21 +2522,27 @@
     "focus mode",
     "focus of consciousness",
     "fossil fuels",
+    "global warming",
+    "greenhouse effect",
+    "greenhouse gas emissions",
+    "heat-trapping gases",
     "hedge fund",
     "helpline",
     "hotline",
     "imperfect competition",
     "inbox",
-    "inflation",
     "inflation rate",
     "information overload",
+    "internet",
     "investor",
     "invisible hand",
     "joint-stock company",
     "just price",
     "kinetic energy",
+    "labour productivity",
     "limited company",
     "limited liability",
+    "loss and damage",
     "marginal utility",
     "market power",
     "maximum prices",
@@ -2236,25 +2555,35 @@
     "money supply",
     "morphine",
     "morse code",
+    "multitasking",
+    "national grid",
+    "negative reinforcement",
     "nervous disorder",
     "neurosis",
     "notification",
+    "online",
+    "online platform",
     "operant conditioning",
     "paramedic",
+    "personal productivity",
     "phone",
     "phone call",
     "portfolio",
+    "positive reinforcement",
     "power grid",
     "price edict",
+    "price elasticity",
     "price index",
+    "price inflation",
     "price revolution",
+    "productive labour",
     "prozac",
     "psychiatric",
     "psychiatry",
     "psychoanalysis",
     "quantity of money",
-    "reinforcement",
     "reward schedule",
+    "scientific management",
     "scrolling",
     "semaphore",
     "serotonin",
@@ -2286,10 +2615,10 @@
     "text message",
     "the unconscious",
     "therapist",
-    "tranquilizer",
-    "tranquilliser",
     "valium",
-    "variable reward"
+    "variable reward",
+    "video call",
+    "video chat"
   ],
   "compiler_version": "2",
   "figure_id": "marcus_aurelius",
@@ -2316,6 +2645,17 @@
         },
         {
           "bridge_distance": 2,
+          "label": "Multitasking",
+          "markers": [
+            "a person switches attention among many tasks at once, like a machine"
+          ],
+          "sense_id": "attention.multitasking",
+          "terms": [
+            "multitasking"
+          ]
+        },
+        {
+          "bridge_distance": 3,
           "label": "Attention as a scarce resource",
           "markers": [
             "attention is scarce because information is abundant",
@@ -2330,6 +2670,7 @@
       ],
       "breach_markers": [
         "attention is a measurable, limited capacity",
+        "a person switches attention among many tasks at once, like a machine",
         "attention is scarce because information is abundant",
         "products compete for and sell people's attention"
       ],
@@ -2384,6 +2725,65 @@
     },
     {
       "available_sense": {
+        "label": "Climate of a region",
+        "sense_id": "climate.regional",
+        "via": "tradition"
+      },
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "Gases that hold in the earth's heat",
+          "markers": [
+            "gases in the air hold in the earth's heat"
+          ],
+          "sense_id": "climate.greenhouse_physics",
+          "terms": [
+            "greenhouse effect",
+            "heat-trapping gases"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Human-caused warming",
+          "markers": [
+            "human burning of fuel is warming the whole planet"
+          ],
+          "sense_id": "climate.anthropogenic",
+          "terms": [
+            "global warming",
+            "carbon emissions",
+            "greenhouse gas emissions"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "International climate policy",
+          "markers": [
+            "wealthy nations owe help to those harmed by a changing climate"
+          ],
+          "sense_id": "climate.policy",
+          "terms": [
+            "climate policy",
+            "climate adaptation",
+            "loss and damage",
+            "climate finance",
+            "climate impacts"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "gases in the air hold in the earth's heat",
+        "human burning of fuel is warming the whole planet",
+        "wealthy nations owe help to those harmed by a changing climate"
+      ],
+      "label": "Climate",
+      "lcc_class": "Q",
+      "lineage_id": "climate",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": {
         "label": "Galenic remedies",
         "sense_id": "drugs_for_the_mind.galenic",
         "via": "tradition"
@@ -2411,8 +2811,6 @@
           ],
           "sense_id": "drugs_for_the_mind.psychopharmacology",
           "terms": [
-            "tranquilliser",
-            "tranquilizer",
             "benzodiazepine",
             "anxiolytic",
             "Valium",
@@ -2535,16 +2933,28 @@
           "terms": [
             "electricity",
             "energy bill",
-            "power grid",
             "energy prices",
             "fossil fuels"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Power grid",
+          "markers": [
+            "electricity reaches homes through a nationwide network of linked stations"
+          ],
+          "sense_id": "energy.grid",
+          "terms": [
+            "power grid",
+            "national grid"
           ]
         }
       ],
       "breach_markers": [
         "energy is a measurable quantity that is never created or destroyed",
         "energy is bought from suppliers through a network",
-        "energy prices drive what everything else costs"
+        "energy prices drive what everything else costs",
+        "electricity reaches homes through a nationwide network of linked stations"
       ],
       "label": "Energy",
       "lcc_class": "Q",
@@ -2579,7 +2989,8 @@
           ],
           "sense_id": "habit.reinforcement",
           "terms": [
-            "reinforcement",
+            "positive reinforcement",
+            "negative reinforcement",
             "variable reward",
             "reward schedule",
             "operant conditioning"
@@ -2747,6 +3158,34 @@
         },
         {
           "bridge_distance": 4,
+          "label": "Video call",
+          "markers": [
+            "people see and hear each other live across a distance"
+          ],
+          "sense_id": "messages_at_distance.video_call",
+          "terms": [
+            "video call",
+            "video chat"
+          ]
+        },
+        {
+          "bridge_distance": 5,
+          "label": "The internet",
+          "markers": [
+            "work, friendship and meeting happen through a network of computers"
+          ],
+          "sense_id": "messages_at_distance.internet",
+          "terms": [
+            "online",
+            "internet",
+            "online platform",
+            "digital platform",
+            "digital tools",
+            "digital spaces"
+          ]
+        },
+        {
+          "bridge_distance": 6,
           "label": "Email",
           "markers": [
             "written messages arrive instantly and pile up waiting to be read"
@@ -2759,7 +3198,7 @@
           ]
         },
         {
-          "bridge_distance": 5,
+          "bridge_distance": 7,
           "label": "Mobile phone",
           "markers": [
             "anyone can be reached anywhere, at any hour",
@@ -2773,7 +3212,7 @@
           ]
         },
         {
-          "bridge_distance": 6,
+          "bridge_distance": 8,
           "label": "Smartphone",
           "markers": [
             "a device constantly signals for its owner's attention",
@@ -2797,6 +3236,8 @@
         "a message crosses a country in minutes without a carrier",
         "messages travel along wires at near-instant speed",
         "two people converse live across great distances",
+        "people see and hear each other live across a distance",
+        "work, friendship and meeting happen through a network of computers",
         "written messages arrive instantly and pile up waiting to be read",
         "anyone can be reached anywhere, at any hour",
         "messages arrive instantly wherever the person is",
@@ -2861,7 +3302,8 @@
           ],
           "sense_id": "price_and_value.equilibrium",
           "terms": [
-            "elasticity",
+            "price elasticity",
+            "elasticity of demand",
             "demand curve"
           ]
         },
@@ -2889,6 +3331,57 @@
       "label": "Price and value",
       "lcc_class": "H",
       "lineage_id": "price_and_value",
+      "unreached": [],
+      "wikidata": null
+    },
+    {
+      "available_sense": null,
+      "beyond": [
+        {
+          "bridge_distance": 1,
+          "label": "The productive powers of labour",
+          "markers": [
+            "a nation's wealth comes from the productive powers of its labour"
+          ],
+          "sense_id": "productivity.labour",
+          "terms": [
+            "productive labour"
+          ]
+        },
+        {
+          "bridge_distance": 2,
+          "label": "Measured productivity",
+          "markers": [
+            "work is judged by output per hour"
+          ],
+          "sense_id": "productivity.measured",
+          "terms": [
+            "labour productivity",
+            "scientific management"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Personal productivity",
+          "markers": [
+            "a person's worth is measured by what they produce",
+            "time and life are optimised for efficiency"
+          ],
+          "sense_id": "productivity.personal",
+          "terms": [
+            "personal productivity"
+          ]
+        }
+      ],
+      "breach_markers": [
+        "a nation's wealth comes from the productive powers of its labour",
+        "work is judged by output per hour",
+        "a person's worth is measured by what they produce",
+        "time and life are optimised for efficiency"
+      ],
+      "label": "Productivity",
+      "lcc_class": "H",
+      "lineage_id": "productivity",
       "unreached": [],
       "wikidata": null
     },
@@ -2933,7 +3426,7 @@
           ],
           "sense_id": "rising_prices.inflation",
           "terms": [
-            "inflation",
+            "price inflation",
             "deflation",
             "price index",
             "inflation rate"
@@ -2979,7 +3472,17 @@
           ],
           "sense_id": "stimulant_drinks.caffeine",
           "terms": [
-            "caffeine",
+            "caffeine"
+          ]
+        },
+        {
+          "bridge_distance": 3,
+          "label": "Energy drink",
+          "markers": [
+            "drinks are sold specifically to boost energy and alertness"
+          ],
+          "sense_id": "stimulant_drinks.energy_drink",
+          "terms": [
             "energy drink"
           ]
         }
@@ -2987,7 +3490,8 @@
       "breach_markers": [
         "a drink brewed from leaves is taken to stay alert",
         "a morning cup of a stimulating drink is an ordinary habit",
-        "a single chemical in the drink causes wakefulness"
+        "a single chemical in the drink causes wakefulness",
+        "drinks are sold specifically to boost energy and alertness"
       ],
       "label": "Stimulant drinks",
       "lcc_class": "T",
@@ -3167,5 +3671,5 @@
   ],
   "oracle_epoch": "An educated person of the Roman world in the late second century CE.",
   "schema_version": "2",
-  "sources_sha256": "c107e895df0ca29083fc36d3c5436a120190a9d4cd8b8b38051c9f2aecddf872"
+  "sources_sha256": "d968ae7600f0d16c2f3c40edc3dfeefdae90991331241b38d6f9296ffd3bc0a6"
 }

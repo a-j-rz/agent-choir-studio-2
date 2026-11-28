@@ -297,8 +297,8 @@ self-contained HTML file — replacing the parked "human-readable Detective repo
 Wire the four figures in parallel (each independent, private Oracle, no cross-talk), persist the
 four as the independent baseline, then the Editor's audit + synthesis.
 *Prerequisites, from Phase 4:* corpora, Manifests and compiled Horizons for Plato, Frederick
-Douglass and Charles Darwin — Marcus's exist; Darwin's corpus recipe is built (C1), his compiled
-Horizon is not. *Moved in from Phase 4:* the in-run pause, built
+Douglass and Charles Darwin — Marcus's exist; Darwin's corpus and compiled Horizon are built
+(C1). *Moved in from Phase 4:* the in-run pause, built
 once, first for the user correction boundary (Topology & Steering §2), then reused for the clarify
 loop and "Before we go on, what do you think?" (Decisions J7). Phase 5 may need to split.
 *Trace evidence:* a full hub-and-spoke run; four independent contributions; an Editor synthesis
@@ -310,9 +310,10 @@ decision recorded either way. Also confirm, on the first Editor call that report
 `reasoning_tokens > 0`, that its estimated cost counts reasoning inside output tokens and not on
 top — left open in Phase 1, where the demo task was too easy to make the model reason.
 
-*Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-27: 5a, 5b and 5c are committed; C1's
-corpus is done; nothing else below is built.* Two tracks meet at the
-first four-figure run; the machinery is tested offline until all four corpora pass the token gate.
+*Plan, agreed 2026-11-26 (Decisions K1–K8). Status 2026-11-28: 5a, 5b and 5c are committed; C1 is
+done (corpus and Horizon); nothing else in the content track, or below, is built.* Two tracks meet
+at the first four-figure run; the machinery is tested offline until all four corpora pass the token
+gate.
 
 ```mermaid
 flowchart LR
@@ -358,15 +359,36 @@ lifecycle once that lifecycle holds four figures.
   recorded and versioned like rubric anchors.
 
 *C1 note (2026-11-27):* Darwin's corpus is done — recipe landed, rebuilt byte-identically, token
-gate passed, roster flipped to `built` (Decisions K3). His profile, lineages, compiled Horizon and
-coverage probe are pending.
+gate passed, roster flipped to `built` (Decisions K3).
 
-*Parked at C1 (2026-11-27):*
+*C1 note (2026-11-28):* Darwin's Horizon is done (Decisions K3, E1). Profile in four traditions;
+three lineage fixes a second figure exposed; a blind coverage probe (3 generated questions; 12 live
+calls, $0.0068; 45 terms extracted, 39 unmapped); new `climate` and `productivity` lineages, new
+senses in `messages_at_distance` (video_call, internet) and `attention` (multitasking); a
+self-collision gate that found 5 committed terms matching a figure's own text, now 0 for both
+figures (148 and 102 breach sequences); the free re-probe took unmapped 39 → 16. Compiled, `--check`
+current.
 
-- **The Horizon gap.** Darwin is `built` in the roster with no compiled Horizon: no live run may cast
-  him until it is compiled (Decisions K3).
-- **A guard for it,** for the Phase 5 checkpoint: refuse to cast a built figure with no compiled
-  Horizon.
+*Parked at C1 (2026-11-27; updated 2026-11-28):*
+
+- **A guard,** for C2 and C3: refuse to cast a built figure with no compiled Horizon. (The gap it
+  covered closed for Darwin on 2026-11-28.)
+- **The probe's BCE template,** for C2: `horizon_coverage_probe` prints "before -347 CE" for a BCE
+  figure. Not fixed.
+
+*Toolkit slice T (planned, agreed 2026-11-28), before C2. Plan, not result: nothing here is built.*
+
+- **T1 — a corpus survey script,** proven by finding Darwin's known defects (7 note defects, 57
+  captions including 2 nested, 2 tables, 14 wrapped headings) and Marcus's 127 footnotes.
+- **T2 — the self-collision gate made permanent,** plus an available-window report, proven on the
+  C1 gate's finds.
+- **T3 — a shared recipe kit of proven mechanics,** proven by Darwin's recipe rebuilt on it
+  byte-identical (`d4122ff0…`), with Marcus's untouched.
+- **Two docs written during T:** a corpus-recipe standard and a new-figure procedure.
+
+*Principle (planned, not yet applied):* each figure supplies only its true delta. Two judgement
+items: the texts and the voice. Two sourced fact sets: the profile and the dates. Three
+confirmations: structure, defects and the window. A figure card is a later shape, after C3.
 
 **Phase 6 — Token-ring.**
 R1 blind baseline → later rounds seeing the transcript → direct-question/challenge objects →

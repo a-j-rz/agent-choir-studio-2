@@ -2,14 +2,16 @@
 
     python -m scripts.horizon_coverage_probe marcus_aurelius
     python -m scripts.horizon_coverage_probe marcus_aurelius --from-trace traces/<run_id>
+    python -m scripts.horizon_coverage_probe --selftest    # offline cases; no calls
 
-Offline build tooling, not a figure run. For each built-in question, twice: a `builder` call
-answers it as a well-informed person today; a second `builder` call lists the concepts in that
-answer that did not exist before 180 CE. Then, with no model, each listed term is matched
-against the figure's compiled Horizon by stem sequence (the BM25 tokeniser and stemmer), and
-find_breaches runs over each full answer. Changes no Horizon file. At most 12 live calls.
---from-trace re-classifies an earlier run's answers against the current Horizon: no calls,
-and nothing is written.
+Offline build tooling, not a figure run. The questions come from
+horizons/probe_questions/<figure_id>.json; the horizon year from the figure's profile. For each
+question, twice: a `builder` call answers it as a well-informed person today; a second `builder`
+call lists the concepts in that answer that did not exist before the horizon year. Then, with
+no model, each listed term is matched against the figure's compiled Horizon by stem sequence
+(the BM25 tokeniser and stemmer), and find_breaches runs over each full answer. Changes no
+Horizon file. At most 12 live calls. --from-trace re-classifies an earlier run's answers against
+the current Horizon: no calls, and nothing is written.
 
 The model only proposes candidates; whether a gap matters is a human call.
 """
@@ -19,63 +21,90 @@ import asyncio
 import json
 from pathlib import Path
 import sys
+import tempfile
 from functools import partial
+from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, create_model
 
 from core.events import Event
 from core.llm import call_model
 from core.runner import relay
 from epistemic import horizon
 
-QUESTIONS = [
-    "Should I check my phone first thing every morning?",
-    "Is anxiety an illness to be treated with medicine?",
-    "Is it right to profit when prices are rising?",
-]
+QUESTIONS_DIR = horizon.HORIZONS_DIR / "probe_questions"
 SAMPLES = 2
 COST_CAP_USD = 0.02
 
 ANSWER_INSTRUCTIONS = "Answer as a thoughtful, well-informed person today, in about 250 words."
-EXTRACT_INSTRUCTIONS = (
-    "List every concept or term in the text that did not exist anywhere before 180 CE. "
+EXTRACT_INSTRUCTIONS = (  # a template: .format(year=<the figure's horizon year>)
+    "List every concept or term in the text that did not exist anywhere before {year} CE. "
     'Include concepts that use old words in a new sense (e.g. "circulation" in Harvey\'s '
     "sense of the blood's circuit). Leave out ordinary words, and concepts that already "
     "existed in antiquity. For each: term — exactly as written in the text; concept — a "
-    "short name; emerged — approximate year or century; why_post_180 — one line."
+    "short name; emerged — approximate year or century; why_post_{year} — one line."
 )
+FIELDS = ("term", "concept", "emerged")  # then why_post_<year>
+_FROZEN = ConfigDict(frozen=True, extra="forbid")
 
 
-class Item(BaseModel):
-    model_config = ConfigDict(frozen=True, extra="forbid")
-    term: str
-    concept: str
-    emerged: str
-    why_post_180: str
+def why_field(year):
+    return f"why_post_{year}"
 
 
-class Extraction(BaseModel):
-    model_config = ConfigDict(frozen=True, extra="forbid")
-    items: list[Item]
+def extract_instructions(year):
+    return EXTRACT_INSTRUCTIONS.format(year=year)
 
 
-TEXT_FORMAT = {
-    "type": "json_schema", "name": "post_180_concepts", "strict": True,
-    "schema": {
-        "type": "object",
-        "properties": {"items": {"type": "array", "items": {
+def extraction_model(year):
+    """The extraction schema for one horizon year: term, concept, emerged, why_post_<year>."""
+    item = create_model("Item", __config__=_FROZEN,
+                        **{k: (str, ...) for k in (*FIELDS, why_field(year))})
+    return create_model("Extraction", __config__=_FROZEN, items=(list[item], ...))
+
+
+def text_format(year):
+    fields = [*FIELDS, why_field(year)]
+    return {
+        "type": "json_schema", "name": f"post_{year}_concepts", "strict": True,
+        "schema": {
             "type": "object",
-            "properties": {k: {"type": "string"} for k in Item.model_fields},
-            "required": list(Item.model_fields),
-            "additionalProperties": False}}},
-        "required": ["items"],
-        "additionalProperties": False,
-    },
-}
+            "properties": {"items": {"type": "array", "items": {
+                "type": "object",
+                "properties": {k: {"type": "string"} for k in fields},
+                "required": fields,
+                "additionalProperties": False}}},
+            "required": ["items"],
+            "additionalProperties": False,
+        },
+    }
+
+
+class QuestionsFile(BaseModel):
+    model_config = _FROZEN
+    schema_version: Literal["1"]
+    source: str = Field(min_length=1)
+    questions: list[str] = Field(min_length=1)
 
 
 class ProbeStopped(Exception):
     pass
+
+
+def horizon_year(figure_id):
+    """The figure's horizon year, from its profile."""
+    path = horizon.HORIZONS_DIR / "profiles" / f"{figure_id}.json"
+    return horizon.Profile.model_validate_json(path.read_bytes()).horizon_year
+
+
+def load_questions(figure_id, root=QUESTIONS_DIR):
+    """The figure's probe questions; refuses a figure that has no questions file."""
+    path = Path(root) / f"{figure_id}.json"
+    if not path.is_file():
+        raise ProbeStopped(f"no probe questions for {figure_id}: {path.name} does not exist in "
+                           f"{Path(root).name}/ (python -m scripts.generate_probe_questions "
+                           f"{figure_id} creates it)")
+    return QuestionsFile.model_validate_json(path.read_bytes()).questions
 
 
 def load_compiled(figure_id):
@@ -116,11 +145,11 @@ def breach_hits(text, compiled):
             for h in horizon.find_breaches(text, compiled)]
 
 
-def parse_extraction(message_texts):
+def parse_extraction(message_texts, extraction):
     valid = []
     for text in message_texts:
         try:
-            valid.append(Extraction.model_validate_json(text))
+            valid.append(extraction.model_validate_json(text))
         except ValidationError:
             pass
     if len(valid) != 1:
@@ -129,8 +158,10 @@ def parse_extraction(message_texts):
     return valid[0], len(message_texts) - 1
 
 
-async def body(trace, figure_id):
+async def body(trace, figure_id, questions, year):
     compiled = load_compiled(figure_id)
+    instructions, fmt, extraction_schema = (extract_instructions(year), text_format(year),
+                                            extraction_model(year))
     spent, calls, answers = 0.0, 0, []
 
     async def call(**kwargs):
@@ -144,15 +175,16 @@ async def body(trace, figure_id):
         calls += result.round_trips
         return result
 
-    for q_number, question in enumerate(QUESTIONS, 1):
+    for q_number, question in enumerate(questions, 1):
         for sample in range(1, SAMPLES + 1):
             answer = await call(instructions=ANSWER_INSTRUCTIONS,
                                 input_items=[{"role": "user", "content": question}])
             extraction_result = await call(
-                instructions=EXTRACT_INSTRUCTIONS, text_format=TEXT_FORMAT,
+                instructions=instructions, text_format=fmt,
                 input_items=[{"role": "user", "content": answer.text}])
             try:
-                extraction, extra = parse_extraction(extraction_result.message_texts)
+                extraction, extra = parse_extraction(extraction_result.message_texts,
+                                                     extraction_schema)
             except ProbeStopped as error:
                 trace.emit("coverage_extraction_invalid", "builder", {
                     "question": question, "sample": sample, "reason": str(error),
@@ -253,9 +285,15 @@ def render(answers, report, show_answers=True):
 
 
 async def main(figure_id):
+    try:
+        questions = load_questions(figure_id)
+    except ProbeStopped as error:
+        print(f"REFUSED: {error}")
+        return 1
     events = []
     try:
-        async for event in relay(partial(body, figure_id=figure_id),
+        async for event in relay(partial(body, figure_id=figure_id, questions=questions,
+                                         year=horizon_year(figure_id)),
                                  f"horizon coverage probe: {figure_id}", render=lambda e: e):
             print(line(event), flush=True)
             events.append(event)
@@ -279,9 +317,10 @@ def read_answers(trace_dir):
 def from_trace(figure_id, trace_dir):
     """Re-classify an earlier run's extractions and answers. No calls; writes nothing."""
     compiled = load_compiled(figure_id)
+    keys = (*FIELDS, why_field(horizon_year(figure_id)))
     answers = []
     for record in read_answers(trace_dir):
-        rows = [{**{k: r[k] for k in ("term", "concept", "emerged", "why_post_180")},
+        rows = [{**{k: r[k] for k in keys},
                  **classify(r["term"], compiled)} for r in record["items"]]
         answers.append({**record, "items": rows,
                         "breach_hits": breach_hits(record["answer"], compiled)})
@@ -295,11 +334,39 @@ def from_trace(figure_id, trace_dir):
     return 0
 
 
+def _case(label, ok, detail=""):
+    print(f"  {label:<62} {'PASS' if ok else 'FAIL'}{'  ' + detail if detail else ''}")
+    return not ok
+
+
+def selftest():
+    """Offline cases: the filled extraction prompt per figure, and refusal without questions."""
+    failures = 0
+    darwin = extract_instructions(horizon_year("charles_darwin"))
+    failures += _case("(a) Darwin's extraction prompt has 1882, not 180",
+                      "1882" in darwin and "180" not in darwin)
+    marcus = extract_instructions(horizon_year("marcus_aurelius"))
+    failures += _case("(b) Marcus's extraction prompt has 180", "180" in marcus)
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            load_questions("charles_darwin", root=tmp)
+            failures += _case("(e) refuses a figure with no questions file", False, "NOT REFUSED")
+        except ProbeStopped as error:
+            failures += _case("(e) refuses a figure with no questions file", True, str(error))
+    print("\nSELFTEST", "PASSED" if not failures else f"FAILED ({failures})")
+    return 0 if not failures else 1
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("figure_id")
+    parser.add_argument("figure_id", nargs="?")
     parser.add_argument("--from-trace", type=Path, metavar="RUN_DIR")
+    parser.add_argument("--selftest", action="store_true")
     args = parser.parse_args()
+    if args.selftest:
+        sys.exit(selftest())
+    if not args.figure_id:
+        parser.error("give a figure_id or --selftest")
     if args.from_trace:
         sys.exit(from_trace(args.figure_id, args.from_trace))
     sys.exit(asyncio.run(main(args.figure_id)))

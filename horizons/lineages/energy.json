@@ -84,7 +84,6 @@
       "terms": [
         "electricity",
         "energy bill",
-        "power grid",
         "energy prices",
         "fossil fuels"
       ],
@@ -97,6 +96,36 @@
         {
           "citation": "Edison's Pearl Street Station, New York, 1882",
           "note": "First commercial central power station."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "energy.grid",
+      "label": "Power grid",
+      "summary": "Power stations linked by a transmission network supplying a whole region or nation.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1926,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "energy.utility"
+      ],
+      "terms": [
+        "power grid",
+        "national grid"
+      ],
+      "markers": [
+        "electricity reaches homes through a nationwide network of linked stations"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Electricity (Supply) Act 1926 (UK)",
+          "note": "Established the Central Electricity Board, which built the National Grid (1927–33)."
         }
       ],
       "confidence": "high"

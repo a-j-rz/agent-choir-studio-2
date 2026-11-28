@@ -69,6 +69,37 @@
       "confidence": "high"
     },
     {
+      "sense_id": "attention.multitasking",
+      "label": "Multitasking",
+      "summary": "A person divides attention among many tasks or streams at once, described on the model of a machine.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1966,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "attention.psychological"
+      ],
+      "terms": [
+        "multitasking"
+      ],
+      "markers": [
+        "a person switches attention among many tasks at once, like a machine"
+      ],
+      "hazards": [
+        "Doing several things at once is not new; the machine model and the self-description are. 'Multitask' is not listed separately: it shares the stem."
+      ],
+      "sources": [
+        {
+          "citation": "Merriam-Webster, 'multitasking', first known use 1966",
+          "note": "Coined for computers running several jobs at once; the figurative human sense followed later, undated."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
       "sense_id": "attention.economy",
       "label": "Attention as a scarce resource",
       "summary": "In an information-rich world, attention is what is scarce, and products compete to capture it.",

@@ -136,6 +136,72 @@
       "confidence": "high"
     },
     {
+      "sense_id": "messages_at_distance.video_call",
+      "label": "Video call",
+      "summary": "People see and hear each other live across a distance.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1964,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.telephone"
+      ],
+      "terms": [
+        "video call",
+        "video chat"
+      ],
+      "markers": [
+        "people see and hear each other live across a distance"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Bell System Picturephone, New York World's Fair (April 1964)",
+          "note": "Public demonstration of two-way video calling; commercial service followed that year."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "messages_at_distance.internet",
+      "label": "The internet",
+      "summary": "Computers in distant places are linked in one network, and work, friendship and meeting are carried on through it.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1969,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "messages_at_distance.telephone"
+      ],
+      "terms": [
+        "online",
+        "internet",
+        "online platform",
+        "digital platform",
+        "digital tools",
+        "digital spaces"
+      ],
+      "markers": [
+        "work, friendship and meeting happen through a network of computers"
+      ],
+      "hazards": [
+        "Bare 'platform' (railway, political; Darwin uses it 4 times) and bare 'digital' (anatomical digits) are old words: only the phrases are terms."
+      ],
+      "sources": [
+        {
+          "citation": "UCLA IMP log, 29 October 1969 (Kleinrock, Kline)",
+          "note": "First host-to-host message over the ARPANET, the precursor of the internet."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
       "sense_id": "messages_at_distance.email",
       "label": "Email",
       "summary": "Written messages arrive instantly over computer networks and wait in an inbox.",
@@ -147,7 +213,7 @@
         }
       ],
       "prerequisites": [
-        "messages_at_distance.telephone"
+        "messages_at_distance.internet"
       ],
       "terms": [
         "email",

@@ -1,0 +1,148 @@
+{
+  "schema_version": "1",
+  "lineage_id": "climate",
+  "label": "Climate",
+  "lcc_class": "Q",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "climate.regional",
+      "label": "Climate of a region",
+      "summary": "A region's characteristic heat, cold and moisture, shaping the plants, animals and people that live there.",
+      "available_in": [
+        {
+          "tradition": "greco-roman",
+          "from": -400,
+          "precision": "century"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "climate"
+      ],
+      "markers": [
+        "a region's seasons, winds and waters shape what lives there"
+      ],
+      "hazards": [],
+      "sources": [
+        {
+          "citation": "Hippocratic Corpus, Airs, Waters, Places",
+          "note": "How a region's seasons, winds and waters shape its people."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "climate.greenhouse_physics",
+      "label": "Gases that hold in the earth's heat",
+      "summary": "The atmosphere retains the earth's heat, and certain gases, among them water vapour and carbonic acid, absorb radiant heat strongly.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1824,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "climate.regional"
+      ],
+      "terms": [
+        "greenhouse effect",
+        "heat-trapping gases"
+      ],
+      "markers": [
+        "gases in the air hold in the earth's heat"
+      ],
+      "hazards": [
+        "The phrase 'greenhouse effect' is twentieth-century, but the concept is Fourier's (1824) and Tyndall's (from 1859); it is placed by concept, so a figure of 1824 or later saying it is not flagged."
+      ],
+      "sources": [
+        {
+          "citation": "Joseph Fourier, 'Remarques générales sur les températures du globe terrestre et des espaces planétaires' (1824)",
+          "note": "The atmosphere raises the earth's temperature by retaining heat."
+        },
+        {
+          "citation": "John Tyndall, 'On the absorption and radiation of heat by gases and vapours', Philosophical Transactions (1861)",
+          "note": "Measured, from 1859, that water vapour and carbonic acid absorb radiant heat; speculated that changes in them produced past changes of climate."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "climate.anthropogenic",
+      "label": "Human-caused warming",
+      "summary": "Burning fuel adds carbon dioxide to the air, and this is warming the whole planet.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1906,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "climate.greenhouse_physics"
+      ],
+      "terms": [
+        "global warming",
+        "carbon emissions",
+        "greenhouse gas emissions"
+      ],
+      "markers": [
+        "human burning of fuel is warming the whole planet"
+      ],
+      "hazards": [
+        "Bare 'climate change' and 'emissions' are deliberately not terms: changes of climate through geological time are an older idea (Darwin writes of them; Tyndall speculated on their cause), and 'emission' of heat and light is old physics. The modern sense is carried by the markers; an answer saying only 'climate change' is a known gap for term matching."
+      ],
+      "sources": [
+        {
+          "citation": "Svante Arrhenius, Världarnas utveckling (1906); English, Worlds in the Making (1908)",
+          "note": "Presented the idea that carbon dioxide from burning fossil fuels could raise the average global temperature."
+        },
+        {
+          "citation": "G. S. Callendar, 'The artificial production of carbon dioxide and its influence on temperature', Quarterly Journal of the Royal Meteorological Society 64 (1938)",
+          "note": "First to link measured warming to fuel combustion."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "climate.policy",
+      "label": "International climate policy",
+      "summary": "Nations act together on climate change: cutting emissions, adapting to its effects, and paying for losses that cannot be prevented.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1992,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "climate.anthropogenic"
+      ],
+      "terms": [
+        "climate policy",
+        "climate adaptation",
+        "loss and damage",
+        "climate finance",
+        "climate impacts"
+      ],
+      "markers": [
+        "wealthy nations owe help to those harmed by a changing climate"
+      ],
+      "hazards": [
+        "Bare 'adaptation' is never a term: it is Darwin's own central word, in its biological sense. Only 'climate adaptation' signals this sense."
+      ],
+      "sources": [
+        {
+          "citation": "United Nations Framework Convention on Climate Change (1992)",
+          "note": "The first international climate treaty."
+        },
+        {
+          "citation": "Vanuatu, for the Alliance of Small Island States, proposal to the Intergovernmental Negotiating Committee (December 1991)",
+          "note": "Proposed an international insurance pool for loss and damage; the origin of the concept."
+        }
+      ],
+      "confidence": "high"
+    }
+  ]
+}

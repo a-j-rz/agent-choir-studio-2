@@ -1,0 +1,102 @@
+{
+  "schema_version": "1",
+  "lineage_id": "productivity",
+  "label": "Productivity",
+  "lcc_class": "H",
+  "wikidata": null,
+  "senses": [
+    {
+      "sense_id": "productivity.labour",
+      "label": "The productive powers of labour",
+      "summary": "Labour, divided and skilled, is the source of a nation's wealth, and its productive powers can be improved.",
+      "available_in": [
+        {
+          "tradition": "european-modern",
+          "from": 1776,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [],
+      "terms": [
+        "productive labour"
+      ],
+      "markers": [
+        "a nation's wealth comes from the productive powers of its labour"
+      ],
+      "hazards": [
+        "'Division of labour' is deliberately not a term: the idea is ancient (Plato's Republic) and Darwin uses a physiological sense of it."
+      ],
+      "sources": [
+        {
+          "citation": "Adam Smith, An Inquiry into the Nature and Causes of the Wealth of Nations (1776), Book I, chapter 1",
+          "note": "Opens on the improvement in the productive powers of labour."
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "productivity.measured",
+      "label": "Measured productivity",
+      "summary": "Output per worker is a quantity to be measured, studied and maximised.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1911,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "productivity.labour"
+      ],
+      "terms": [
+        "labour productivity",
+        "scientific management"
+      ],
+      "markers": [
+        "work is judged by output per hour"
+      ],
+      "hazards": [
+        "Bare 'productivity' is deliberately not a term: it stems to 'product', which matches 'production(s)' and 'product(s)' 150 times in Darwin's own chunk text. The markers carry the sense; an answer saying only 'productivity' is a known gap for term matching."
+      ],
+      "sources": [
+        {
+          "citation": "Frederick Winslow Taylor, The Principles of Scientific Management (1911)",
+          "note": "'Maximum prosperity can exist only as the result of maximum productivity.'"
+        }
+      ],
+      "confidence": "high"
+    },
+    {
+      "sense_id": "productivity.personal",
+      "label": "Personal productivity",
+      "summary": "A person's own output becomes the measure of how well they work and live.",
+      "available_in": [
+        {
+          "tradition": "global-modern",
+          "from": 1967,
+          "precision": "exact"
+        }
+      ],
+      "prerequisites": [
+        "productivity.measured"
+      ],
+      "terms": [
+        "personal productivity"
+      ],
+      "markers": [
+        "a person's worth is measured by what they produce",
+        "time and life are optimised for efficiency"
+      ],
+      "hazards": [
+        "Bare 'efficiency' and 'efficient' are never terms: Darwin uses them 41 times. 'Optimise' is not a term: its stem also catches 'optimism'."
+      ],
+      "sources": [
+        {
+          "citation": "Peter F. Drucker, The Effective Executive (1967)",
+          "note": "Self-management of the knowledge worker's time and output as a discipline. Dating a cultural shift by one book is a choice among candidates."
+        }
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

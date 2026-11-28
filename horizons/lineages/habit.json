@@ -80,7 +80,8 @@
         "habit.nervous"
       ],
       "terms": [
-        "reinforcement",
+        "positive reinforcement",
+        "negative reinforcement",
         "variable reward",
         "reward schedule",
         "operant conditioning"
@@ -89,7 +90,9 @@
         "unpredictable rewards make a behaviour hardest to stop",
         "behaviour can be engineered by designing rewards"
       ],
-      "hazards": [],
+      "hazards": [
+        "Bare 'reinforcement' is not a term: Darwin's 'reinforce' (1 hit)."
+      ],
       "sources": [
         {
           "citation": "B. F. Skinner, The Behavior of Organisms (1938); Ferster and Skinner, Schedules of Reinforcement (1957)",

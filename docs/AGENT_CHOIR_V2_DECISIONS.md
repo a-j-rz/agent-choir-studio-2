@@ -141,6 +141,15 @@ Decisions resolved during the build carry the date they were settled, e.g. **RES
   evidence:** whether a figure's prompt includes its own era's senses — the 3c A/B ran one turn
   per cell; two of condition B's three Oracle requests quoted the block back. Phase 5 runs on
   condition A and on the stand-in prompt (K2); both questions stay OPEN.
+  *Refined 2026-11-28 (C1):* coverage-probe questions are generated blind, per figure: one builder
+  call naming no figure, year or context, written once and never curated (Marcus's were the Phase 3
+  questions in hand). No-imprint rule: nothing in a profile, milieu or lineage may originate from
+  example questions or working conversation; every entry traces to a source about the world. A term
+  belongs to a sense only if it names that sense's concept as it existed at the sense's date; a
+  later product or system gets its own later sense. Self-collision gate: no breach term may match
+  the figure's own chunk text by stem sequence; a brief-time check now, made permanent in T2
+  (planned). Known bias, recorded and not deepened by us: the tree's first 15 lineages were shaped
+  by three owner-chosen questions.
 - **E3 — No figure prompt may contain a breach term.** **RESOLVED 2026-11-25.** The filled prompt
   is checked with `find_breaches` before every turn and the turn raises on any hit. *Rejected:*
   listing the figure's breach terms in its prompt (hands it the modern vocabulary); trusting
@@ -383,10 +392,39 @@ been. Each item is updated with evidence as its slice lands.
   expectations stay explicit literals, updated deliberately when a figure is built. *Rejected:*
   footnotes kept as separate note chunks (little value, more leakage surface); `book` as the whole
   work (context windows would cross chapter breaks); a token-aware splitter (couples the recipe to
-  the embedding model); a ceiling of 350 or 360 (too little headroom). **Open:** Darwin is `built`
-  in the roster but has no compiled Horizon, so **no live run may cast him until his Horizon is
-  compiled**. Candidate code guard, parked for the Phase 5 checkpoint: refuse to cast a built figure
-  with no compiled Horizon.
+  the embedding model); a ceiling of 350 or 360 (too little headroom).
+  *Horizon built 2026-11-28 (slice C1):* profile `horizons/profiles/charles_darwin.json`; traditions
+  european-modern, european-early-modern and greco-roman (all high) and latin-medieval (medium);
+  Oracle epoch "An educated person in Britain in the later nineteenth century.", which deliberately
+  omits "naturalist" (C5: epoch, not identity). *No-imprint rule:* nothing in a profile, milieu or
+  lineage may originate from example questions or working conversation; every entry traces to a
+  source about the world. The latin-medieval basis was first drafted from the very lineage it fixed
+  (usury); the owner caught it, and it was rewritten from Darwin's education. *Fixes exposed by a
+  second figure:* tea gained a european-early-modern entry (1658); "energy drink" moved from
+  caffeine (1819) to a new `energy_drink` sense (1962); "power grid" moved from utility (1882) to a
+  new `grid` sense (1926), adding "national grid". Principle: a term belongs to a sense only if it
+  names that sense's concept as it existed at the sense's date. *Blind probe:* three questions from
+  `scripts/generate_probe_questions.py` (`c6924820…`, 2026-11-27); the coverage probe, live (12
+  calls, $0.0068), extracted 45 terms: mapped_beyond 3, near 3, unmapped 39. *Lineage growth:* new
+  `climate` (regional, about −400; greenhouse_physics, 1824, available to Darwin; anthropogenic,
+  1906; policy, 1992) and `productivity` (labour, 1776; measured, 1911; personal, 1967, medium);
+  `messages_at_distance` gains video_call (1964) and internet (1969), and email's prerequisite
+  becomes internet; `attention` gains multitasking (1966, medium). Personal boundaries is recorded
+  as a gap, not seeded. *Kept out as terms:* bare "adaptation" (Darwin's own word), "climate
+  change", "emissions", "productivity" (stems to `product`: 150 hits in Darwin's chunk text),
+  "efficiency", "platform", "digital", "optimise". *Self-collision gate:* every breach term, stemmed
+  by `retrieval.bm25.analyse`, may have zero stem-sequence matches in the figure's own chunk text.
+  Its first run found 5 terms already committed: "tranquilizer"/"tranquilliser" (Marcus's own
+  "tranquillity", 18 hits), "inflation" (Darwin 12, Marcus 1), "elasticity" (Darwin 6),
+  "reinforcement" (Darwin 1); each was replaced by phrases or removed. Now 0 for both figures (148
+  and 102 breach sequences), and shown able to fail (bare "productivity": 150). It is a brief-time
+  check; making it permanent is planned (T2). *Re-probe (no calls):* Darwin's unmapped 39 → 16
+  (mapped_beyond 13, near 16); what remains is one-offs, boundaries, "optimized", "screen", "tabs".
+  The Marcus probe trace's classifications are unchanged by the removals: none of those words occurs
+  in it. Compiled files: Marcus `57717ab0…`, Darwin `e33171c4…`, both `--check` current.
+  **Closed 2026-11-28:** Darwin's Horizon is compiled, so the gap that barred casting him is closed.
+  The candidate code guard stays parked, for C2 and C3: refuse to cast a built figure with no
+  compiled Horizon.
 - **K4 — Plato's corpus.** **RESOLVED 2026-11-26.** Jowett's translation, 3rd edition; the
   *Republic* from Gutenberg #55201 (Stephanus numbering throughout). Eight dialogues: *Republic*,
   *Apology*, *Crito*, *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Jowett's introductions,

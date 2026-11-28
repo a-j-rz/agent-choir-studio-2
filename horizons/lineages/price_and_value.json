@@ -146,13 +146,16 @@
         "price_and_value.marginal"
       ],
       "terms": [
-        "elasticity",
+        "price elasticity",
+        "elasticity of demand",
         "demand curve"
       ],
       "markers": [
         "price is set where supply meets demand"
       ],
-      "hazards": [],
+      "hazards": [
+        "Bare 'elasticity' is not a term: Darwin's elastic tissue (6 hits)."
+      ],
       "sources": [
         {
           "citation": "Alfred Marshall, Principles of Economics (1890)",

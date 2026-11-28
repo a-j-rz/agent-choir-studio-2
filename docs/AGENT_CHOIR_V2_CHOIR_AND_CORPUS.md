@@ -78,7 +78,7 @@ from day one. Rights are clean for all four in public-domain English.
 
 *Works chosen for Phase 5 (Decisions K3–K5, 2026-11-26):* Darwin — *The Origin of
 Species*, 6th edition (1872), and *The Descent of Man*, 2nd edition (1874); horizon year 1882;
-corpus built 2026-11-27 (his Horizon is not yet compiled).
+corpus built 2026-11-27, Horizon compiled 2026-11-28.
 Plato — eight dialogues in Jowett's 3rd-edition translation: *Republic*, *Apology*, *Crito*,
 *Phaedo*, *Gorgias*, *Meno*, *Symposium*, *Phaedrus*. Douglass — *My Bondage and My Freedom*
 (1855) with its appendix of speech extracts, *Three Addresses* (1880s) and *Collected Articles*;
@@ -230,6 +230,14 @@ The Horizon describes what the figure could *understand*; the corpus decides wha
 maps borders, not everything the figure knew: only concepts with a modern counterpart need a
 lineage, and the tree is seeded from evidence (a coverage probe on the questions in hand) and
 grown when traces show a gap. Anything unmapped is invisible to the vocabulary check.
+
+*As built for Darwin:* his profile places him in four traditions: european-modern,
+european-early-modern and greco-roman (high), and latin-medieval (medium). His blind coverage probe
+grew the tree by four pieces: new `climate` and `productivity` lineages, and new senses in
+`messages_at_distance` (video call, internet) and `attention` (multitasking). A self-collision gate
+now checks that no breach term matches the figure's own text by stem; its first run caught five
+committed terms that matched Darwin's or Marcus's own words. Re-run on the same answers with no
+calls, the probe's unmapped terms fell from 39 to 16 (Decisions K3).
 
 ---
 
